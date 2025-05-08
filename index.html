@@ -21,7 +21,7 @@
   </header>
 
   <section class="section inicio" id="inicio">
-    <div class="card">
+    <div class="card"  id="inicio-card">
       <h2>Te damos la bienvenida</h2>
         <div class="presentation">
           <p>Inicia sesión o registrate para disfrutar de nuestros productos y beneficios.</p>
@@ -32,24 +32,38 @@
           <p class="continue">Continuar sin iniciar sesión</p>
         </div>
     </div>
-  </section>
-
-  <section class="section servicios" id="servicios">
-    <div class="card">
+    <div class="card" id="servicios-card">
       <h2>Servicios</h2>
-      <button>Pesas</button>
-      <button>Nutrición</button>
+      <button>Catálogo</button>
+      <button>Planes de suscripción</button>
       <button>Clases</button>
     </div>
   </section>
 
   <section class="section login" id="login">
-    <div class="card">
-      <h2>Iniciar sesión</h2>
-      <input type="email" placeholder="Correo" />
-      <input type="password" placeholder="Contraseña" />
-      <button>Iniciar Sesión</button>
-      <button>Registrarse</button>
+    <div class="card" id="user-card">
+      <h2>Bienvenido</h2>
+      <p>Has iniciado sesión como: <span id="userEmail"></span></p>
+      <button id="logoutBtn">Cerrar Sesión</button>
+    </div>
+
+    <div class="card" id="login-card">
+      <div class="card" id="signinForm">
+        <h2>Iniciar sesión</h2>
+        <input type="email" placeholder="Correo" id="emailSignin"/>
+        <input type="password" placeholder="Contraseña" id="passwordSignin"/>
+        <button id="signinBtn">Iniciar Sesión</button>
+        <button id="signupShowBtn">Registrarse</button>
+      </div>
+  
+      <div class="card" id="signupForm" style="display: none;">
+        <h2>Registrarse</h2>
+        <input type="email" placeholder="Correo" id="emailSignup"/>
+        <input type="password" placeholder="Contraseña" id="passwordSignup"/>
+        <input type="password" placeholder="Confirmar Contraseña" id="confirmPasswordSignup"/>
+        <button id="signupBtn">Registrarse</button>
+        <button id="signinShowBtn">Iniciar Sesión</button>
+      </div>
     </div>
   </section>
 
@@ -92,6 +106,91 @@
     </div>
   </section>
 
+  <section class="section planes" id="planes">
+    <div class="plan">
+      <h2>Plan Básico</h2>
+      <ul>
+        <li>Acceso de 8 am a 2 pm</li>
+        <li>Uso de máquinas y pesas</li>
+        <li>1 clase grupal por semana</li>
+        <li>Sin entrenador personal</li>
+      </ul>
+      <div class="price">$XX/mes</div>
+      <button class="subscribe-button" onclick="abrirModal()">Suscribirse</button>
+    </div>
+
+    <div class="plan">
+      <h2>Plan Estándar</h2>
+      <ul>
+        <li>Acceso ilimitado</li>
+        <li>Clases grupales ilimitadas</li>
+        <li>1 sesión mensual con entrenador</li>
+        <li>Acceso a zona de cardio y pesas</li>
+      </ul>
+      <div class="price">$XX/mes</div>
+      <button class="subscribe-button" onclick="abrirModal()">Suscribirse</button>
+    </div>
+
+    <div class="plan">
+      <h2>Plan Premium</h2>
+      <ul>
+        <li>Acceso total a todas las zonas</li>
+        <li>Clases grupales ilimitadas</li>
+        <li>4 sesiones con entrenador</li>
+        <li>Plan nutricional personalizado</li>
+        <li>Eventos y talleres exclusivos</li>
+      </ul>
+      <div class="price">$XX/mes</div>
+      <button class="subscribe-button" onclick="abrirModal()">Suscribirse</button>
+    </div>
+
+    <div class="plan">
+      <h2>Plan Corporativo</h2>
+      <ul>
+        <li>Ideal para empresas o grupos</li>
+        <li>Descuento por cantidad</li>
+        <li>Incluye beneficios estándar/premium</li>
+        <li>Informes de progreso</li>
+      </ul>
+      <div class="price">$XX/mes por miembro</div>
+      <button class="subscribe-button" onclick="abrirModal()">Suscribirse</button>
+    </div>
+
+    <div class="plan">
+      <h2>Plan Diario</h2>
+      <ul>
+        <li>Pago por entrada</li>
+        <li>Acceso completo por 1 día</li>
+        <li>Ideal para visitantes ocasionales</li>
+      </ul>
+      <div class="price">$XX/día</div>
+      <button class="subscribe-button" onclick="abrirModal()">Suscribirse</button>
+    </div>
+
+    <div class="plan">
+      <h2>Plan Estudiantil / Senior</h2>
+      <ul>
+        <li>Descuento especial</li>
+        <li>Requiere identificación</li>
+        <li>Beneficios del plan básico o estándar</li>
+      </ul>
+      <div class="price">$XX/mes</div>
+      <button class="subscribe-button" onclick="abrirModal()">Suscribirse</button>
+    </div>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <h3>Formulario de Suscripción</h3>
+        <input type="text" placeholder="Nombre completo" required>
+        <input type="email" placeholder="Correo electrónico" required>
+        <button class="send-btn">Enviar</button>
+        <button class="close-btn" onclick="cerrarModal()">Cerrar</button>
+      </div>
+    </div>
+  </section> 
+
   <script src="./js/script.js"></script>
+  <script type="module" src="./js/login.js"></script>
 </body>
 </html>
