@@ -54,15 +54,17 @@ nav a.active {
     text-align: center;
     width: 100%;
     height: auto;
-}
 
 .card {
+    display: flex;
     background-color: #1c1f26cc;
-    padding: 30px;
-    margin: auto;
+    padding: 15px;
+    margin-left: 50px;
     max-width: 400px;
     border-radius: 20px;
-    height: 500px;
+    height: 350px;
+    align-items: center;
+    justify-content: center;
 }
 
 .card h2 {
@@ -83,13 +85,23 @@ nav a.active {
 }
 
 .card button {
-    background-color: #F2B705;
-    color: black;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 70px;
+    align-items: center;
+    background-color: rgba(39,45,57,90%);
+    color: #FFFF;
     padding: 10px 20px;
     border: none;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 10px;
+    margin-top: 10px;
+    text-align: center;
+    justify-content: space-around;
+
+    
 }
 
 .card button:hover {
