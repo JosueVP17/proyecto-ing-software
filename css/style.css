@@ -273,16 +273,8 @@ background-color: var(--color-highlight);
 color: var(--color-bg);
 font-weight: bold;
 }
-/* Estilo personalizado de scrollbar (Webkit) */
-body::-webkit-scrollbar {
-  width: 10px;
+body {
+  overflow-y: auto; /* Muestra scroll vertical si es necesario */
+  max-height: 100vh;
 }
 
-body::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 10px;
-}
-
-body::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
-}
