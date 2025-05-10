@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <title>Aurum Gym</title>
 </head>
 <body>
@@ -68,41 +69,9 @@
   </section>
 
   <section class="section catalogo" id="catalogo">
-    <div class="productos">
-      <div class="producto">
-        <h3>Producto 1</h3>
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
-      </div>
-      <div class="producto">
-        <h3>Producto 2</h3>
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
-      </div>
-      <div class="producto">
-        <h3>Producto 3</h3>
-        <img src="" alt="Producto 3">
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
-      </div>
-      <div class="producto">
-        <h3>Producto 4</h3>
-        <img src="" alt="Producto 4">
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
-      </div>
-      <div class="producto">
-        <h3>Producto 5</h3>
-        <img src="" alt="Producto 5">
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
-      </div>
-      <div class="producto">
-        <h3>Producto 6</h3>
-        <img src="" alt="Producto 6">
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
-      </div>
+    <h1>Nuestros productos</h1>
+    <div class="productos" id="productos">
+      <div class="producto" id="producto"></div>
     </div>
   </section>
 
@@ -188,9 +157,10 @@
         <button class="close-btn" onclick="cerrarModal()">Cerrar</button>
       </div>
     </div>
-  </section> 
+  </section>
 
-  <script src="./js/script.js"></script>
   <script type="module" src="./js/login.js"></script>
+  <script src="./js/script.js"></script>
+  <script type="module" src="./js/products.js"></script>
 </body>
 </html>

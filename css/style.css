@@ -15,6 +15,8 @@ body {
     background-image: url(../images/bg.png);
     background-repeat: no-repeat;
     overflow: hidden;
+    overflow-y: auto;
+    max-height: 100vh;
     height: 100vh;
     margin: 0;
 }
@@ -50,10 +52,11 @@ nav a.active {
 }
 
 .section {
-    padding: 60px 20px;
+    padding: 20px;
     text-align: center;
     width: 100%;
     height: auto;
+}
 
 .card {
     display: flex;
@@ -110,12 +113,18 @@ nav a.active {
     transform: scale(1.05);
 }
 
+.catalogo h1 {
+    font-size: 3em;
+    color: #F2B705;
+    margin-top: 0;
+}
+
 .productos {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
-    max-width: 1000px;
-    margin: auto;
+    margin: 0 auto;
+    padding: 0 2em;
 }
 
 .producto {
@@ -125,16 +134,47 @@ nav a.active {
     color: white;
 }
 
+.producto img {
+    display: block;
+    border-radius: 10px;
+    width: 90%;
+    margin: 10px auto;
+}
+
 .producto h3 {
     background-color: #9E872F;
     padding: 10px;
     border-radius: 10px;
 }
 
-.producto img {
-    max-width: 100px;
-    display: block;
-    margin: 10px auto;
+.producto div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.producto p {
+    background-color: var(--color-card);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.producto button {
+    background-color: var(--color-accent);
+    width: 40%;
+    height: 4em;
+    border-radius: 10px;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.producto button:hover {
+    background-color: var(--color-card-hover);
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.producto i {
+    color: white;
 }
 
 .inicio .card {
@@ -275,18 +315,13 @@ color: #000;
 }
 
 .close-btn {
-background-color: var(--color-accent);
-color: white;
-font-weight: bold;
+    background-color: var(--color-accent);
+    color: white;
+    font-weight: bold;
 }
 
 .send-btn {
-background-color: var(--color-highlight);
-color: var(--color-bg);
-font-weight: bold;
+    background-color: var(--color-highlight);
+    color: var(--color-bg);
+    font-weight: bold;
 }
-body {
-  overflow-y: auto; /* Muestra scroll vertical si es necesario */
-  max-height: 100vh;
-}
-
