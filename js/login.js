@@ -1,25 +1,37 @@
-import { auth } from './firebase-config.js';
+import { auth, db } from "./firebase-config.js"
 import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js"
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js"
 
-// Escuchar cambios en el estado de autenticación
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async(user) => {
     const userCard = document.getElementById('user-card')
     const loginCard = document.getElementById('login-card')
     const inicioCard = document.getElementById('inicio-card')
     const serviciosCard = document.getElementById('servicios-card')
 
     if (user) {
-        // Usuario autenticado
-        console.log('Usuario autenticado:', user);
+        console.log('Usuario autenticado:', user)
+
+        // DISPLAY DE TARJETAS DE INFORMACIÓN
         userCard.style.display = 'block'
         loginCard.style.display = 'none'
         document.getElementById('userEmail').textContent = user.email
     
         inicioCard.style.display = 'none'
         serviciosCard.style.display = 'block'
+
+        // COMPROBAR SI EL USUARIO ES ADMIN
+        const adminRef = doc(db, 'admin', user.uid)
+        const adminSnap = await getDoc(adminRef)
+        const addProductBtn = document.getElementById('addProductBtn')
+
+        if (adminSnap.exists()) {
+            addProductBtn.style.display = 'inline-block'
+            console.log('@@@ Administrador')
+        } else addProductBtn.style.display = 'none'
     } else {
-        // Usuario no autenticado
-        console.log('No hay usuario autenticado');
+        console.log('No hay usuario autenticado')
+
+        // DISPLAY DE TARJETAS DE INICIO DE SESIÓN
         userCard.style.display = 'none'
         loginCard.style.display = 'block'
     
@@ -28,11 +40,9 @@ onAuthStateChanged(auth, (user) => {
     }
 })
 
-// Seleccionar los elementos del DOM
 const signupBtn = document.getElementById('signupBtn')
 const signinBtn = document.getElementById('signinBtn')
 
-// Función para registrar un nuevo usuario
 signupBtn.addEventListener('click', async () => {
     const email = document.getElementById('emailSignup').value
     const password = document.getElementById('passwordSignup').value
@@ -47,30 +57,31 @@ signupBtn.addEventListener('click', async () => {
     }
 })
 
-// Función para iniciar sesión
+// FUNCIÓN PARA INICIAR SESIÓN
 signinBtn.addEventListener('click', async () => {
     const email = document.getElementById('emailSignin').value
     const password = document.getElementById('passwordSignin').value
 
     try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        alert('Inicio de sesión exitoso');
-        console.log('Usuario:', userCredential.user);
+        const userCredential = await signInWithEmailAndPassword(auth, email, password)
+        alert('Inicio de sesión exitoso')
+        console.log('Usuario:', userCredential.user)
     } catch (error) {
-        console.error('Error al iniciar sesión:', error.message);
-        alert('Error al iniciar sesión: ' + error.message);
+        console.error('Error al iniciar sesión:', error.message)
+        alert('Error al iniciar sesión: ' + error.message)
     }
 })
 
+// FUNCIÓN PARA CERRAR SESIÓN
 const logoutBtn = document.getElementById('logoutBtn')
-// Función para cerrar sesión
+
 logoutBtn.addEventListener('click', async () => {
     try {
-        await signOut(auth);
-        alert('Sesión cerrada exitosamente');
-        console.log('El usuario ha cerrado sesión');
+        await signOut(auth)
+        alert('Sesión cerrada exitosamente')
+        console.log('El usuario ha cerrado sesión')
     } catch (error) {
-        console.error('Error al cerrar sesión:', error.message);
-        alert('Error al cerrar sesión: ' + error.message);
+        console.error('Error al cerrar sesión:', error.message)
+        alert('Error al cerrar sesión: ' + error.message)
     }
 })

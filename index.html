@@ -70,6 +70,25 @@
 
   <section class="section catalogo" id="catalogo">
     <h1>Nuestros productos</h1>
+    <!-- Botón para abrir el modal (solo visible si es admin) -->
+    <button id="addProductBtn" style="display: none; font-weight: bold;"><i class="fa fa-plus" aria-hidden="true"></i> AGREGAR PRODUCTO</button>
+
+    <!-- Modal de formulario -->
+    <div class="modal" id="adminModal" style="display: none;">
+      <div class="modal-content">
+        <h3>NUEVO PRODUCTO</h3>
+        <form id="productForm">
+          <input type="text" id="nombre" placeholder="Nombre del producto" required /><br />
+          <input type="number" step="0.01" id="precio" placeholder="Precio" required /><br />
+          <input type="text" id="marca" placeholder="Marca" required /><br />
+          <input type="text" id="imagen" placeholder="URL de imagen" required /><br />
+          <textarea id="descripcion" placeholder="Descripción"></textarea><br />
+          <button class="send-btn" type="submit">Agregar</button>
+          <button class="close-btn" type="button" id="closeModalBtn">Cancelar</button>
+        </form>
+      </div>
+    </div>
+
     <div class="productos" id="productos">
       <div class="producto" id="producto"></div>
     </div>

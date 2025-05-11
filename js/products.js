@@ -38,16 +38,26 @@ const renderProducts = async() => {
     })
 }
 
-const addProduct = async() => {
-    const product = {
-        imagen: "https://shop.bodybuilding.com/cdn/shop/files/bodybuildingcom-signature-100-whey-protein-30-servings-668541.jpg?v=1735446931&width=3000",
-        nombre: "Bodybuilding.com Signature 100% Whey, 60 Servings",
-        precio: 999.99,
-        marca: "Bodybuilding.com",
-        descripcion: "Signature 100% Whey Protein ofrece una potente combinación de tres fuentes de proteína de alta calidad: 6 gramos de concentrado de proteína de suero, 13 gramos de aislado de proteína de suero y 6 gramos de proteína de suero hidrolizada, lo que te proporciona proteína limpia y de rápida digestión en cada porción. Con la cantidad justa de concentrado de suero para aportar un sabor cremoso y una textura suave, esta mezcla está diseñada para promover el crecimiento muscular, contrarrestar el deterioro muscular y acelerar la recuperación después del entrenamiento.*"
-    }
+addProductBtn.addEventListener('click', () => {
+    adminModal.style.display = 'block'
+})
 
-    const existingProductQuery = query(productsCollection, where('nombre', '==', product.nombre))
+closeModalBtn.addEventListener('click', () => {
+    adminModal.style.display = 'none'
+})
+
+productForm.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    const nombre = document.getElementById('nombre').value
+    const precio = parseFloat(document.getElementById('precio').value)
+    const marca = document.getElementById('marca').value
+    const imagen = document.getElementById('imagen').value
+    const descripcion = document.getElementById('descripcion').value
+
+    const producto = { nombre, precio, marca, imagen, descripcion }
+
+    const existingProductQuery = query(productsCollection, where('nombre', '==', producto.nombre))
     const docsRef = await getDocs(existingProductQuery)
 
     if (!docsRef.empty) {
@@ -56,14 +66,14 @@ const addProduct = async() => {
     }
 
     try {
-        const newDoc = await addDoc(productsCollection, product)
+        const newDoc = await addDoc(productsCollection, producto)
         renderProducts()
         console.log('@@@ Producto agregado con ID ', newDoc.id)
+        adminModal.style.display = 'none'
+        document.getElementById('productForm').reset()
     } catch(error) {
         console.log('@@@ Error al agregar el producto: ', error)
     }
-}
-
-addProduct()
+})
 
 renderProducts()

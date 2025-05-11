@@ -1,9 +1,4 @@
-const inicioBtn = document.getElementById('inicioBtn')
-const loginBtn = document.getElementById('loginBtn')
-const catalogoBtn = document.getElementById('catalogoBtn')
-const planesBtn = document.getElementById('planesBtn')
-const contactoBtn = document.getElementById('contactoBtn')
-
+// DISPLAY DE SECCIONES
 const navButtons = document.querySelectorAll('nav a')
 const sections = document.querySelectorAll('.section')
 
@@ -26,6 +21,8 @@ navButtons.forEach(button => {
     })
 })
 
+
+// DISPLAY DE FORMULARIO DE INICIO DE SESIÓN
 const signupShowBtn = document.getElementById('signupShowBtn')
 const signinShowBtn = document.getElementById('signinShowBtn')
 const signupForm = document.getElementById('signupForm')

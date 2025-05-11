@@ -136,15 +136,21 @@ nav a.active {
 
 .producto img {
     display: block;
-    border-radius: 10px;
+    object-fit: cover;
     width: 90%;
+    max-height: 260px;
     margin: 10px auto;
 }
 
 .producto h3 {
+    color: #f2f2f2;
     background-color: #9E872F;
     padding: 10px;
     border-radius: 10px;
+}
+
+.producto h4 {
+    color: #f2f2f2;
 }
 
 .producto div {
@@ -154,6 +160,7 @@ nav a.active {
 }
 
 .producto p {
+    color: #f2f2f2;
     background-color: var(--color-card);
     padding: 10px;
     border-radius: 10px;
@@ -174,7 +181,21 @@ nav a.active {
 }
 
 .producto i {
-    color: white;
+    color: #f2f2f2;
+}
+
+#addProductBtn {
+    color: #f2f2f2;
+    background-color: var(--color-accent);
+    border: none;
+    border-radius: 10px;
+    height: 3em;
+    padding: 10px;
+    margin-bottom: 30px;
+}
+
+#addProductBtn {
+    cursor: pointer;
 }
 
 .inicio .card {
@@ -301,17 +322,31 @@ nav a.active {
     color: var(--color-highlight);
 }
 
-.modal-content input, .modal-content button {
-width: 100%;
-margin: 10px 0;
-padding: 10px;
-border: none;
-border-radius: 5px;
+.modal-content input, .modal-content button, .modal-content textarea {
+    width: 90%;
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
 }
 
-.modal-content input {
-background-color: #fff;
-color: #000;
+.modal-content input, .modal-content textarea {
+    background-color: #fff;
+    color: #000;
+}
+
+.modal-content textarea {
+    font-family: 'Poppins', sans-serif;
+}
+
+.send-btn {
+    background-color: var(--color-highlight);
+    color: var(--color-bg);
+    font-weight: bold;
+}
+
+.send-btn:hover {
+    cursor: pointer;
 }
 
 .close-btn {
@@ -320,8 +355,6 @@ color: #000;
     font-weight: bold;
 }
 
-.send-btn {
-    background-color: var(--color-highlight);
-    color: var(--color-bg);
-    font-weight: bold;
+.close-btn {
+    cursor: pointer;
 }
