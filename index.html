@@ -112,7 +112,7 @@
       <div class="modal-content">
         <h3>ACTUALIZAR PRODUCTO</h3>
         <form id="updateProductForm">
-          <input type="text" id="productID" disabled>
+          <input type="text" id="updateProductID" disabled>
           <input type="text" id="updateNombre" placeholder="Nombre del producto" required /><br />
           <input type="number" step="0.01" id="updatePrecio" placeholder="Precio" required /><br />
           <input type="text" placeholder="Marca" id="updateMarca" required /><br />
@@ -120,6 +120,17 @@
           <textarea placeholder="Descripción" id="updateDescripcion"></textarea><br />
           <button class="send-btn" type="submit">Actualizar</button>
           <button class="close-btn" type="button" id="updateModalCloseBtn">Cancelar</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal" id="modalEliminar" style="display: none;">
+      <div class="modal-content">
+        <h3>¿ESTÁS SEGURO DE ELIMINAR EL PRODUCTO?</h3>
+        <form id="deleteProductForm">
+          <input type="text" id="deleteProductID" style="display: none;" disabled>
+          <button class="send-btn" type="submit">Eliminar</button>
+          <button class="close-btn" type="button" id="deleteModalCloseBtn">Cancelar</button>
         </form>
       </div>
     </div>
