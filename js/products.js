@@ -76,4 +76,44 @@ productForm.addEventListener('submit', async (e) => {
     }
 })
 
+inventoryBtn.addEventListener('click', async() => {
+    const inventoryBtn = document.getElementById('inventoryBtn')
+    const productsContainer = document.getElementById('productos')
+    const table = document.getElementById('tabla')
+    
+    if(productsContainer.style.display === "none") {
+        productsContainer.style.display = "grid"
+        table.style.display = "none"
+        inventoryBtn.innerHTML = '<i class="fa fa-archive" aria-hidden="true"></i> INVENTARIO'
+
+        renderProducts()
+    } else {
+        productsContainer.style.display = "none"
+        table.style.display = "block"
+        inventoryBtn.innerHTML = '<i class="fa fa-long-arrow-left" aria-hidden="true"></i> REGRESAR'
+
+        const tbody = document.getElementById('tbody')
+        const products = await getProducts()
+
+        products.forEach((product) => {
+            const row = document.createElement('tr')
+
+            row.innerHTML = `
+                <td>${product.id}</td>
+                <td>${product.nombre}</td>
+                <td>$${product.precio}</td>
+                <td>${product.marca}</td>
+                <td><img src="${product.imagen}"></td>
+                <td>${product.descripcion}</td>
+                <td>
+                    <button class="productEdit"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</button>
+                    <button class="productDelete"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</button>
+                </td>
+            `
+
+            tbody.appendChild(row)
+        })
+    }
+})
+
 renderProducts()

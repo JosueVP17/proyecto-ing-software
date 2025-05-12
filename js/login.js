@@ -23,9 +23,11 @@ onAuthStateChanged(auth, async(user) => {
         const adminRef = doc(db, 'admin', user.uid)
         const adminSnap = await getDoc(adminRef)
         const addProductBtn = document.getElementById('addProductBtn')
+        const inventoryBtn = document.getElementById('inventoryBtn')
 
         if (adminSnap.exists()) {
             addProductBtn.style.display = 'inline-block'
+            inventoryBtn.style.display = 'inline-block'
             console.log('@@@ Administrador')
         } else addProductBtn.style.display = 'none'
     } else {

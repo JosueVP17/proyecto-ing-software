@@ -72,7 +72,7 @@
     <h1>Nuestros productos</h1>
     <!-- Botón para abrir el modal (solo visible si es admin) -->
     <button id="addProductBtn" style="display: none; font-weight: bold;"><i class="fa fa-plus" aria-hidden="true"></i> AGREGAR PRODUCTO</button>
-
+    <button id="inventoryBtn" style="display: none; font-weight: bold;"><i class="fa fa-archive" aria-hidden="true"></i> INVENTARIO</button>
     <!-- Modal de formulario -->
     <div class="modal" id="adminModal" style="display: none;">
       <div class="modal-content">
@@ -92,6 +92,21 @@
     <div class="productos" id="productos">
       <div class="producto" id="producto"></div>
     </div>
+
+    <table style="display: none;" id="tabla">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>NOMBRE</th>
+          <th>PRECIO</th>
+          <th>MARCA</th>
+          <th>IMAGEN</th>
+          <th>DESCRIPCIÓN</th>
+          <th>ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
   </section>
 
   <section class="section planes" id="planes">
