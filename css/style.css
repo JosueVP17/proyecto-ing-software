@@ -377,6 +377,11 @@ tr img {
     color: var(--color-highlight);
 }
 
+.modal-content textarea {
+    overflow-y: scroll;
+    height: 100px;
+}
+
 .modal-content input, .modal-content button, .modal-content textarea {
     width: 90%;
     margin: 10px 0;
