@@ -410,4 +410,33 @@ font-weight: bold;
   overflow: hidden; /* Oculta scrollbars */
   resize: none; /* Evita que el usuario lo estire manualmente */
 }
+.ventana-flotante {
+  display: none; /* Oculto por defecto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.vcon {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  min-width: 300px;
+  position: relative;
+}
+
+.cerrar {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
 /*Perfil de usuario*/
