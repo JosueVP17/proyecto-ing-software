@@ -40,15 +40,76 @@
     </div>
   </section>
 
+<!--Perfil de usuario-->
   <section class="section login" id="login">
-    <div class="card" id="user-card">
-      <h2>Bienvenido</h2>
-      <p>Has iniciado sesión como: <span id="userEmail"></span></p>
-      <button id="logoutBtn">Cerrar Sesión</button>
+    <div id="user-card">
+      <div class="panel-principal">
+          <p id="mensaje"></p>
+          <div class="usercontent">
+            <div class="userinfo">
+              <p class="info">Tus metas</p>
+            </div>
+            <div class="userinfo">
+              <p class="info">Tus intereses</p>
+            </div>
+            <div class="userinfo">
+              <p class="info"></p>
+            </div>
+            <div class="userinfo">
+              <p class="info"></p>
+            </div>
+          </div>
+         <center><table border="1" class="routine">
+            <tr>
+              <th style="width: 10%;">Día</th>
+              <th style="width: 70%;">Rutina</th>
+            </tr>
+            <tr>
+              <td>Lunes</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Martes</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Miércoles</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Jueves</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Viernes</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Sábado</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Domingo</td>
+              <td></td>
+            </tr>
+          </table></center> 
+        </div>
+      <div class="panel-lateral">
+        <div class="avatar"> 
+        <img src="./images/npp.png">
+        </div>
+        <input type="text" placeholder="Nombre de usuario" id="username" class="entry"/>
+        <p class="datan">Correo <span class="data" id="userEmail"></span></p>
+        <p class="datan">Ubicacion <span class="data" id="userLoc"></span></p>
+        <p class="datan">Edad <span class="data" id="userAge"></span></p>
+        <p class="datan">Estatura <span class="data" id="userHeight"></span></p>
+        
+        <button id="logoutBtn">Cerrar Sesión</button>
+        </div>
     </div>
 
     <div class="card" id="login-card">
-      <div class="card" id="signinForm">
+      <div id="signinForm">
         <h2>Iniciar sesión</h2>
         <input type="email" placeholder="Correo" id="emailSignin"/>
         <input type="password" placeholder="Contraseña" id="passwordSignin"/>
@@ -56,7 +117,7 @@
         <button id="signupShowBtn">Registrarse</button>
       </div>
   
-      <div class="card" id="signupForm" style="display: none;">
+      <div id="signupForm" style="display: none;">
         <h2>Registrarse</h2>
         <input type="email" placeholder="Correo" id="emailSignup"/>
         <input type="password" placeholder="Contraseña" id="passwordSignup"/>
@@ -66,6 +127,7 @@
       </div>
     </div>
   </section>
+<!--Perfil de usuario-->
 
   <section class="section catalogo" id="catalogo">
     <div class="productos">
