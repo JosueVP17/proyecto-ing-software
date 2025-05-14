@@ -47,8 +47,141 @@
           <center><button onclick="abrirForm()" class="btn-form">Abrir Formulario</button></center>
           <div id="ventana" class="ventana-flotante">
             <div class="vcon">
-              <p style="color:red">->Formulario Aqui<-</p>
-              <button onclick="cerrarForm()" class="btn-form">Cerrar Ventana</button>
+              <button onclick="cerrarForm()" class="btn-form-close"> X </button>
+              <p class="tittle-meta-personal">Formulario de Meta Personal</p>
+
+              <div class="question">
+                <label>1. ¿Cuál es tu principal objetivo al unirte al gimnasio?</label><br>
+                <select name="objetivo">
+                  <option value="musculo">Ganar masa muscular</option>
+                  <option value="peso">Bajar de peso</option>
+                  <option value="condicion">Mejorar condición física general</option>
+                  <option value="flexibilidad">Aumentar flexibilidad/movilidad</option>
+                  <option value="estres">Reducir estrés</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>2. ¿Cuántos días a la semana puedes entrenar?</label><br>
+                <select name="frecuencia">
+                  <option value="1-2">1-2 días</option>
+                  <option value="3-4">3-4 días</option>
+                  <option value="5-6">5-6 días</option>
+                  <option value="7">Todos los días</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>3. ¿Cuál es tu nivel de experiencia?</label><br>
+                <select name="experiencia">
+                  <option value="principiante">Principiante</option>
+                  <option value="intermedio">Intermedio</option>
+                  <option value="avanzado">Avanzado</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>4. ¿Qué tipo de ejercicios prefieres?</label><br>
+                <select name="preferencia">
+                  <option value="pesas">Pesas y máquinas</option>
+                  <option value="cuerpo">Cuerpo libre (calistenia)</option>
+                  <option value="cardio">Cardio</option>
+                  <option value="grupal">Clases grupales</option>
+                  <option value="yoga">Yoga / Pilates</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>5. ¿Qué habitos estás dispuesto(a) a cambiar o mejorar?</label><br>
+                <select name="habitos">
+                  <option value="alimentacion">Alimentación</option>
+                  <option value="sueño">Horario de sueño</option>
+                  <option value="hidratacion">Hidratación</option>
+                  <option value="sedentarismo">Reducir sedentarismo</option>
+                </select>
+              </div>
+              
+              <div class="question">
+                <label>6. ¿Cuánto tiempo puedes dedicar por sesión de entrenamiento?</label><br>
+                <select name="tiempo_sesion">
+                  <option value="30">30 minutos</option>
+                  <option value="45">45 minutos</option>
+                  <option value="60">1 hora</option>
+                  <option value="mas_60">Más de 1 hora</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>7. ¿Qué tan intenso prefieres que sea tu entrenamiento?</label><br>
+                <select name="intensidad">
+                  <option value="baja">Baja intensidad</option>
+                  <option value="media">Intensidad media</option>
+                  <option value="alta">Alta intensidad</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>8. ¿Tienes alguna lesión o limitación física?</label><br>
+                <select name="lesiones">
+                  <option value="si">Sí</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>9. ¿Tienes alguna restricción alimenticia?</label><br>
+                <select name="restriccionalimentaria">
+                  <option value="si">Sí</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>10. ¿Qué tan importante es perder grasa corporal?</label><br>
+                <select name="grasa">
+                  <option value="muy">Muy importante</option>
+                  <option value="algo">Algo importante</option>
+                  <option value="nada">No es prioridad</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>11. ¿Te interesa competir en alguna disciplina?</label><br>
+                <select name="competencia">
+                  <option value="si">Sí</option>
+                  <option value="no">No</option>
+                  <option value="quizas">Tal vez en el futuro</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>12. ¿Qué tan motivado estás actualmente?</label><br>
+                <select name="motivacion">
+                  <option value="muy">Muy motivado</option>
+                  <option value="media">Medianamente motivado</option>
+                  <option value="poco">Poco motivado</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>13. ¿Qué tan importante es tu salud mental?</label><br>
+                <select name="salud">
+                  <option value="muy">Muy importante</option>
+                  <option value="algo">Algo importante</option>
+                  <option value="nada">No es prioridad</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>14. ¿Prefieres entrenar solo o en grupo?</label><br>
+                <select name="grupo">
+                  <option value="solo">Solo</option>
+                  <option value="grupo">En grupo</option>
+                  <option value="igual">Me da igual</option>
+                </select>
+              </div>
+
+              <button class="btn-enviar-form" onclick="procesarFormulario()">Enviar</button>
             </div>
           </div>
           <div class="usercontent">

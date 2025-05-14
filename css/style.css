@@ -555,7 +555,7 @@ input[type="email"]:focus {
 }
 
 .vcon {
-  background-color: white;
+  background-color: rgba(22, 26, 37, 0.95);
   padding: 20px;
   border-radius: 10px;
   min-width: 300px;
