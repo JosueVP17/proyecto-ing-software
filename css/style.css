@@ -334,3 +334,32 @@ body {
   max-height: 100vh;
 }
 
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  background-color: #1f1f1f;  /* Fondo oscuro */
+  color: #fff;                /* Texto blanco */
+  border: 1px solid #444;     /* Borde discreto */
+  padding: 10px;
+  margin: 10px 5px;
+  border-radius: 5px;         /* Bordes redondeados */
+  width: 45%;                 /* Ajuste de ancho */
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder,
+input[type="email"]::placeholder {
+  color: #bbb;                /* Placeholder más suave */
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+  border-color: #ffb800;      /* Borde naranja al enfocar */
+  outline: none;
+  background-color: #2b2b2b;
+}
+
