@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="./css/style.css">
   <title>Aurum Gym</title>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <body>
   <header>
     <div class="logo">
@@ -39,9 +41,110 @@
       <button >Clases</button>
       </center>
     </div>
-    <div class="rutinas" id="rut">
+ <div class="contenedor">   
+<button class="rutin" onclick="abrirModal()">Rutinas
+<img class="imgrutin" src="./images/rutinas.png" >
+</button>
+
+
+<!-- Modal (oculto por defecto) -->
+<div id="rutinas" class="rutinas">
+  <div class="rutina-contenido">
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
     <h2>Rutinas</h2>
-    <img src="./images/rutinas.png" alt="Rutinas"></div>
+    <p>Este es el contenido de la ventana emergente.</p>
+  </div>
+</div>
+
+<button class="rutin" onclick="abrirModal()">Plan nutricional
+  <img class="imgdieta" src="./images/nutricion.png" > </button>
+
+<!-- Modal (oculto por defecto) -->
+<div id="rutina" class="rutinas">
+  <div class="rutina-contenido">
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>Plan nutricional</h2>
+    <p>Este es el contenido de la ventana emergente.</p>
+  </div>
+</div>
+
+<button class="rutin" onclick="abrirModal()">IMC
+  <img class="imgIMC" src="./images/IMC.png" >
+</button>
+
+
+<!-- Modal (oculto por defecto) -->
+<div id="rutinas" class="rutinas">
+  <div class="rutina-contenido">
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>IMC</h2>
+    <p>Este es el contenido de la ventana emergente.</p>
+  </div>
+</div>
+
+<button class="rutin" onclick="abrirModal()">TMB
+  <img class="imgtmb" src="./images/bdc.png" >
+</button>
+ 
+
+<!-- Modal (oculto por defecto) -->
+<div id="rutinas" class="rutinas">
+  <div class="rutina-contenido">
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>TMB</h2>
+    <p>Este es el contenido de la ventana emergente.</p>
+  </div>
+</div>
+</div>
+<div class="estadistica"> 
+  <div>
+    <h2>Estadísticas</h2>
+  <img class="imgestadistica" src="./images/estadisticas.png" >
+  <canvas id="miGrafica" width="500" height="100"></canvas>
+  </div>
+  <script>
+const ctx = document.getElementById('miGrafica').getContext('2d');
+const miGrafico = new Chart(ctx, {
+  type: 'bar', // o 'line', 'pie', etc.
+  data: {
+    labels: ['Enero', 'Febrero', 'Marzo', 'Abril'],
+    datasets: [{
+      label: 'Cambios en el IMC',
+      data: [12, 19, 3, 5],
+      backgroundColor: '#ffb800',
+      borderColor: '#ffffff',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        labels: {
+          color: 'white'
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: 'white'
+        }
+      },
+      y: {
+        ticks: {
+          color: 'white'
+        }
+      }
+    }
+  }
+});
+</script>
+
+
+</div>
+
+
   </section>
 
   <section class="section login" id="login">

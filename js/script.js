@@ -48,3 +48,11 @@ function abrirModal() {
 function cerrarModal() {
   document.getElementById('modal').style.display = 'none'
 }
+
+function abrirModal() {
+  document.getElementById("rutinas").style.display = "block";
+}
+
+function cerrarModal() {
+  document.getElementById("rutinas").style.display = "none";
+}
