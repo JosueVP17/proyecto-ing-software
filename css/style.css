@@ -54,7 +54,51 @@ nav a.active {
     text-align: center;
     width: 100%;
     height: auto;
+}
 
+.login {
+    place-items: center;
+    background-color: #1c1f26cc;
+    padding: 15px;
+    max-width: 400px;
+    border-radius: 20px;
+    height: 500px;
+    align-items: center;
+    justify-content: center;
+     position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+}
+.login h2 {
+    font-size: 2em;
+    color: #F2B705;
+
+}
+.login button {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 70px;
+    align-items: center;
+    background-color: rgba(39,45,57,90%);
+    color: #FFFF;
+    padding: 10px 20px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-top: 10px;
+    text-align: center;
+    justify-content: space-around;
+
+}
+.login button:hover {
+    background-color: #F2B705;
+    color: black;
+    transform: scale(1.05);
+}
 .card {
     display: flex;
     background-color: #1c1f26cc;
