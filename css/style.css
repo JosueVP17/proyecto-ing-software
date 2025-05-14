@@ -99,6 +99,42 @@ nav a.active {
     color: black;
     transform: scale(1.05);
 }
+.servicios{
+    display: flex;
+    place-items: center;
+    background-color: #1c1f26cc;
+    padding: 15px;
+    max-width: 400px;
+    border-radius: 20px;
+    height: 350px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color:#F2B705 ;
+
+}
+.servicios button{
+     display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 70px;
+    align-items: center;
+    background-color: rgba(39,45,57,90%);
+    color: #FFFF;
+    padding: 10px 20px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-top: 10px;
+    text-align: center;
+    justify-content: space-around;
+}
+.servicios button:hover {
+    background-color: #F2B705;
+    color: black;
+    transform: scale(1.05);
+}
 .card {
     display: flex;
     background-color: #1c1f26cc;
