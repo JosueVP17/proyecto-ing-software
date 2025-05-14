@@ -17,8 +17,6 @@ body {
     overflow: hidden;
     height: 100vh;
     margin: 0;
-    overflow-y: auto; /* Muestra scroll vertical si es necesario */
-    max-height: 100vh;
 }
 
 p {
@@ -55,8 +53,88 @@ nav a.active {
     padding: 60px 20px;
     text-align: center;
     width: 100%;
-    height: auto;}
+    height: auto;
+}
 
+.login {
+    place-items: center;
+    background-color: #1c1f26cc;
+    padding: 15px;
+    max-width: 400px;
+    border-radius: 20px;
+    height: 500px;
+    align-items: center;
+    justify-content: center;
+     position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+}
+.login h2 {
+    font-size: 2em;
+    color: #F2B705;
+
+}
+.login button {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 70px;
+    align-items: center;
+    background-color: rgba(39,45,57,90%);
+    color: #FFFF;
+    padding: 10px 20px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-top: 10px;
+    text-align: center;
+    justify-content: space-around;
+
+}
+.login button:hover {
+    background-color: #F2B705;
+    color: black;
+    transform: scale(1.05);
+}
+.servicios{
+    display: flex;
+    place-items: center;
+    background-color: #1c1f26cc;
+    padding: 15px;
+    max-width: 400px;
+    border-radius: 20px;
+    height: 350px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color:#F2B705 ;
+
+}
+.servicios button{
+     display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 70px;
+    align-items: center;
+    background-color: rgba(39,45,57,90%);
+    color: #FFFF;
+    padding: 10px 20px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-top: 10px;
+    text-align: center;
+    justify-content: space-around;
+}
+.servicios button:hover {
+    background-color: #F2B705;
+    color: black;
+    transform: scale(1.05);
+}
 .card {
     display: flex;
     background-color: #1c1f26cc;
@@ -65,6 +143,8 @@ nav a.active {
     max-width: 400px;
     border-radius: 20px;
     height: 350px;
+    align-items: center;
+    justify-content: center;
 }
 
 .card h2 {
@@ -285,7 +365,39 @@ background-color: var(--color-highlight);
 color: var(--color-bg);
 font-weight: bold;
 }
+body {
+  overflow-y: auto; /* Muestra scroll vertical si es necesario */
+  max-height: 100vh;
+}
 
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  background-color: #1f1f1f;  /* Fondo oscuro */
+  color: #fff;                /* Texto blanco */
+  border: 1px solid #444;     /* Borde discreto */
+  padding: 10px;
+  margin: 10px 5px;
+  border-radius: 5px;         /* Bordes redondeados */
+  width: 45%;                 /* Ajuste de ancho */
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder,
+input[type="email"]::placeholder {
+  color: #bbb;                /* Placeholder más suave */
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+  border-color: #ffb800;      /* Borde naranja al enfocar */
+  outline: none;
+  background-color: #2b2b2b;
+}
 /*Perfil de usuario*/
 .panel-lateral {
   width: 20%; 
@@ -421,6 +533,25 @@ font-weight: bold;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+}
+
+.btn-form
+{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 70px;
+    align-items: center;
+    background-color: rgba(39,45,57,90%);
+    color: #FFFF;
+    padding: 10px 20px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-top: 10px;
+    text-align: center;
+    justify-content: space-around;
 }
 
 .vcon {

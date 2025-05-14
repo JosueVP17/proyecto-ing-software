@@ -41,10 +41,16 @@
   </section>
 
 <!--Perfil de usuario-->
-  <section class="section login" id="login">
+  <section class="section" id="login">
     <div id="user-card">
       <div class="panel-principal">
-          <p id="mensaje"></p>
+          <center><button onclick="abrirForm()" class="btn-form">Abrir Formulario</button></center>
+          <div id="ventana" class="ventana-flotante">
+            <div class="vcon">
+              <p style="color:red">->Formulario Aqui<-</p>
+              <button onclick="cerrarForm()" class="btn-form">Cerrar Ventana</button>
+            </div>
+          </div>
           <div class="usercontent">
             <div class="userinfo">
               <p class="info">Tu Meta</p>
@@ -93,12 +99,6 @@
               <td></td>
             </tr>
           </table></center> 
-          <button onclick="abrirForm()">Abrir Formulario</button>
-          <div id="ventana" class="ventana-flotante">
-            <div class="vcon">
-              <p style="color:red">->Formulario Aqui<-</p>
-              <button onclick="cerrarForm()">Cerrar Ventana</button>
-            </div>
 </div>
         </div>
       <div class="panel-lateral">
