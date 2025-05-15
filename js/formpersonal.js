@@ -2,6 +2,12 @@ import { db, auth } from './firebase-config.js'
 import { doc, setDoc, getDoc, updateDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js"
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js"
 
+
+/*Para limpiar el formulario*/
+function limpiarFormulario() {
+  document.querySelectorAll('input, select').forEach(el => el.value = '')
+}
+
 /*Para abrir y cerrar el formulario de personal*/
 const abrirForm = document.getElementById("abrirForm")
 
@@ -9,6 +15,7 @@ abrirForm.addEventListener("click", function () {
   const form = document.getElementById("ventana")
   form.style.display = "flex"
 
+  limpiarFormulario()
   cargarRespuestas()
 })
 
@@ -25,16 +32,16 @@ async function cargarRespuestas() {
 
   if (user) {
     try {
-      //Consulta para buscar el formulario del usuario por su correo
+      /*Consulta para buscar el formulario del usuario por su correo*/
       const q = query(collection(db, "meta-personal"), where("correo", "==", user.email))
       const querySnapshot = await getDocs(q)
 
       if (!querySnapshot.empty) {
-        //Se obtiene el formulario que contenga el correo del usuario
+        /*Se obtiene el formulario que contenga el correo del usuario*/
         const docSnapshot = querySnapshot.docs[0]
         const respuestas = docSnapshot.data()
 
-        //Se llenan los campos del formulario con las respuestas
+        /*Se llenan los campos del formulario con las respuestas*/
         document.querySelector('input[name="edad"]').value = respuestas.edad || ''
         document.querySelector('input[name="masa"]').value = respuestas.masa || ''
         document.querySelector('input[name="estatura"]').value = respuestas.estatura || ''
@@ -90,17 +97,17 @@ async function procesarFormulario(event) {
   }
 
   try {
-    //Se crea o actualiza el documento en la base de datos
+    /*Se crea o actualiza el documento en la base de datos*/
     const q = query(collection(db, "meta-personal"), where("correo", "==", respuestas.correo))
     const querySnapshot = await getDocs(q)
 
     if (!querySnapshot.empty) {
-      //Si ya existe, se actualiza
+      /*Si ya existe, se actualiza*/
       const docRef = querySnapshot.docs[0].ref
       await setDoc(docRef, respuestas)
       alert("Formulario actualizado exitosamente.")
     } else {
-      //Si no existe, se crea o agrega a la base
+      /*Si no existe, se crea o agrega a la base*/
       await addDoc(collection(db, "meta-personal"), respuestas)
       alert("Formulario enviado exitosamente.")
     }
@@ -110,6 +117,6 @@ async function procesarFormulario(event) {
   }
 }
 
-//Para enviar el formulario
+/*Para enviar el formulario*/
 const enviarFormBtn = document.querySelector('.btn-enviar-form')
 enviarFormBtn.addEventListener('click', procesarFormulario)
