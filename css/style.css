@@ -308,11 +308,15 @@ body {
     margin-right: 20px;
     margin-left: 25px;
     margin-bottom: 25px;
-    height: 450px;
-    width: 400px;
-    background-color: #1c1f26cc;
+    height: 350px;
+    width: 300px;
+    background-color: #0c1324cc;
 
     border-radius: 20px;
+}
+
+.nombre-profesional{
+    font-size: 15px;
 }
 
 .contacto-datos {
@@ -321,7 +325,17 @@ body {
     text-align: left;
     margin-left: 20px;
     margin-right: 20px;
+    
 }
+
+.esp-datos p {
+    font-size: 15px;
+}
+
+.datos-prof p {
+    font-size: 15px;
+}
+
 
 .contacto-datos p {
     margin: 5px 0;
@@ -331,9 +345,15 @@ body {
     height: 100px;
 }
 
+.imagen-contacto img {
+    border-radius: 25px;
+    margin-bottom: 10px;
+}
+
 #facebook {
     margin-top: 15px;
     font-size: 30px;
+    color: blue;
 }
 
 #instagram {
@@ -344,5 +364,6 @@ body {
 #whatsapp {
     margin-top: 15px;
     font-size: 30px;
+    color: green;
 }
 /* ----------------------------- */
