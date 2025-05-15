@@ -115,12 +115,5 @@ window.addEventListener("load", () => {
     input.setAttribute("readonly", true);
   }
 });
-function abrirForm() {
-  document.getElementById("ventana").style.display = "flex";
-}
-
-function cerrarForm() {
-  document.getElementById("ventana").style.display = "none";
-}
 
 /*Perfil de usuario*/
