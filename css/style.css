@@ -54,7 +54,7 @@ nav a.active {
     text-align: center;
     width: 100%;
     height: auto;
-
+}
 .card {
     display: flex;
     background-color: #1c1f26cc;
@@ -290,3 +290,59 @@ body {
   max-height: 100vh;
 }
 
+/* CSS Contacto con Profesionales */
+.contacto-container 
+{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 60px;
+    margin-right: 50px;
+}
+
+
+.item1{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-right: 20px;
+    margin-left: 25px;
+    margin-bottom: 25px;
+    height: 450px;
+    width: 400px;
+    background-color: #1c1f26cc;
+
+    border-radius: 20px;
+}
+
+.contacto-datos {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.contacto-datos p {
+    margin: 5px 0;
+}
+
+.contacto-item {
+    height: 100px;
+}
+
+#facebook {
+    margin-top: 15px;
+    font-size: 30px;
+}
+
+#instagram {
+    margin-top: 15px;
+    font-size: 30px;
+}
+
+#whatsapp {
+    margin-top: 15px;
+    font-size: 30px;
+}
+/* ----------------------------- */
