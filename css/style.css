@@ -15,6 +15,8 @@ body {
     background-image: url(../images/bg.png);
     background-repeat: no-repeat;
     overflow: hidden;
+    overflow-y: auto;
+    max-height: 100vh;
     height: 100vh;
     margin: 0;
 }
@@ -50,12 +52,11 @@ nav a.active {
 }
 
 .section {
-    padding: 60px 20px;
+    padding: 20px;
     text-align: center;
     width: 100%;
     height: auto;
 }
-
 .login {
     place-items: center;
     background-color: #1c1f26cc;
@@ -91,7 +92,6 @@ nav a.active {
     margin-top: 10px;
     text-align: center;
     justify-content: space-around;
-
 }
 .login button:hover {
     background-color: #F2B705;
@@ -342,12 +342,18 @@ nav a.active {
     transform: scale(1.05);
 }
 
+.catalogo h1 {
+    font-size: 3em;
+    color: #F2B705;
+    margin-top: 0;
+}
+
 .productos {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
-    max-width: 1000px;
-    margin: auto;
+    margin: 0 auto;
+    padding: 0 2em;
 }
 
 .producto {
@@ -357,16 +363,123 @@ nav a.active {
     color: white;
 }
 
+.producto img {
+    display: block;
+    object-fit: cover;
+    border-radius: 10px;
+    width: 90%;
+    max-height: 260px;
+    margin: 10px auto;
+}
+
 .producto h3 {
+    color: #f2f2f2;
     background-color: #9E872F;
     padding: 10px;
     border-radius: 10px;
 }
 
-.producto img {
-    max-width: 100px;
-    display: block;
-    margin: 10px auto;
+.producto h4 {
+    color: #f2f2f2;
+}
+
+.producto div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.producto p {
+    color: #f2f2f2;
+    background-color: var(--color-card);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.producto button {
+    background-color: var(--color-accent);
+    width: 40%;
+    height: 4em;
+    border-radius: 10px;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.producto button:hover {
+    background-color: var(--color-card-hover);
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.producto i {
+    color: #f2f2f2;
+}
+
+#addProductBtn, #inventoryBtn {
+    color: #f2f2f2;
+    background-color: var(--color-accent);
+    border: none;
+    border-radius: 10px;
+    height: 3em;
+    padding: 10px;
+    margin-bottom: 30px;
+}
+
+#addProductBtn, #inventoryBtn {
+    cursor: pointer;
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: separate;
+    border-radius: 10px;
+    border: 1px solid #f2f2f2;
+    background-color: var(--color-border);
+    width: 95%;
+    margin: 0 auto;
+}
+
+td {
+    border-top: 1px solid #f2f2f2;
+}
+
+th:not(:last-child), td:not(:last-child) {
+    border-right: 1px solid #f2f2f2;
+}
+
+th:not(:first-child) {
+    padding-top:20px;
+    padding-bottom:20px;
+}
+
+td {
+    padding: 15px;
+}
+
+tr img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.productEdit {
+    background-color: #FFC107;
+}
+
+.productDelete {
+    background-color: #DC3545;
+}
+
+.productEdit, .productDelete {
+    font-weight: bold;
+    color: #f2f2f2;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    height: 50px;
+    margin: 10px 0;
+}
+
+.productEdit:hover, .productDelete:hover {
+    cursor: pointer;
 }
 
 .inicio .card {
@@ -493,35 +606,44 @@ nav a.active {
     color: var(--color-highlight);
 }
 
-.modal-content input, .modal-content button {
-width: 100%;
-margin: 10px 0;
-padding: 10px;
-border: none;
-border-radius: 5px;
+.modal-content textarea {
+    overflow-y: scroll;
+    height: 100px;
 }
 
-.modal-content input {
-background-color: #fff;
-color: #000;
+.modal-content input, .modal-content button, .modal-content textarea {
+    width: 90%;
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
 }
 
-.close-btn {
-background-color: var(--color-accent);
-color: white;
-font-weight: bold;
+.modal-content input, .modal-content textarea {
+    background-color: #fff;
+    color: #000;
+}
+
+.modal-content textarea {
+    font-family: 'Poppins', sans-serif;
 }
 
 .send-btn {
-background-color: var(--color-highlight);
-color: var(--color-bg);
-font-weight: bold;
-}
-body {
-  overflow-y: auto; /* Muestra scroll vertical si es necesario */
-  max-height: 100vh;
+    background-color: var(--color-highlight);
+    color: var(--color-bg);
+    font-weight: bold;
 }
 
+.send-btn:hover {
+    cursor: pointer;
+}
+
+.close-btn {
+    background-color: var(--color-accent);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
 
 input[type="text"],
 input[type="password"],

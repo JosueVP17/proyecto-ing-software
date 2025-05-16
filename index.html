@@ -429,40 +429,69 @@ const miGrafico = new Chart(ctx, {
 <!--Perfil de usuario-->
 
   <section class="section catalogo" id="catalogo">
-    <div class="productos">
-      <div class="producto">
-        <h3>Producto 1</h3>
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
+    <h1>Nuestros productos</h1>
+    <!-- Botón para abrir el modal (solo visible si es admin) -->
+    <button id="addProductBtn" style="display: none; font-weight: bold;"><i class="fa fa-plus" aria-hidden="true"></i> AGREGAR PRODUCTO</button>
+    <button id="inventoryBtn" style="display: none; font-weight: bold;"><i class="fa fa-archive" aria-hidden="true"></i> INVENTARIO</button>
+    <!-- Modal de formulario -->
+    <div class="modal" id="modalAgregar" style="display: none;">
+      <div class="modal-content">
+        <h3>NUEVO PRODUCTO</h3>
+        <form id="addProductForm">
+          <input type="text" placeholder="Nombre del producto" id="addNombre" required /><br />
+          <input type="number" step="0.01" id="addPrecio" placeholder="Precio" required /><br />
+          <input type="text" id="addMarca" placeholder="Marca" required /><br />
+          <input type="text" id="addImagen" placeholder="URL de imagen" required /><br />
+          <textarea placeholder="Descripción" id="addDescripcion"></textarea><br />
+          <button class="send-btn" type="submit">Agregar</button>
+          <button class="close-btn" type="button" id="addModalCloseBtn">Cancelar</button>
+        </form>
       </div>
-      <div class="producto">
-        <h3>Producto 2</h3>
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
+    </div>
+
+    <div class="productos" id="productos">
+      <div class="producto" id="producto"></div>
+    </div>
+
+    <table style="display: none;" id="tabla">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>NOMBRE</th>
+          <th>PRECIO</th>
+          <th>MARCA</th>
+          <th>IMAGEN</th>
+          <th>DESCRIPCIÓN</th>
+          <th>ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+
+    <div class="modal" id="modalActualizar" style="display: none;">
+      <div class="modal-content">
+        <h3>ACTUALIZAR PRODUCTO</h3>
+        <form id="updateProductForm">
+          <input type="text" id="updateProductID" disabled>
+          <input type="text" id="updateNombre" placeholder="Nombre del producto" required /><br />
+          <input type="number" step="0.01" id="updatePrecio" placeholder="Precio" required /><br />
+          <input type="text" placeholder="Marca" id="updateMarca" required /><br />
+          <input type="text" placeholder="URL de imagen" id="updateImagen" required /><br />
+          <textarea placeholder="Descripción" id="updateDescripcion"></textarea><br />
+          <button class="send-btn" type="submit">Actualizar</button>
+          <button class="close-btn" type="button" id="updateModalCloseBtn">Cancelar</button>
+        </form>
       </div>
-      <div class="producto">
-        <h3>Producto 3</h3>
-        <img src="" alt="Producto 3">
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
-      </div>
-      <div class="producto">
-        <h3>Producto 4</h3>
-        <img src="" alt="Producto 4">
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
-      </div>
-      <div class="producto">
-        <h3>Producto 5</h3>
-        <img src="" alt="Producto 5">
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
-      </div>
-      <div class="producto">
-        <h3>Producto 6</h3>
-        <img src="" alt="Producto 6">
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
+    </div>
+
+    <div class="modal" id="modalEliminar" style="display: none;">
+      <div class="modal-content">
+        <h3>¿ESTÁS SEGURO DE ELIMINAR EL PRODUCTO?</h3>
+        <form id="deleteProductForm">
+          <input type="text" id="deleteProductID" style="display: none;" disabled>
+          <button class="send-btn" type="submit">Eliminar</button>
+          <button class="close-btn" type="button" id="deleteModalCloseBtn">Cancelar</button>
+        </form>
       </div>
     </div>
   </section>
@@ -549,12 +578,13 @@ const miGrafico = new Chart(ctx, {
         <button class="close-btn" onclick="cerrarModal()">Cerrar</button>
       </div>
     </div>
-  </section> 
-
-  <script type="module" src="./js/loginfo.js"></script>
+  </section>
+  
   <script src="./js/script.js"></script>
+  <script type="module" src="./js/loginfo.js"></script>
   <script type="module" src="./js/formpersonal.js"></script>
   <script type="module" src="./js/login.js"></script>
   <script src="./js/cropper.js"></script>
+  <script type="module" src="./js/products.js"></script>
 </body>
 </html>
