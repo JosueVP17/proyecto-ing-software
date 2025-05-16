@@ -45,3 +45,69 @@ function abrirModal() {
 function cerrarModal() {
   document.getElementById('modal').style.display = 'none'
 }
+
+/*Perfil de usuario*/
+const textarea = document.getElementById('autoTextarea');
+
+function autoGrow(el) {
+  el.style.height = 'auto'; 
+  el.style.height = el.scrollHeight + 'px';
+}
+
+textarea.addEventListener('input', () => autoGrow(textarea));
+const maxCharsPerLine = 30;
+
+textarea.addEventListener('input', () => {
+  const lines = textarea.value.split('\n');
+  const limitedLines = lines.map(line =>
+    line.length > maxCharsPerLine
+      ? line.slice(0, maxCharsPerLine)
+      : line
+  );
+  textarea.value = limitedLines.join('\n');
+  autoGrow(textarea);
+});
+function guardarTexto() {
+  const textarea = document.getElementById("autoTextarea");
+  const mensaje = document.getElementById("mensaje");
+  const texto = textarea.value;
+
+  localStorage.setItem("textoGuardado", texto);
+
+  mensaje.textContent = "Texto guardado.";
+}
+  window.onload = function () {
+    const guardado = localStorage.getItem("textoGuardado");
+    if (guardado) {
+      document.getElementById("autoTextarea").value = guardado;
+    }
+  };
+   const input = document.getElementById("username");
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      input.setAttribute("readonly", true);
+      input.blur(); 
+    }
+  });
+
+  input.addEventListener("click", function () {
+    if (input.hasAttribute("readonly")) {
+      input.removeAttribute("readonly");
+      input.focus();
+    }
+  });
+input.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    localStorage.setItem("username", input.value);
+    input.setAttribute("readonly", true);
+    input.blur();
+  }
+});
+
+window.addEventListener("load", () => {
+  const savedName = localStorage.getItem("username");
+  if (savedName) {
+    input.value = savedName;
+    input.setAttribute("readonly", true);
+  }
+});
