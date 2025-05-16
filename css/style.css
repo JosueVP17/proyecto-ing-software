@@ -323,7 +323,7 @@ nav a.active {
     height: 70px;
     align-items: center;
     background-color: rgba(39,45,57,90%);
-    color: #e-around;FFFF;
+    color: #FFFF;
     padding: 10px 20px;
     border: none;
     font-size: 20px;
@@ -332,8 +332,6 @@ nav a.active {
     margin-top: 10px;
     text-align: center;
     justify-content: space-around;
-
-    
 }
 
 .card button:hover {
@@ -645,9 +643,9 @@ tr img {
     cursor: pointer;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="email"] {
+.login input[type="text"],
+.login input[type="password"],
+.login input[type="email"] {
   background-color: #1f1f1f;  /* Fondo oscuro */
   color: #fff;                /* Texto blanco */
   border: 1px solid #444;     /* Borde discreto */
@@ -659,15 +657,15 @@ input[type="email"] {
   transition: 0.3s;
 }
 
-input[type="text"]::placeholder,
-input[type="password"]::placeholder,
-input[type="email"]::placeholder {
+.login input[type="text"]::placeholder,
+.login input[type="password"]::placeholder,
+.login input[type="email"]::placeholder {
   color: #bbb;                /* Placeholder más suave */
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="email"]:focus {
+.login input[type="text"]:focus,
+.login input[type="password"]:focus,
+.login input[type="email"]:focus {
   border-color: #ffb800;      /* Borde naranja al enfocar */
   outline: none;
   background-color: #2b2b2b;
