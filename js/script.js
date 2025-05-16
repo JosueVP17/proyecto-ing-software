@@ -48,7 +48,6 @@ function abrirModal() {
 function cerrarModal() {
   document.getElementById('modal').style.display = 'none'
 }
-
 /*Perfil de usuario*/
 
    const input = document.getElementById("username");
