@@ -6,7 +6,13 @@
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <title>Aurum Gym</title>
+  <link rel="stylesheet" href="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.css" />
+  <script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
+
+
 </head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <body>
   <header>
     <div class="logo">
@@ -22,34 +28,387 @@
   </header>
 
   <section class="section inicio" id="inicio">
-    <div class="card"  id="inicio-card">
+    <div class="login"  id="inicio-card">
       <h2>Te damos la bienvenida</h2>
         <div class="presentation">
           <p>Inicia sesión o registrate para disfrutar de nuestros productos y beneficios.</p>
         </div>
-        <div class="buttons">
+        <div class="button">
           <button>Iniciar Sesión</button>
           <button>Registrarse</button>
           <p class="continue">Continuar sin iniciar sesión</p>
         </div>
     </div>
-    <div class="card" id="servicios-card">
+    <div class="servicios" id="servicios-card">
       <h2>Servicios</h2>
       <center><button >Catálogo</button>
       <button >Planes de suscripción</button>
-      <button >Clases</button></center>
+      <button >Clases</button>
+      </center>
     </div>
+ <div class="contenedor">   
+<button class="rutin" onclick="abrirModal()">Rutinas
+<img class="imgrutin" src="./images/rutinas.png" >
+</button>
+
+
+<!-- Modal (oculto por defecto) -->
+<div id="rutinas" class="rutinas">
+  <div class="rutina-contenido">
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>Rutinas</h2>
+    <p>Este es el contenido de la ventana emergente.</p>
+  </div>
+</div>
+
+<button class="rutin" onclick="abrirModal()">Plan nutricional
+  <img class="imgdieta" src="./images/nutricion.png" > </button>
+
+<!-- Modal (oculto por defecto) -->
+<div id="rutina" class="rutinas">
+  <div class="rutina-contenido">
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>Plan nutricional</h2>
+    <p>Este es el contenido de la ventana emergente.</p>
+  </div>
+</div>
+
+<button class="rutin" onclick="abrirModal()">IMC
+  <img class="imgIMC" src="./images/IMC.png" >
+</button>
+
+
+<!-- Modal (oculto por defecto) -->
+<div id="rutinas" class="rutinas">
+  <div class="rutina-contenido">
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>IMC</h2>
+    <p>Este es el contenido de la ventana emergente.</p>
+  </div>
+</div>
+
+<button class="rutin" onclick="abrirModal()">TMB
+  <img class="imgtmb" src="./images/bdc.png" >
+</button>
+ 
+
+<!-- Modal (oculto por defecto) -->
+<div id="rutinas" class="rutinas">
+  <div class="rutina-contenido">
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>TMB</h2>
+    <p>Este es el contenido de la ventana emergente.</p>
+  </div>
+</div>
+</div>
+<div class="estadistica"> 
+  <div>
+    <h2>Estadísticas</h2>
+  <img class="imgestadistica" src="./images/estadisticas.png" >
+  <canvas id="miGrafica" width="500" height="100"></canvas>
+  </div>
+  <script>
+const ctx = document.getElementById('miGrafica').getContext('2d');
+const miGrafico = new Chart(ctx, {
+  type: 'bar', // o 'line', 'pie', etc.
+  data: {
+    labels: ['Enero', 'Febrero', 'Marzo', 'Abril'],
+    datasets: [{
+      label: 'Cambios en el IMC',
+      data: [12, 19, 3, 5],
+      backgroundColor: '#ffb800',
+      borderColor: '#ffffff',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        labels: {
+          color: 'white'
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: 'white'
+        }
+      },
+      y: {
+        ticks: {
+          color: 'white'
+        }
+      }
+    }
+  }
+});
+</script>
+
+
+</div>
+
+
   </section>
 
-  <section class="section login" id="login">
-    <div class="card" id="user-card">
-      <h2>Bienvenido</h2>
-      <p>Has iniciado sesión como: <span id="userEmail"></span></p>
-      <button id="logoutBtn">Cerrar Sesión</button>
+<!--Perfil de usuario-->
+  <section class="section" id="login">
+    <div id="user-card">
+      <div class="panel-principal">
+          <center><button id="abrirForm" class="btn-form">Abrir Formulario <i class="fa-solid fa-clipboard-question"></i></button></center>
+          <div id="ventana" class="ventana-flotante">
+            <div class="vcon">
+              <button id="cerrarForm" class="btn-form-cerrar"> X </button>
+              <p class="tit-meta-personal">Formulario de Meta Personal</p>
+              <i class="fa-solid fa-clipboard-question tit-meta-personal"></i>
+
+              <div class="question">
+                <label>1. ¿Cuál es tu edad?</label><br>
+                <input type="number" name="edad" placeholder="Ingresa tu edad">
+                <div class="error-message" style="display: none;"></div>
+              </div>
+
+              <div class="question">
+                <label>2. ¿Cuál es tu masa corporal (en kg)?</label><br>
+                <input type="number" name="masa" placeholder="Ingresa tu peso en kg">
+                <div class="error-message" style="display: none;"></div>
+              </div>
+
+              <div class="question">
+                <label>3. ¿Cuál es tu estatura (en cm)?</label><br>
+                <input type="number" name="estatura" placeholder="Ingresa tu estatura en cm">
+                <div class="error-message" style="display: none;"></div>
+              </div>
+
+              <div class="question">
+                <label>4. ¿Cuál es tu principal objetivo al unirte al gimnasio?</label><br>
+                <select name="objetivo">
+                  <option value="musculo">Ganar masa muscular</option>
+                  <option value="peso">Bajar de peso</option>
+                  <option value="condicion">Mejorar condición física general</option>
+                  <option value="flexibilidad">Aumentar flexibilidad/movilidad</option>
+                  <option value="estres">Reducir estrés</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>5. ¿Cuántos días a la semana puedes entrenar?</label><br>
+                <select name="frecuencia">
+                  <option value="1-2">1-2 días</option>
+                  <option value="3-4">3-4 días</option>
+                  <option value="5-6">5-6 días</option>
+                  <option value="7">Todos los días</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>6. ¿Cuál es tu nivel de experiencia?</label><br>
+                <select name="experiencia">
+                  <option value="principiante">Principiante</option>
+                  <option value="intermedio">Intermedio</option>
+                  <option value="avanzado">Avanzado</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>7. ¿Qué tipo de ejercicios prefieres?</label><br>
+                <select name="preferencia">
+                  <option value="pesas">Pesas y máquinas</option>
+                  <option value="cuerpo">Cuerpo libre (calistenia)</option>
+                  <option value="cardio">Cardio</option>
+                  <option value="grupal">Clases grupales</option>
+                  <option value="yoga">Yoga / Pilates</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>8. ¿Qué habitos estás dispuesto(a) a cambiar o mejorar?</label><br>
+                <select name="habitos">
+                  <option value="alimentacion">Alimentación</option>
+                  <option value="sueño">Horario de sueño</option>
+                  <option value="hidratacion">Hidratación</option>
+                  <option value="sedentarismo">Reducir sedentarismo</option>
+                </select>
+              </div>
+              
+              <div class="question">
+                <label>9. ¿Cuánto tiempo puedes dedicar por sesión de entrenamiento?</label><br>
+                <select name="tiempo_sesion">
+                  <option value="30">30 minutos</option>
+                  <option value="45">45 minutos</option>
+                  <option value="60">1 hora</option>
+                  <option value="mas_60">Más de 1 hora</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>10. ¿Qué tan intenso prefieres que sea tu entrenamiento?</label><br>
+                <select name="intensidad">
+                  <option value="baja">Baja intensidad</option>
+                  <option value="media">Intensidad media</option>
+                  <option value="alta">Alta intensidad</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>11. ¿Tienes alguna lesión o limitación física?</label><br>
+                <select name="lesiones">
+                  <option value="si">Sí</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>12. ¿Tienes alguna restricción alimenticia?</label><br>
+                <select name="restriccionalimentaria">
+                  <option value="si">Sí</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>13. ¿Qué tan importante es perder grasa corporal?</label><br>
+                <select name="grasa">
+                  <option value="muy">Muy importante</option>
+                  <option value="algo">Algo importante</option>
+                  <option value="nada">No es prioridad</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>14. ¿Te interesa competir en alguna disciplina?</label><br>
+                <select name="competencia">
+                  <option value="si">Sí</option>
+                  <option value="no">No</option>
+                  <option value="quizas">Tal vez en el futuro</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>15. ¿Qué tan motivado estás actualmente?</label><br>
+                <select name="motivacion">
+                  <option value="muy">Muy motivado</option>
+                  <option value="media">Medianamente motivado</option>
+                  <option value="poco">Poco motivado</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>16. ¿Qué tan importante es tu salud mental?</label><br>
+                <select name="salud">
+                  <option value="muy">Muy importante</option>
+                  <option value="algo">Algo importante</option>
+                  <option value="nada">No es prioridad</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>17. ¿Prefieres entrenar solo o en grupo?</label><br>
+                <select name="grupo">
+                  <option value="solo">Solo</option>
+                  <option value="grupo">En grupo</option>
+                  <option value="igual">Me da igual</option>
+                </select>
+              </div>
+
+              <button class="btn-enviar-form" type="submit">Enviar</button>
+            </div>
+          </div>
+          <div class="usercontent">
+            <div class="userinfo">
+              <p class="info">Tu Meta</p>
+            </div>
+            <div class="userinfo">
+              <p class="info">Tu Motivacion</p>
+            </div>
+            <div class="userinfo">
+              <p class="info">Habitos a poner atencion</p>
+            </div>
+            <div class="userinfo">
+              <p class="info">Tus obstaculos</p>
+            </div>
+          </div>
+         <center><table border="1" class="routine">
+            <tr>
+              <th style="width: 10%;">Día</th>
+              <th style="width: 70%;">Rutina</th>
+            </tr>
+            <tr>
+              <td>Lunes</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Martes</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Miércoles</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Jueves</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Viernes</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Sábado</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Domingo</td>
+              <td></td>
+            </tr>
+          </table></center> 
+        </div>
+      <div class="panel-lateral">
+        <input type="file" id="avatarInput" accept="image/*">
+
+        <img id="avatarPreview" src="./images/npp.png" alt="Preview">
+
+        <div id="cropModal">
+          <div id="cropModalContent">
+            <img id="imageToCrop" alt="Imagen para recortar">
+
+            <div class="buttonsContainer">
+              <button id="cropBtn">Recortar</button>
+              <button id="cancelCropBtn">Cancelar</button>
+            </div>
+          </div>
+        </div>
+          <input type="text" placeholder="Nombre de usuario" id="username" class="entry"/>
+          <p class="datan">Correo <span class="data" id="userEmail"></span></p>
+          <p class="datan">Ubicacion <span class="data" id="userLoc"></span></p>
+          <p class="datan">Edad <span class="data" id="userAge"></span></p>
+          <p class="datan">Estatura <span class="data" id="userHeight"></span></p>
+          
+          <div class="usercontent">
+            <button id="logoutBtn">Cerrar Sesión</button>
+            <button id="logeditBtn">Cambiar contraseña</button>
+          </div>
+          <div id="ventanaLog" class="ventana-flotante">
+            <h3>Actualizar datos</h3>
+
+            <p><label>Contraseña actual:</label>
+            <input type="password" id="passwordActual" placeholder="Requerida para actualizar" /></p>
+
+            <p><label>Actualizar contraseña:</label>
+            <input type="password" id="nuevaPassword" placeholder="Nueva contraseña" /></p>
+            <div class="usercontent">
+              <button id="guardarCambiosBtn">Guardar Cambios</button>
+              <button id="cerrarLogBtn">Cerrar</button>
+            </div>
+            <p id="mensaje"></p>
+          </div>
+        </div>
     </div>
+  </div>
 
     <div class="card" id="login-card">
-      <div class="card" id="signinForm">
+      <div id="signinForm">
         <h2>Iniciar sesión</h2>
         <input type="email" placeholder="Correo" id="emailSignin"/>
         <input type="password" placeholder="Contraseña" id="passwordSignin"/>
@@ -57,7 +416,7 @@
         <button id="signupShowBtn">Registrarse</button>
       </div>
   
-      <div class="card" id="signupForm" style="display: none;">
+      <div id="signupForm" style="display: none;">
         <h2>Registrarse</h2>
         <input type="email" placeholder="Correo" id="emailSignup"/>
         <input type="password" placeholder="Contraseña" id="passwordSignup"/>
@@ -67,42 +426,72 @@
       </div>
     </div>
   </section>
+<!--Perfil de usuario-->
 
   <section class="section catalogo" id="catalogo">
-    <div class="productos">
-      <div class="producto">
-        <h3>Producto 1</h3>
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
+    <h1>Nuestros productos</h1>
+    <!-- Botón para abrir el modal (solo visible si es admin) -->
+    <button id="addProductBtn" style="display: none; font-weight: bold;"><i class="fa fa-plus" aria-hidden="true"></i> AGREGAR PRODUCTO</button>
+    <button id="inventoryBtn" style="display: none; font-weight: bold;"><i class="fa fa-archive" aria-hidden="true"></i> INVENTARIO</button>
+    <!-- Modal de formulario -->
+    <div class="modal" id="modalAgregar" style="display: none;">
+      <div class="modal-content">
+        <h3>NUEVO PRODUCTO</h3>
+        <form id="addProductForm">
+          <input type="text" placeholder="Nombre del producto" id="addNombre" required /><br />
+          <input type="number" step="0.01" id="addPrecio" placeholder="Precio" required /><br />
+          <input type="text" id="addMarca" placeholder="Marca" required /><br />
+          <input type="text" id="addImagen" placeholder="URL de imagen" required /><br />
+          <textarea placeholder="Descripción" id="addDescripcion"></textarea><br />
+          <button class="send-btn" type="submit">Agregar</button>
+          <button class="close-btn" type="button" id="addModalCloseBtn">Cancelar</button>
+        </form>
       </div>
-      <div class="producto">
-        <h3>Producto 2</h3>
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
+    </div>
+
+    <div class="productos" id="productos">
+      <div class="producto" id="producto"></div>
+    </div>
+
+    <table style="display: none;" id="tabla">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>NOMBRE</th>
+          <th>PRECIO</th>
+          <th>MARCA</th>
+          <th>IMAGEN</th>
+          <th>DESCRIPCIÓN</th>
+          <th>ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+
+    <div class="modal" id="modalActualizar" style="display: none;">
+      <div class="modal-content">
+        <h3>ACTUALIZAR PRODUCTO</h3>
+        <form id="updateProductForm">
+          <input type="text" id="updateProductID" disabled>
+          <input type="text" id="updateNombre" placeholder="Nombre del producto" required /><br />
+          <input type="number" step="0.01" id="updatePrecio" placeholder="Precio" required /><br />
+          <input type="text" placeholder="Marca" id="updateMarca" required /><br />
+          <input type="text" placeholder="URL de imagen" id="updateImagen" required /><br />
+          <textarea placeholder="Descripción" id="updateDescripcion"></textarea><br />
+          <button class="send-btn" type="submit">Actualizar</button>
+          <button class="close-btn" type="button" id="updateModalCloseBtn">Cancelar</button>
+        </form>
       </div>
-      <div class="producto">
-        <h3>Producto 3</h3>
-        <img src="" alt="Producto 3">
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
-      </div>
-      <div class="producto">
-        <h3>Producto 4</h3>
-        <img src="" alt="Producto 4">
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
-      </div>
-      <div class="producto">
-        <h3>Producto 5</h3>
-        <img src="" alt="Producto 5">
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
-      </div>
-      <div class="producto">
-        <h3>Producto 6</h3>
-        <img src="" alt="Producto 6">
-        <p>$1,500</p>
-        <p>Lorem ipsum dolor sit amet...</p>
+    </div>
+
+    <div class="modal" id="modalEliminar" style="display: none;">
+      <div class="modal-content">
+        <h3>¿ESTÁS SEGURO DE ELIMINAR EL PRODUCTO?</h3>
+        <form id="deleteProductForm">
+          <input type="text" id="deleteProductID" style="display: none;" disabled>
+          <button class="send-btn" type="submit">Eliminar</button>
+          <button class="close-btn" type="button" id="deleteModalCloseBtn">Cancelar</button>
+        </form>
       </div>
     </div>
   </section>
@@ -374,11 +763,13 @@
             </div>
         </div>
       </div>
-      
-      
   </section>
-
+    
   <script src="./js/script.js"></script>
+  <script type="module" src="./js/loginfo.js"></script>
+  <script type="module" src="./js/formpersonal.js"></script>
   <script type="module" src="./js/login.js"></script>
+  <script src="./js/cropper.js"></script>
+  <script type="module" src="./js/products.js"></script>
 </body>
 </html>
