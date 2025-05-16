@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./css/style.css">
   <title>Aurum Gym</title>
+  <link rel="stylesheet" href="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.css" />
+  <script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
+
+
 </head>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -147,15 +151,111 @@ const miGrafico = new Chart(ctx, {
 
   </section>
 
-  <section class="section login" id="login">
-    <div class="class" id="user-card">
-      <h2>Bienvenido</h2>
-      <p>Has iniciado sesión como: <span id="userEmail"></span></p>
-      <button id="logoutBtn">Cerrar Sesión</button>
-    </div>
+<!--Perfil de usuario-->
+  <section class="section" id="login">
+    <div id="user-card">
+      <div class="panel-principal">
+          <center><button onclick="abrirForm()" class="btn-form">Abrir Formulario</button></center>
+          <div id="ventana" class="ventana-flotante">
+            <div class="vcon">
+              <p style="color:red">->Formulario Aqui<-</p>
+              <button onclick="cerrarForm()" class="btn-form">Cerrar Ventana</button>
+            </div>
+          </div>
+          <div class="usercontent">
+            <div class="userinfo">
+              <p class="info">Tu Meta</p>
+            </div>
+            <div class="userinfo">
+              <p class="info">Tu Motivacion</p>
+            </div>
+            <div class="userinfo">
+              <p class="info">Habitos a poner atencion</p>
+            </div>
+            <div class="userinfo">
+              <p class="info">Tus obstaculos</p>
+            </div>
+          </div>
+         <center><table border="1" class="routine">
+            <tr>
+              <th style="width: 10%;">Día</th>
+              <th style="width: 70%;">Rutina</th>
+            </tr>
+            <tr>
+              <td>Lunes</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Martes</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Miércoles</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Jueves</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Viernes</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Sábado</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Domingo</td>
+              <td></td>
+            </tr>
+          </table></center> 
+        </div>
+      <div class="panel-lateral">
+        <input type="file" id="avatarInput" accept="image/*">
 
-    <div class="Inicio" id="login-card">
-      <div class="" id="signinForm">
+        <img id="avatarPreview" src="./images/npp.png" alt="Preview">
+
+        <div id="cropModal">
+          <div id="cropModalContent">
+            <img id="imageToCrop" alt="Imagen para recortar">
+
+            <div class="buttonsContainer">
+              <button id="cropBtn">Recortar</button>
+              <button id="cancelCropBtn">Cancelar</button>
+            </div>
+          </div>
+        </div>
+          <input type="text" placeholder="Nombre de usuario" id="username" class="entry"/>
+          <p class="datan">Correo <span class="data" id="userEmail"></span></p>
+          <p class="datan">Ubicacion <span class="data" id="userLoc"></span></p>
+          <p class="datan">Edad <span class="data" id="userAge"></span></p>
+          <p class="datan">Estatura <span class="data" id="userHeight"></span></p>
+          
+          <div class="usercontent">
+            <button id="logoutBtn">Cerrar Sesión</button>
+            <button id="logeditBtn">Cambiar contraseña</button>
+          </div>
+          <div id="ventanaLog" class="ventana-flotante">
+            <h3>Actualizar datos</h3>
+
+            <p><label>Contraseña actual:</label>
+            <input type="password" id="passwordActual" placeholder="Requerida para actualizar" /></p>
+
+            <p><label>Actualizar contraseña:</label>
+            <input type="password" id="nuevaPassword" placeholder="Nueva contraseña" /></p>
+            <div class="usercontent">
+              <button id="guardarCambiosBtn">Guardar Cambios</button>
+              <button id="cerrarLogBtn">Cerrar</button>
+            </div>
+            <p id="mensaje"></p>
+          </div>
+        </div>
+    </div>
+  </div>
+
+    <div class="card" id="login-card">
+      <div id="signinForm">
         <h2>Iniciar sesión</h2>
         <input type="email" placeholder="Correo" id="emailSignin"/>
         <input type="password" placeholder="Contraseña" id="passwordSignin"/>
@@ -163,7 +263,7 @@ const miGrafico = new Chart(ctx, {
         <button id="signupShowBtn">Registrarse</button>
       </div>
   
-      <div class="card" id="signupForm" style="display: none;">
+      <div id="signupForm" style="display: none;">
         <h2>Registrarse</h2>
         <input type="email" placeholder="Correo" id="emailSignup"/>
         <input type="password" placeholder="Contraseña" id="passwordSignup"/>
@@ -173,6 +273,7 @@ const miGrafico = new Chart(ctx, {
       </div>
     </div>
   </section>
+<!--Perfil de usuario-->
 
   <section class="section catalogo" id="catalogo">
     <div class="productos">
@@ -297,7 +398,9 @@ const miGrafico = new Chart(ctx, {
     </div>
   </section> 
 
+  <script type="module" src="./js/loginfo.js"></script>
   <script src="./js/script.js"></script>
   <script type="module" src="./js/login.js"></script>
+  <script src="./js/cropper.js"></script>
 </body>
 </html>

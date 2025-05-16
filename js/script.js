@@ -48,11 +48,36 @@ function abrirModal() {
 function cerrarModal() {
   document.getElementById('modal').style.display = 'none'
 }
+/*Perfil de usuario*/
 
-function abrirModal() {
-  document.getElementById("rutinas").style.display = "block";
-}
+   const input = document.getElementById("username");
 
-function cerrarModal() {
-  document.getElementById("rutinas").style.display = "none";
-}
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      input.setAttribute("readonly", true);
+      input.blur(); 
+    }
+  });
+
+  input.addEventListener("click", function () {
+    if (input.hasAttribute("readonly")) {
+      input.removeAttribute("readonly");
+      input.focus();
+    }
+  });
+input.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    localStorage.setItem("username", input.value);
+    input.setAttribute("readonly", true);
+    input.blur();
+  }
+});
+
+window.addEventListener("load", () => {
+  const savedName = localStorage.getItem("username");
+  if (savedName) {
+    input.value = savedName;
+    input.setAttribute("readonly", true);
+  }
+});
+/*Perfil de usuario*/
