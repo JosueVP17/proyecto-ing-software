@@ -86,7 +86,6 @@ function guardarTexto() {
     }
   };
    const input = document.getElementById("username");
-
   input.addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
       input.setAttribute("readonly", true);
@@ -115,5 +114,3 @@ window.addEventListener("load", () => {
     input.setAttribute("readonly", true);
   }
 });
-
-/*Perfil de usuario*/

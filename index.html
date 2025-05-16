@@ -6,6 +6,10 @@
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <title>Aurum Gym</title>
+  <link rel="stylesheet" href="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.css" />
+  <script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
+
+
 </head>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -359,21 +363,49 @@ const miGrafico = new Chart(ctx, {
               <td></td>
             </tr>
           </table></center> 
-</div>
         </div>
       <div class="panel-lateral">
-        <div class="avatar"> 
-        <img src="./images/npp.png">
+        <input type="file" id="avatarInput" accept="image/*">
+
+        <img id="avatarPreview" src="./images/npp.png" alt="Preview">
+
+        <div id="cropModal">
+          <div id="cropModalContent">
+            <img id="imageToCrop" alt="Imagen para recortar">
+
+            <div class="buttonsContainer">
+              <button id="cropBtn">Recortar</button>
+              <button id="cancelCropBtn">Cancelar</button>
+            </div>
+          </div>
         </div>
-        <input type="text" placeholder="Nombre de usuario" id="username" class="entry"/>
-        <p class="datan">Correo <span class="data" id="userEmail"></span></p>
-        <p class="datan">Ubicacion <span class="data" id="userLoc"></span></p>
-        <p class="datan">Edad <span class="data" id="userAge"></span></p>
-        <p class="datan">Estatura <span class="data" id="userHeight"></span></p>
-        
-        <button id="logoutBtn">Cerrar Sesión</button>
+          <input type="text" placeholder="Nombre de usuario" id="username" class="entry"/>
+          <p class="datan">Correo <span class="data" id="userEmail"></span></p>
+          <p class="datan">Ubicacion <span class="data" id="userLoc"></span></p>
+          <p class="datan">Edad <span class="data" id="userAge"></span></p>
+          <p class="datan">Estatura <span class="data" id="userHeight"></span></p>
+          
+          <div class="usercontent">
+            <button id="logoutBtn">Cerrar Sesión</button>
+            <button id="logeditBtn">Cambiar contraseña</button>
+          </div>
+          <div id="ventanaLog" class="ventana-flotante">
+            <h3>Actualizar datos</h3>
+
+            <p><label>Contraseña actual:</label>
+            <input type="password" id="passwordActual" placeholder="Requerida para actualizar" /></p>
+
+            <p><label>Actualizar contraseña:</label>
+            <input type="password" id="nuevaPassword" placeholder="Nueva contraseña" /></p>
+            <div class="usercontent">
+              <button id="guardarCambiosBtn">Guardar Cambios</button>
+              <button id="cerrarLogBtn">Cerrar</button>
+            </div>
+            <p id="mensaje"></p>
+          </div>
         </div>
     </div>
+  </div>
 
     <div class="card" id="login-card">
       <div id="signinForm">
@@ -519,8 +551,10 @@ const miGrafico = new Chart(ctx, {
     </div>
   </section> 
 
+  <script type="module" src="./js/loginfo.js"></script>
   <script src="./js/script.js"></script>
   <script type="module" src="./js/formpersonal.js"></script>
   <script type="module" src="./js/login.js"></script>
+  <script src="./js/cropper.js"></script>
 </body>
 </html>
