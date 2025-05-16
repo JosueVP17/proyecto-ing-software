@@ -29,7 +29,11 @@ onAuthStateChanged(auth, async(user) => {
             addProductBtn.style.display = 'inline-block'
             inventoryBtn.style.display = 'inline-block'
             console.log('@@@ Administrador')
-        } else addProductBtn.style.display = 'none'
+        } else{
+            addProductBtn.style.display = 'none'
+            inventoryBtn.style.display = 'none'
+            console.log('@@@ Usuario')
+        }
     } else {
         console.log('No hay usuario autenticado')
 
