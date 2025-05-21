@@ -6,6 +6,82 @@
     <title>Carrito - Aurum Gym</title>
 </head>
 <body>
+    <header>
+        <div class="logo">
+            <img src="./images/LogoSolido.png" alt="Aurum Gym Logo"/>
+        </div>
+        <h1>    |   </h1>
+        <div class="shop-icon">
+            <img src="./images/ShopSolido.png" alt="Carrito de Compras"/>
+        </div>    
+    </header>
+
+    <main class="container">
+        <section class="cart-products">
+         <div class="tittle-cart-pruducts">
+            <h2>TU CARRITO</h2>
+         </div> 
+        <div class="products"> 
+            <div class="cart-product">
+                <img src="producto1.png" alt="Producto 1" />
+                <div class="item-details">
+                <p>Producto 1</p>
+                <p>$499 C/U</p>
+                    <div class="quantity">
+                        <button>-</button>
+                        <span>1</span>
+                        <button>+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-product">
+                <img src="producto2.png" alt="Producto 2" />
+                <div class="item-details">
+                    <p>Producto 2</p>
+                    <p>$534 C/U</p>
+                    <div class="quantity">
+                        <button>-</button>
+                        <span>1</span>
+                        <button>+</button>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        </section>
+
+        <aside class="summary">
+            <div class="tittle-summary">
+                <h2>TOTAL</h2>
+            </div>
+            <div class="cart-summary">
+                <div class="summary-item">
+                    <p>Producto 1<br/><small>1 x $499</small></p>
+                    <span>$499</span>
+                </div>
+                <hr/>
+
+                <div class="summary-item">
+                    <p>Producto 2<br/><small>2 x $534</small></p>
+                    <span>$1068</span>
+                </div>
+
+                <hr/>
+                <div class="summary-item">
+                    <p>Producto 3<br/><small>2 x $199</small></p>
+                    <span>$398</span>
+                </div>
+                <hr/>
+            </div>
+            <div class="discount">
+                <label>Ingresa un cupon</label>
+                <input type="text" placeholder="EJ: 14F3EEF4F"/>
+            </div>
+            <button class="pay-btn">PAGAR</button>
+        </aside>
+    </main>
+    
     <script src="./js/carritocompras.js"></script>
+    <script src="./js/products.js"></script>
 </body>
 </html>
