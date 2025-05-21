@@ -1,4 +1,4 @@
-import {db} from "./firebase-config.js"
+import {auth, db} from "./firebase-config.js"
 import {collection, doc, addDoc, getDoc, getDocs, query, where, updateDoc, deleteDoc} from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js"
 
 const productsCollection = collection(db, 'products')
@@ -32,11 +32,62 @@ const renderProducts = async() => {
             <h3>${product.nombre}</h3>
             <div>
                 <p>$${product.precio}</p>
-                <button><i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i></button>
+                <button class="addToCart" data-id=${product.id}><i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i></button>
             </div>
         `
         productCard.classList.add('producto')
         productsContainer.appendChild(productCard)
+    })
+
+    document.querySelectorAll(".addToCart").forEach((btn) => {
+        // Obtener el id del producto del botón
+        const productId = btn.getAttribute('data-id')
+
+        btn.addEventListener('click', async() => {
+            const user = auth.currentUser
+            if (!user) {
+                alert('Debes iniciar sesión para agregar productos al carrito.')
+                return;
+            }
+            const userEmail = user.email
+
+            // Tabla cart
+            const cartCollection = collection(db, 'cart')
+            // Consulta para buscar un documento con el userEmail
+            const cartQuery = query(cartCollection, where('email', '==', userEmail))
+            // Resultado de la consulta
+            const cartDocs = await getDocs(cartQuery)
+
+            let cartDocRef
+            let cartData = { email: userEmail, items: []}
+
+            if(!cartDocs.empty) {
+                // Si existe el documento con userEmail
+                // Referencia al documento con userEmail
+                cartDocRef = cartDocs.docs[0].ref
+                // Datos del documento
+                cartData = cartDocs.docs[0].data()
+
+                const index = cartData.items.findIndex(item => item.id === productId)
+                if(index !== -1) {
+                    // Si existe el producto aumenta en uno
+                    cartData.items[index].cantidad += 1
+                } else {
+                    // Si no existe añade el producto al array de items
+                    cartData.items.push({id: productId, cantidad: 1})
+                }
+                // Actualiza el documento con el array actualizado
+                await updateDoc(cartDocRef, {items: cartData.items})
+            } else {
+                // Si no existe el documento añadir el producto con cantidad 1
+                cartData.items.push({id: productId, cantidad: 1})
+
+                // Añadir el documento con el correo, el producto y la cantidad
+                await addDoc(cartCollection, cartData)
+            }
+
+            alert('Producto añadido al carrito')
+        })
     })
 }
 
