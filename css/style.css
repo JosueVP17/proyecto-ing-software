@@ -39,6 +39,11 @@ header {
     width: 400px;
 }
 
+nav {
+    display: flex;
+    align-items: center;
+}
+
 nav a {
     margin: 0 50px;
     color: white;
