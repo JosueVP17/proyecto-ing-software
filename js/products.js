@@ -93,10 +93,7 @@ const renderProducts = async (filterText = "") => {
     const productsContainer = document.getElementById('productos')
     productsContainer.innerHTML = ''
 
-    // Carga de productos una sola vez
-    if (allProducts.length === 0) {
-        allProducts = await getProducts()
-    }
+    allProducts = await getProducts()
 
     // Filtrar productos por nombre o marca
     const filteredProducts = allProducts.filter(product => {
@@ -276,7 +273,7 @@ inventoryBtn.addEventListener('click', async () => {
         table.style.display = "none"
         inventoryBtn.innerHTML = '<i class="fa fa-archive" aria-hidden="true"></i> INVENTARIO'
 
-        await renderProducts()
+        await renderProducts(document.getElementById('searchInput')?.value || "")
     } else {
         productsContainer.style.display = "none"
         table.style.display = "block"
@@ -324,7 +321,7 @@ addProductForm.addEventListener('submit', async (e) => {
         modalAgregar.style.display = 'none'
         document.getElementById('addProductForm').reset()
 
-        await renderProducts()
+        await renderProducts(document.getElementById('searchInput')?.value || "")
         await renderTable()
         console.log('@@@ Producto agregado con ID ', newDoc.id)
     } catch(error) {
@@ -351,6 +348,7 @@ updateProductForm.addEventListener('submit', async (e) => {
         modalActualizar.style.display = 'none'
         document.getElementById('updateProductForm').reset()
 
+        await renderProducts(document.getElementById('searchInput')?.value || "")
         await renderTable()
         console.log('@@@ Producto actualizado')
     } catch(error) {
@@ -372,6 +370,7 @@ deleteProductForm.addEventListener('submit', async(e) => {
         modalEliminar.style.display = 'none'
         document.getElementById('deleteProductForm').reset()
 
+        await renderProducts(document.getElementById('searchInput')?.value || "")
         await renderTable()
         console.log('@@@ Producto eliminado')
     } catch(error) {
@@ -379,4 +378,4 @@ deleteProductForm.addEventListener('submit', async(e) => {
     }
 })
 
-renderProducts()
+renderProducts(document.getElementById('searchInput')?.value || "")
