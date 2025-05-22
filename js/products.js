@@ -17,14 +17,47 @@ const getProducts = async() => {
     }
 }
 
+// EVENTO PARA LA BARRA DE BÚSQUEDA Y FILTROS
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('searchInput')
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            renderProducts(e.target.value)
+        })
+    }
+
+    const filterBtn = document.getElementById('filterBtn')
+    if (filterBtn) {
+        filterBtn.addEventListener('click', () => {
+            alert('Filtros.')
+        })
+    }
+})
+
 // CARGAR PRODUCTOS DEL CATÁLOGO
-const renderProducts = async() => {
+let allProducts = []
+
+const renderProducts = async (filterText = "") => {
     const productsContainer = document.getElementById('productos')
     productsContainer.innerHTML = ''
 
-    const products = await getProducts()
+    // Carga de productos una sola vez
+    if (allProducts.length === 0) {
+        allProducts = await getProducts()
+    }
 
-    products.forEach((product) => {
+    // Filtrar productos por nombre o marca
+    const filteredProducts = allProducts.filter(product => {
+        // Regresar el producto que coincida con el nombre o marca
+        const text = filterText.toLowerCase()
+        return (
+            product.nombre.toLowerCase().includes(text) ||
+            product.marca.toLowerCase().includes(text)
+        )
+    })
+
+    // Renderizar los productos
+    filteredProducts.forEach((product) => {
         const productCard = document.createElement('div')
         productCard.innerHTML = `
             <img src="${product.imagen}">
