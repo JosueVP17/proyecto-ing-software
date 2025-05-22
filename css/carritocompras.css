@@ -267,16 +267,16 @@ hr {
 }
 
 .pay-btn {
-     background-color: #2e3192;
-     color: black;
-     width: 100%;
-     padding: 12px;
-      border: none;
-      font-weight: bold;
-      font-size: 1.1rem;
-     border-radius: 25px;
-     cursor: pointer;
-     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    background-color: #2e3192;
+    color: black;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 .pay-btn:hover {
