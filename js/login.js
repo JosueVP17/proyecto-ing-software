@@ -2,7 +2,12 @@ import { auth, db } from "./firebase-config.js"
 import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js"
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js"
 
+let registrandoUsuario = false;
+
 onAuthStateChanged(auth, async(user) => {
+
+    if(registrandoUsuario) return
+
     const userCard = document.getElementById('user-card')
     const loginCard = document.getElementById('login-card')
     const inicioCard = document.getElementById('inicio-card')
@@ -59,13 +64,30 @@ signupBtn.addEventListener('click', async () => {
         return
     }
 
+    registrandoUsuario = true
+
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+        await signOut(auth) 
+        
+        document.getElementById('signupForm').style.display = 'none'
+        document.getElementById('signinForm').style.display = 'block'
+        
         alert('Usuario registrado exitosamente')
         console.log('Usuario:', userCredential.user)
+
+        document.getElementById('emailSignup').value = ''
+        document.getElementById('passwordSignup').value = ''
+        document.getElementById('confirmPasswordSignup').value = ''
+
+       
+
+
     } catch (error) {
         console.error('Error al registrar:', error.message)
         alert('Error al registrar: ' + error.message)
+    } finally {
+        registrandoUsuario = false
     }
 })
 
