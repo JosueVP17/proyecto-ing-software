@@ -21,7 +21,13 @@ navButtons.forEach(button => {
     })
 })
 
-
+const carritoBtn = document.getElementById('carritoBtn');
+if (carritoBtn) {
+    carritoBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = 'carritocompras.html';
+    });
+}
 // DISPLAY DE FORMULARIO DE INICIO DE SESIÓN
 const signupShowBtn = document.getElementById('signupShowBtn')
 const signinShowBtn = document.getElementById('signinShowBtn')
