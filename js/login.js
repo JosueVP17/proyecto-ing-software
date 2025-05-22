@@ -52,6 +52,12 @@ const signinBtn = document.getElementById('signinBtn')
 signupBtn.addEventListener('click', async () => {
     const email = document.getElementById('emailSignup').value
     const password = document.getElementById('passwordSignup').value
+    const confirmpassword = document.getElementById('confirmPasswordSignup').value
+
+    if (password != confirmpassword){
+        alert('Las contraseñas no coinciden')
+        return
+    }
 
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
