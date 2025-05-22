@@ -76,17 +76,35 @@ const renderCartSummary = async () => {
     const cartQuery = query(collection(db, "cart"), where("email", "==", user.email))
     const cartDocs = await getDocs(cartQuery)
 
+    /* Referencias a input y botón de cupón y a la sección de descuento*/
+    const couponInput = document.getElementById('couponInput')
+    const applyCouponBtn = document.getElementById('applyCouponBtn')
+    const discountDiv = document.querySelector('.discount')
+    const couponMessage = document.getElementById('couponMessage')
+
     /*Si no hay productos, se envia un mensaje*/
     if (cartDocs.empty || !(cartDocs.docs[0].data().items && cartDocs.docs[0].data().items.length > 0)) {
         document.querySelector('.cart-summary').innerHTML = "<h1>Tu carrito está vacío.</h1>"
-        return;
+        if (couponInput) couponInput.disabled = true
+        if (applyCouponBtn) applyCouponBtn.disabled = true
+        if (discountDiv) discountDiv.style.display = "none"
+        if (couponMessage) couponMessage.textContent = ""
+        return
+    } else {
+        if (couponInput) couponInput.disabled = false
+        if (applyCouponBtn) applyCouponBtn.disabled = false
+        if (couponInput) couponInput.disabled = false
+        if (applyCouponBtn) applyCouponBtn.disabled = false
+        if (discountDiv) discountDiv.style.display = "flex"
     }
 
     const cartData = cartDocs.docs[0].data()
     const items = cartData.items || []
 
-    const summaryContainer = document.querySelector('.cart-summary');
+    const summaryContainer = document.querySelector('.cart-summary')
     summaryContainer.innerHTML = ""
+
+    let total = 0
 
     /*Se crea un recuadro o div por cada producto en el carrito*/
     for (const item of items) {
@@ -98,15 +116,17 @@ const renderCartSummary = async () => {
         const product = productSnap.data()
 
         const subtotal = item.cantidad * product.precio
+        total += subtotal
 
         /*Se crea el HTML del resumen del producto*/
         const summaryItem = document.createElement("div")
         summaryItem.className = "summary-item"
         summaryItem.setAttribute("data-id", item.id)
-        summaryItem.innerHTML = `
+        summaryItem.innerHTML = 
+        `
             <p>${product.nombre}<br/><small>${item.cantidad} x $${product.precio}</small></p>
             <span style="display:block; margin-top:4px;">$${subtotal}</span>
-        `;
+        `
         summaryContainer.appendChild(summaryItem)
 
         /*Linea divisora*/
@@ -115,6 +135,44 @@ const renderCartSummary = async () => {
             summaryContainer.appendChild(hr)
         }
     }
+
+    /*Se desglosa el descuento*/
+    let descuento = 0
+    let descuentoHtml = ""
+    if (appCoupon) {
+        if (appCoupon.tipo === "porcentaje") {
+            descuento = Math.round(total * (appCoupon.valor / 100))
+            descuentoHtml = 
+            `
+                <div class="summary-discount">
+                    <span>Descuento (${appCoupon.valor}%):</span>
+                    <span>-$${descuento}</span>
+                </div>
+            `
+        } else if (appCoupon.tipo === "fijo") {
+            descuento = appCoupon.valor;
+            descuentoHtml = 
+            `
+                <div class="summary-discount">
+                    <span>Descuento:</span>
+                    <span>-$${descuento}</span>
+                </div>
+            `
+        }
+        if (descuento > total) descuento = total
+    }
+
+    const totalFinal = total - descuento
+
+    /*Se agrega el desglose de descuento y total final al resumen*/
+    summaryContainer.innerHTML += 
+    `
+        ${descuentoHtml}
+        <div class="summary-total-final">
+            <span>Total a pagar:</span>
+            <span>$${totalFinal}</span>
+        </div>
+    `
 }
 
 /*Función para agregar listeners a los botones + y - de cada producto*/
@@ -133,7 +191,8 @@ const addQuantityListeners = () => {
                 await updateCartItemQuantity(productId, cantidad)
                 quantitySpan.textContent = cantidad
                 updateSummaryItem(productId, cantidad)
-                renderTotal()
+                await renderCartSummary()
+                await renderTotal()
             }
         })
 
@@ -144,7 +203,8 @@ const addQuantityListeners = () => {
             await updateCartItemQuantity(productId, cantidad)
             quantitySpan.textContent = cantidad
             updateSummaryItem(productId, cantidad)
-            renderTotal()
+            await renderCartSummary()
+            await renderTotal()
         })
 
         /*Para eliminar un producto*/
@@ -155,7 +215,9 @@ const addQuantityListeners = () => {
             cartProduct.remove();
             const summaryItem = document.querySelector(`.summary-item[data-id="${productId}"]`)
             if (summaryItem) summaryItem.remove()
-            renderTotal()
+            await renderCartSummary()
+            await renderCartProducts()
+            await renderTotal()
         })
     })
 }
@@ -209,7 +271,7 @@ const updateSummaryItem = async (productId, cantidad) => {
     }
 }
 
-//Eliminar producto del carrito
+/*Funcion para eliminar producto del carrito*/
 const removeCartItem = async (productId) => {
     /*Se obtiene el usuario*/
     const user = auth.currentUser
@@ -230,10 +292,6 @@ const removeCartItem = async (productId) => {
 
     /*Se actualiza el carrito en la base de datos*/
     await updateDoc(cartDoc.ref, { items })
-    /*Se vuelve a renderizar todo para mostrar el mensaje de vacío si aplica
-    //await renderCartProducts();
-    //await renderCartSummary();
-    //await renderTotal();*/
 }
 
 /*Función para mostrar el total del carrito*/
@@ -266,15 +324,84 @@ const renderTotal = async () => {
         total += item.cantidad * product.precio
     }
 
+    /*Aplicando el cupón si hay*/
+    let descuento = 0
+    if (appCoupon) {
+        if (appCoupon.tipo === "porcentaje") {
+            descuento = Math.round(total * (appCoupon.valor / 100));
+        } else if (appCoupon.tipo === "fijo") {
+            descuento = appCoupon.valor
+        }
+        if (descuento > total) descuento = total;
+    }
+
+    const totalFinal = total - descuento
     /*Se muestra el total de todo el carrito*/
-    document.querySelector('.total span').textContent = `$${total}`
+    document.querySelector('.total span').textContent = `$${totalFinal}`
 }
+
+let appCoupon = null /*Para guardar el cupón a aplicar*/
+
+/*Función para validar y aplicar el cupón*/
+const applyCoupon = async () => {
+    const input = document.getElementById('couponInput')
+    const code = input.value.trim()
+    const messageDiv = document.getElementById('couponMessage')
+    if (!code) {
+        messageDiv.textContent = "Ingresa un código de cupón."
+        appCoupon = null
+        renderCartSummary()
+        renderTotal()
+        return
+    }
+
+    /*Se busca el cupón en  la base de datos*/
+    const couponsRef = collection(db, "coupons")
+    const q = query(couponsRef, where("codigo", "==", code), where("activo", "==", true))
+    const querySnapshot = await getDocs(q)
+
+    if (querySnapshot.empty) {
+        messageDiv.textContent = "Cupón no válido o inactivo."
+        appCoupon = null
+        renderCartSummary()
+        renderTotal()
+        return
+    }
+
+    /*Se agarra el primer cupón válido*/
+    const coupon = querySnapshot.docs[0].data()
+    appCoupon = coupon;
+    messageDiv.textContent = coupon.tipo === "porcentaje"
+        ? `Cupón aplicado: ${coupon.valor}% de descuento`
+        : `Cupón aplicado: $${coupon.valor} de descuento`
+
+    renderCartSummary()
+    renderTotal()
+}
+
+/*Listener para aplicar cupón*/
+document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('applyCouponBtn')
+    if (btn) btn.addEventListener('click', applyCoupon)
+
+    const couponInput = document.getElementById('couponInput')
+    if (couponInput) {
+        couponInput.addEventListener('input', () => {
+            if (couponInput.value.trim() === "") {
+                appCoupon = null
+                document.getElementById('couponMessage').textContent = ""
+                renderCartSummary()
+                renderTotal()
+            }
+        })
+    }
+})
 
 /*Si el usuario esta autenticado, se muestran productos si es que tiene*/
 auth.onAuthStateChanged(user => {
     if (user) {
-        renderCartProducts();
-        renderCartSummary();
-        renderTotal();
+        renderCartProducts()
+        renderCartSummary()
+        renderTotal()
     }
-});
+})
