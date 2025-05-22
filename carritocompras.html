@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito - Aurum Gym</title>
+    <link rel="stylesheet" href="./css/carritocompras.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <header>
@@ -19,14 +21,15 @@
     <main class="container">
         <section class="cart-products">
          <div class="tittle-cart-pruducts">
-            <h2>TU CARRITO</h2>
+            <h2>TU CARRITO <i class="fa-solid fa-basket-shopping fa-bounce" style="color: #FFD43B;"></i></h2>
          </div> 
         <div class="products"> 
             <div class="cart-product">
+                <button class="remove-btn"> x </button>
                 <img src="producto1.png" alt="Producto 1" />
                 <div class="item-details">
-                <p>Producto 1</p>
-                <p>$499 C/U</p>
+                    <h2>Producto 1</h2>
+                    <h2>$499 C/U</h2>
                     <div class="quantity">
                         <button>-</button>
                         <span>1</span>
@@ -36,10 +39,11 @@
             </div>
 
             <div class="cart-product">
+                <button class="remove-btn"> x </button>
                 <img src="producto2.png" alt="Producto 2" />
                 <div class="item-details">
-                    <p>Producto 2</p>
-                    <p>$534 C/U</p>
+                    <h2>Producto 2</h2>
+                    <h2>$534 C/U</h2>
                     <div class="quantity">
                         <button>-</button>
                         <span>1</span>
@@ -52,7 +56,7 @@
 
         <aside class="summary">
             <div class="tittle-summary">
-                <h2>TOTAL</h2>
+                <h2>TOTAL <i class="fa-solid fa-sack-dollar fa-shake" style="color: #FFD43B;"></i></h2>
             </div>
             <div class="cart-summary">
                 <div class="summary-item">
@@ -74,14 +78,18 @@
                 <hr/>
             </div>
             <div class="discount">
-                <label>Ingresa un cupon</label>
+                <label>INGRESA UN CUPÓN   <i class="fa-solid fa-ticket fa-shake" style="color: #FFD43B;"></i></label>
                 <input type="text" placeholder="EJ: 14F3EEF4F"/>
+            </div>
+            <br>
+            <div class="total">
+                <span>$1999</span>
             </div>
             <button class="pay-btn">PAGAR</button>
         </aside>
     </main>
     
-    <script src="./js/carritocompras.js"></script>
-    <script src="./js/products.js"></script>
+    <script type="module" src="./js/carritocompras.js"></script>
+    <script type="module" src="./js/products.js"></script>
 </body>
 </html>
