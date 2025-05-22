@@ -32,7 +32,10 @@ filterBtn.addEventListener('click', () => {
     // Mostrar modal
     filterModal.style.display = 'block';
 
+    // Reiniciar el listado de marcas
     const marcaFiltro = document.getElementById('marcaFiltro')
+    marcaFiltro.innerHTML = '<option value="">Todas</option>'
+
     // Guardar el nombre de cada marca
     const marcas = [...new Set(allProducts.map(p => p.marca))]
     // Crear dropdown con las marcas

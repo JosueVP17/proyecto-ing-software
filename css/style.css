@@ -350,16 +350,20 @@ nav a.active {
 .search-filter-bar {
     display: flex;
     align-items: center;
+    background-color: var(--color-card);
     gap: 10px;
+    border-radius: 4px;
     width: 70%;
     margin: 20px auto;
+    padding: 20px;
 }
 
 #searchInput {
     flex: 1;
-    padding: 8px;
-    border-radius: 4px;
+    font-size: medium;
     border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
 }
 
 #filterBtn {
