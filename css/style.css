@@ -1281,6 +1281,10 @@ to {
     margin-bottom: 10px;
 }
 
+.imagen-contacto:hover{
+    height: 200px;
+}
+
 #especialidad { 
 }
 
@@ -1290,7 +1294,18 @@ to {
 }
 
 #ubicacion {
+    color: white;
+    text-decoration: none;
 }
+
+#ubicacion:hover {
+    font-size: 16px;
+    color: #a09d90;
+}
+#ubicacion:visited {
+  text-decoration: none;
+}
+
 #correo {
 
 }
@@ -1372,5 +1387,7 @@ to {
     font-size: 30px;
     color: white;
 }
+
+
 
 /* ----------------------------- */
