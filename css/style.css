@@ -1275,7 +1275,6 @@ to {
     margin-right: 50px;
 }
 
-
 .item1{
     display: flex;
     flex-direction: column;
@@ -1284,7 +1283,7 @@ to {
     margin-left: 25px;
     margin-bottom: 25px;
     height: 350px;
-    width: 300px;
+    width: 350px;
     background-color: #0c1324cc;
 
     border-radius: 20px;
@@ -1325,20 +1324,109 @@ to {
     margin-bottom: 10px;
 }
 
+#especialidad { 
+}
+
+#modalidad {
+    color: #25D366;
+
+}
+
+#ubicacion {
+    color: white;
+    text-decoration: none;
+}
+
+#ubicacion:hover {
+    font-size: 16px;
+    color: #a09d90;
+}
+#ubicacion:visited {
+  text-decoration: none;
+}
+
+#correo {
+
+}
+#telefono {
+}
+
 #facebook {
     margin-top: 15px;
     font-size: 30px;
-    color: blue;
+    color: #1877F2;
+}
+
+#facebook:hover {
+    margin-top: 15px;
+    color: #0d4999;
+    font-size: 35px;
+}
+
+#linkedin {
+    margin-top: 15px;
+    font-size: 30px;
+    color: #0A66C2;
+}
+
+#linkedin:hover {
+    margin-top: 15px;
+    font-size: 35px;
+    color: #103b66;
 }
 
 #instagram {
     margin-top: 15px;
     font-size: 30px;
+    color: white;
+}
+
+#instagram:hover {
+    margin-top: 15px;
+    font-size: 35px;
+    color: rgb(163, 163, 163);
+}
+
+#instagram:visited {
+  color: white;
+  text-decoration: none;
 }
 
 #whatsapp {
     margin-top: 15px;
     font-size: 30px;
-    color: green;
+    color: #25D366;
 }
+
+#whatsapp:hover {
+    margin-top: 15px;
+    font-size: 35px;
+    color: #068334;
+}
+
+#youtube {
+    margin-top: 15px;
+    font-size: 30px;
+    color: #FF0000;
+}
+#youtube:hover {
+    margin-top: 15px;
+    font-size: 35px;
+    color: #a50000;
+}
+
+#mail {
+    margin-top: 15px;
+    font-size: 26px;
+    color: white;
+}
+
+#mail:hover {
+    margin-top: 15px;
+    font-size: 30px;
+    color: white;
+}
+
+
+
 /* ----------------------------- */
