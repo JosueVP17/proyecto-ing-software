@@ -54,12 +54,26 @@ window.onclick = function(event) {
     if (event.target == filterModal) filterModal.style.display = "none"
 }
 
+// APLICAR O ELIMINAR FILTROS
 const aplicarFiltrosBtn = document.getElementById('aplicarFiltros')
 aplicarFiltrosBtn.addEventListener('click', () => {
     // Guardar los filtros
     filtros.marca = document.getElementById('marcaFiltro').value
     filtros.precioMin = document.getElementById('precioMin').value
     filtros.precioMax = document.getElementById('precioMax').value
+    filterModal.style.display = 'none'
+    renderProducts(document.getElementById('searchInput')?.value || "")
+})
+
+const eliminarFiltrosBtn = document.getElementById('eliminarFiltros')
+eliminarFiltrosBtn.addEventListener('click', () => {
+    // Limpiar los filtros
+    filtros.marca = ""
+    filtros.precioMin = ""
+    filtros.precioMax = ""
+    document.getElementById('marcaFiltro').value = ""
+    document.getElementById('precioMin').value = ""
+    document.getElementById('precioMax').value = ""
     filterModal.style.display = 'none'
     renderProducts(document.getElementById('searchInput')?.value || "")
 })
