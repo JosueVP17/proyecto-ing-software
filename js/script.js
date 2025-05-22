@@ -47,26 +47,7 @@ function cerrarModal() {
 }
 
 /*Perfil de usuario*/
-const textarea = document.getElementById('autoTextarea');
 
-function autoGrow(el) {
-  el.style.height = 'auto'; 
-  el.style.height = el.scrollHeight + 'px';
-}
-
-textarea.addEventListener('input', () => autoGrow(textarea));
-const maxCharsPerLine = 30;
-
-textarea.addEventListener('input', () => {
-  const lines = textarea.value.split('\n');
-  const limitedLines = lines.map(line =>
-    line.length > maxCharsPerLine
-      ? line.slice(0, maxCharsPerLine)
-      : line
-  );
-  textarea.value = limitedLines.join('\n');
-  autoGrow(textarea);
-});
 function guardarTexto() {
   const textarea = document.getElementById("autoTextarea");
   const mensaje = document.getElementById("mensaje");

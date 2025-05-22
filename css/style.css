@@ -717,27 +717,38 @@ tr img {
     font-size: 16px;
 }
 
+.usercontent {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* dos columnas iguales */
+  gap: 20px;
+  padding: 20px;
+}
+
 .userinfo {
-  flex-grow: 1;
-  max-width: 25%;
   background-color: #534F4F;
   color: white;
   font-weight: bold;
-  display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 6px;
+  padding: 10px;
 }
-.usercontent {
-  display: flex;
-  gap: 20px; /* espacio igual entre cajas */
-  padding: 20px;
+.userinfo span{
+    display: block;
 }
+
+.userinfo span::before {
+  content: "• "; /* viñeta clásica */
+  color: #F2B705;  /* color de la viñeta */
+  margin-right: 6px;
+}
+
 .info
 {
     background: transparent;
     border: none;
     border-bottom: 2px solid #F2B705;
+    display: block;
 }
 .datan
 {
