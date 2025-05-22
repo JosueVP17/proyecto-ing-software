@@ -1,9 +1,4 @@
-const inicioBtn = document.getElementById('inicioBtn')
-const loginBtn = document.getElementById('loginBtn')
-const catalogoBtn = document.getElementById('catalogoBtn')
-const planesBtn = document.getElementById('planesBtn')
-const contactoBtn = document.getElementById('contactoBtn')
-
+// DISPLAY DE SECCIONES
 const navButtons = document.querySelectorAll('nav a')
 const sections = document.querySelectorAll('.section')
 
@@ -26,6 +21,8 @@ navButtons.forEach(button => {
     })
 })
 
+
+// DISPLAY DE FORMULARIO DE INICIO DE SESIÓN
 const signupShowBtn = document.getElementById('signupShowBtn')
 const signinShowBtn = document.getElementById('signinShowBtn')
 const signupForm = document.getElementById('signupForm')
@@ -49,10 +46,68 @@ function cerrarModal() {
   document.getElementById('modal').style.display = 'none'
 }
 
-function abrirModal() {
-  document.getElementById("rutinas").style.display = "block";
+/*Perfil de usuario*/
+const textarea = document.getElementById('autoTextarea');
+
+function autoGrow(el) {
+  el.style.height = 'auto'; 
+  el.style.height = el.scrollHeight + 'px';
 }
 
-function cerrarModal() {
-  document.getElementById("rutinas").style.display = "none";
+textarea.addEventListener('input', () => autoGrow(textarea));
+const maxCharsPerLine = 30;
+
+textarea.addEventListener('input', () => {
+  const lines = textarea.value.split('\n');
+  const limitedLines = lines.map(line =>
+    line.length > maxCharsPerLine
+      ? line.slice(0, maxCharsPerLine)
+      : line
+  );
+  textarea.value = limitedLines.join('\n');
+  autoGrow(textarea);
+});
+function guardarTexto() {
+  const textarea = document.getElementById("autoTextarea");
+  const mensaje = document.getElementById("mensaje");
+  const texto = textarea.value;
+
+  localStorage.setItem("textoGuardado", texto);
+
+  mensaje.textContent = "Texto guardado.";
 }
+  window.onload = function () {
+    const guardado = localStorage.getItem("textoGuardado");
+    if (guardado) {
+      document.getElementById("autoTextarea").value = guardado;
+    }
+  };
+   const input = document.getElementById("username");
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      input.setAttribute("readonly", true);
+      input.blur(); 
+    }
+  });
+
+  input.addEventListener("click", function () {
+    if (input.hasAttribute("readonly")) {
+      input.removeAttribute("readonly");
+      input.focus();
+    }
+  });
+input.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    localStorage.setItem("username", input.value);
+    input.setAttribute("readonly", true);
+    input.blur();
+  }
+});
+
+window.addEventListener("load", () => {
+  const savedName = localStorage.getItem("username");
+  if (savedName) {
+    input.value = savedName;
+    input.setAttribute("readonly", true);
+  }
+});
