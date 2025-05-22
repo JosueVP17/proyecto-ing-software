@@ -2,6 +2,12 @@ import {auth, db} from "./firebase-config.js"
 import {collection, doc, addDoc, getDoc, getDocs, query, where, updateDoc, deleteDoc} from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js"
 
 const productsCollection = collection(db, 'products')
+let allProducts = []
+let filtros = {
+    marca: "",
+    precioMin: "",
+    precioMax: ""
+}
 
 // OBTENER PRODUCTOS DE FIREBASE
 const getProducts = async() => {
@@ -17,7 +23,48 @@ const getProducts = async() => {
     }
 }
 
-// EVENTO PARA LA BARRA DE BÚSQUEDA Y FILTROS
+// MOSTRAR Y OCULTAR MODAL DE FILTROS
+const filterModal = document.getElementById('filterModal')
+const filterBtn = document.getElementById('filterBtn')
+const closeFilterModal = document.getElementById('closeFilterModal')
+
+filterBtn.addEventListener('click', () => {
+    // Mostrar modal
+    filterModal.style.display = 'block';
+
+    const marcaFiltro = document.getElementById('marcaFiltro')
+    // Guardar el nombre de cada marca
+    const marcas = [...new Set(allProducts.map(p => p.marca))]
+    // Crear dropdown con las marcas
+    marcas.forEach(marca => {
+        const option = document.createElement('option')
+        option.value = marca
+        option.textContent = marca
+        marcaFiltro.appendChild(option)
+    })
+})
+
+// Cerrar modal
+closeFilterModal.addEventListener('click', () => {
+    filterModal.style.display = 'none'
+})
+
+// Cerrar modal sin botón
+window.onclick = function(event) {
+    if (event.target == filterModal) filterModal.style.display = "none"
+}
+
+const aplicarFiltrosBtn = document.getElementById('aplicarFiltros')
+aplicarFiltrosBtn.addEventListener('click', () => {
+    // Guardar los filtros
+    filtros.marca = document.getElementById('marcaFiltro').value
+    filtros.precioMin = document.getElementById('precioMin').value
+    filtros.precioMax = document.getElementById('precioMax').value
+    filterModal.style.display = 'none'
+    renderProducts(document.getElementById('searchInput')?.value || "")
+})
+
+// EVENTO PARA LA BARRA DE BÚSQUEDA
 document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput')
     if (searchInput) {
@@ -25,18 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
             renderProducts(e.target.value)
         })
     }
-
-    const filterBtn = document.getElementById('filterBtn')
-    if (filterBtn) {
-        filterBtn.addEventListener('click', () => {
-            alert('Filtros.')
-        })
-    }
 })
 
 // CARGAR PRODUCTOS DEL CATÁLOGO
-let allProducts = []
-
 const renderProducts = async (filterText = "") => {
     const productsContainer = document.getElementById('productos')
     productsContainer.innerHTML = ''
@@ -48,12 +86,22 @@ const renderProducts = async (filterText = "") => {
 
     // Filtrar productos por nombre o marca
     const filteredProducts = allProducts.filter(product => {
-        // Regresar el producto que coincida con el nombre o marca
         const text = filterText.toLowerCase()
-        return (
+
+        // Para cada coincidencia es True o False
+        // Si coincide con el nombre o marca, TRUE
+        let coincideBusqueda = (
             product.nombre.toLowerCase().includes(text) ||
             product.marca.toLowerCase().includes(text)
         )
+        // Si no hay filtro de marca o si coincide este producto con el filtro, TRUE
+        let coincideMarca = !filtros.marca || product.marca === filtros.marca
+        // Si no hay filtro de precio mínimo o si el precio es mayor al filtro, TRUE
+        let coincidePrecioMin = !filtros.precioMin || Number(product.precio) >= Number(filtros.precioMin)
+        // Si no hay filtro de precio máximo o si el precio es menor al filtro, TRUE
+        let coincidePrecioMax = !filtros.precioMax || Number(product.precio) <= Number(filtros.precioMax)
+        // Si todas coincidencias son TRUE, se filtra el producto a filteredProducts
+        return coincideBusqueda && coincideMarca && coincidePrecioMin && coincidePrecioMax
     })
 
     // Renderizar los productos
