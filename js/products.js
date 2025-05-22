@@ -66,6 +66,7 @@ aplicarFiltrosBtn.addEventListener('click', () => {
     filtros.precioMax = document.getElementById('precioMax').value
     filterModal.style.display = 'none'
     renderProducts(document.getElementById('searchInput')?.value || "")
+    renderTable(document.getElementById('searchInput')?.value || "")
 })
 
 const eliminarFiltrosBtn = document.getElementById('eliminarFiltros')
@@ -79,6 +80,7 @@ eliminarFiltrosBtn.addEventListener('click', () => {
     document.getElementById('precioMax').value = ""
     filterModal.style.display = 'none'
     renderProducts(document.getElementById('searchInput')?.value || "")
+    renderTable(document.getElementById('searchInput')?.value || "")
 })
 
 // EVENTO PARA LA BARRA DE BÚSQUEDA
@@ -87,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             renderProducts(e.target.value)
+            renderTable(e.target.value)
         })
     }
 })
@@ -186,13 +189,33 @@ const renderProducts = async (filterText = "") => {
     })
 }
 
-const renderTable = async () => {
+const renderTable = async (filterText = "") => {
     const tbody = document.getElementById('tbody')
-    const products = await getProducts()
-
     tbody.innerHTML = ''
 
-    products.forEach((product) => {
+    allProducts = await getProducts()
+
+    // Filtrar productos por nombre o marca
+    const filteredProducts = allProducts.filter(product => {
+        const text = filterText.toLowerCase()
+
+        // Para cada coincidencia es True o False
+        // Si coincide con el nombre o marca, TRUE
+        let coincideBusqueda = (
+            product.nombre.toLowerCase().includes(text) ||
+            product.marca.toLowerCase().includes(text)
+        )
+        // Si no hay filtro de marca o si coincide este producto con el filtro, TRUE
+        let coincideMarca = !filtros.marca || product.marca === filtros.marca
+        // Si no hay filtro de precio mínimo o si el precio es mayor al filtro, TRUE
+        let coincidePrecioMin = !filtros.precioMin || Number(product.precio) >= Number(filtros.precioMin)
+        // Si no hay filtro de precio máximo o si el precio es menor al filtro, TRUE
+        let coincidePrecioMax = !filtros.precioMax || Number(product.precio) <= Number(filtros.precioMax)
+        // Si todas coincidencias son TRUE, se filtra el producto a filteredProducts
+        return coincideBusqueda && coincideMarca && coincidePrecioMin && coincidePrecioMax
+    })
+
+    filteredProducts.forEach((product) => {
         const row = document.createElement('tr')
 
         row.innerHTML = `
@@ -282,7 +305,7 @@ inventoryBtn.addEventListener('click', async () => {
         table.style.display = "block"
         inventoryBtn.innerHTML = '<i class="fa fa-long-arrow-left" aria-hidden="true"></i> REGRESAR'
 
-        await renderTable()
+        await renderTable(document.getElementById('searchInput')?.value || "")
     }
 })
 
@@ -325,7 +348,7 @@ addProductForm.addEventListener('submit', async (e) => {
         document.getElementById('addProductForm').reset()
 
         await renderProducts(document.getElementById('searchInput')?.value || "")
-        await renderTable()
+        await renderTable(document.getElementById('searchInput')?.value || "")
         console.log('@@@ Producto agregado con ID ', newDoc.id)
     } catch(error) {
         console.log('@@@ Error al agregar el producto: ', error)
@@ -352,7 +375,7 @@ updateProductForm.addEventListener('submit', async (e) => {
         document.getElementById('updateProductForm').reset()
 
         await renderProducts(document.getElementById('searchInput')?.value || "")
-        await renderTable()
+        await renderTable(document.getElementById('searchInput')?.value || "")
         console.log('@@@ Producto actualizado')
     } catch(error) {
         console.log('@@@ Error al actualizar el producto', error)
@@ -374,7 +397,7 @@ deleteProductForm.addEventListener('submit', async(e) => {
         document.getElementById('deleteProductForm').reset()
 
         await renderProducts(document.getElementById('searchInput')?.value || "")
-        await renderTable()
+        await renderTable(document.getElementById('searchInput')?.value || "")
         console.log('@@@ Producto eliminado')
     } catch(error) {
         console.log('@@@ Error al eliminar el producto', error)
