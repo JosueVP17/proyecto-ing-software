@@ -58,10 +58,16 @@ signupBtn.addEventListener('click', async () => {
     const email = document.getElementById('emailSignup').value
     const password = document.getElementById('passwordSignup').value
     const confirmpassword = document.getElementById('confirmPasswordSignup').value
+    const passwordsecurity = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/
 
     if (password != confirmpassword){
         alert('Las contraseñas no coinciden')
         return
+    }
+
+    if (!passwordsecurity.test(password)) {
+    alert('La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.')
+    return
     }
 
     registrandoUsuario = true
