@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+/*Inicia sección para el carrito de compras*/
+
 /*Función para mostrar los productos agregados del carrito*/
 const renderCartProducts = async () => {
     const user = auth.currentUser
@@ -405,3 +407,5 @@ auth.onAuthStateChanged(user => {
         renderTotal()
     }
 })
+
+/*Finaliza sección para el carrito de compras*/

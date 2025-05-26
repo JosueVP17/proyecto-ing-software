@@ -8,17 +8,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="./images/LogoSolido.png" alt="Aurum Gym Logo"/>
-        </div>
-        <h1>    |   </h1>
-        <div class="shop-icon">
-            <img src="./images/ShopSolido.png" alt="Carrito de Compras"/>
-        </div>    
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="./images/LogoSolido.png" alt="Aurum Gym Logo"/>
+            </div>
+            <h1>    |   </h1>
+            <div class="shop-icon">
+                <img src="./images/ShopSolido.png" alt="Carrito de Compras"/>
+            </div> 
+        </div>   
     </header>
 
-    <main class="container">
+    <nav class="nav-pay">
+        <span class="active">Carro</span> &gt;
+        <span>Proceso de Pago</span> &gt;
+        <span>Revisión del Pedido</span> &gt;
+        <span>Éxito</span>
+    </nav>
+
+    <section class="container-carrito">
         <section class="cart-products">
          <div class="tittle-cart-pruducts">
             <h2>TU CARRITO <i class="fa-solid fa-basket-shopping fa-bounce" style="color: #FFD43B;"></i></h2>
@@ -42,9 +51,205 @@
             <br>
             <button class="pay-btn">PAGAR</button>
         </aside>
-    </main>
+    </section>
+
+    <section class="container-proceso-pago">
+        <main class="proceso-pago">
+            <section>
+                <h2 class="section-title">
+                    📧 Contacto
+                </h2>
+                <div class="form-group">
+                    <label class="form-label">E-mail *</label>
+                    <input type="email" class="form-input" placeholder="tu@email.com">
+                </div>
+            </section>
+
+            <section>
+                <h2 class="section-title">
+                    📍 Dirección de envío
+                </h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Nombre *</label>
+                        <input type="text" class="form-input" placeholder="Tu nombre">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Apellido *</label>
+                        <input type="text" class="form-input" placeholder="Tu apellido">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Dirección *</label>
+                    <input type="text" class="form-input" placeholder="Calle, número, colonia">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Código Postal *</label>
+                    <input type="text" class="form-input" placeholder="12345">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Ciudad *</label>
+                        <input type="text" class="form-input" placeholder="Ciudad">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Estado *</label>
+                        <select class="form-input">
+                            <option>Seleccionar Estado</option>
+                            <option>Ciudad de México</option>
+                            <option>Guadalajara</option>
+                            <option>Monterrey</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">País</label>
+                        <input type="text" class="form-input" value="México" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Municipio *</label>
+                        <input type="text" class="form-input" placeholder="Municipio">
+                    </div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" class="checkbox" id="same-address">
+                    <label for="same-address">Dirección de Facturación igual a la de Envío</label>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="section-title">
+                    💳 Opciones de pago
+                </h2>
+                <div class="payment-options">
+                    <label class="payment-option selected">
+                        <input type="radio" name="payment" value="card" checked>
+                        <div class="payment-header">
+                            <div class="payment-title">Tarjeta de Crédito o Débito / OXXO</div>
+                        </div>
+                        <div class="payment-description">Será redireccionado a Stripe para realizar su pago seguro</div>
+                        <div class="payment-logos">
+                            <span class="payment-logo">VISA</span>
+                            <span class="payment-logo">Mastercard</span>
+                            <span class="payment-logo">AMEX</span>
+                            <span class="payment-logo">OXXO</span>
+                        </div>
+                    </label>
+                    
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="paypal">
+                        <div class="payment-header">
+                            <div class="payment-title">PayPal</div>
+                        </div>
+                        <div class="payment-description">Será redireccionado a PayPal para completar el pago</div>
+                        <div class="payment-logos">
+                            <span class="payment-logo" style="color: #0070ba;">PayPal</span>
+                        </div>
+                    </label>
+                    
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="transfer">
+                        <div class="payment-header">
+                            <div class="payment-title">Transferencia Bancaria</div>
+                        </div>
+                        <div class="payment-description">Se mostrarán los datos bancarios después de confirmar</div>
+                        <div class="payment-logos">
+                            <span class="payment-logo">BBVA</span>
+                            <span class="payment-logo">Santander</span>
+                            <span class="payment-logo">Banorte</span>
+                        </div>
+                    </label>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="section-title">
+                    🚚 Opciones de envío
+                </h2>
+                <label class="shipping-option selected">
+                    <input type="radio" name="shipping" value="dhl" checked>
+                    <div class="shipping-content">
+                        <div class="shipping-title">DHL Express</div>
+                        <div class="shipping-description">
+                            Envío rápido y seguro a todo México
+                        </div>
+                        <div class="shipping-price">
+                            $180.00 MXN - Entrega en 1-2 días hábiles
+                        </div>
+                    </div>
+                </label>
+                
+                <label class="shipping-option">
+                    <input type="radio" name="shipping" value="estafeta">
+                    <div class="shipping-content">
+                        <div class="shipping-title">Estafeta</div>
+                        <div class="shipping-description">
+                            Servicio confiable con cobertura nacional
+                        </div>
+                        <div class="shipping-price">
+                            $120.00 MXN - Entrega en 3-4 días hábiles
+                        </div>
+                    </div>
+                </label>
+                
+                <label class="shipping-option">
+                    <input type="radio" name="shipping" value="fedex">
+                    <div class="shipping-content">
+                        <div class="shipping-title">FedEx</div>
+                        <div class="shipping-description">
+                            Envío premium con seguimiento detallado
+                        </div>
+                        <div class="shipping-price">
+                            $200.00 MXN - Entrega en 1-3 días hábiles
+                        </div>
+                    </div>
+                </label>
+            </section>
+        </main>
+
+        <aside class="proceso-summary">
+            <h3 class="proceso-summary-title">
+                🛒 Revisión del pedido
+            </h3>
+            
+            <div class="cart-summary">
+            </div>
+            
+            <div class="summary-row">
+                <span>Subtotal:</span>
+                <span>$999.00 MXN</span>
+            </div>
+            <div class="summary-row">
+                <span>Impuesto:</span>
+                <span>$39.96 MXN</span>
+            </div>
+            <div class="summary-row">
+                <span>Envío:</span>
+                <span>$180.00 MXN</span>
+            </div>
+            <div class="summary-row total">
+                <span>TOTAL:</span>
+            </div>
+            
+            <button class="btn btn-primary">
+                🔒 Revisar compra
+            </button>
+            
+            <div style="display: flex; gap: 1rem;">
+                <a href="#" class="btn btn-secondary" style="flex: 1;">Editar Carro</a>
+                <a href="#" class="btn btn-secondary" style="flex: 1;">Continuar Comprando</a>
+            </div>
+        </aside>
+    </section>
     
     <script type="module" src="./js/carritocompras.js"></script>
     <script type="module" src="./js/products.js"></script>
+    <script type="module" src="./js/script.js"></script>
 </body>
 </html>
