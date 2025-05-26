@@ -338,6 +338,17 @@ const renderTotal = async () => {
 
 let appCoupon = null /*Para guardar el cupón a aplicar*/
 
+/*Función para guardar el cupón en Firebase*/
+const saveCoupon = async (coupon) => {
+    const user = auth.currentUser
+    if (!user) return
+    const cartQuery = query(collection(db, "cart"), where("email", "==", user.email))
+    const cartDocs = await getDocs(cartQuery)
+    if (cartDocs.empty) return
+    const cartDoc = cartDocs.docs[0]
+    await updateDoc(cartDoc.ref, { coupon: coupon ? coupon : null })
+}
+
 /*Función para validar y aplicar el cupón*/
 const applyCoupon = async () => {
     const input = document.getElementById('couponInput')
@@ -359,6 +370,9 @@ const applyCoupon = async () => {
     if (querySnapshot.empty) {
         messageDiv.textContent = "Cupón no válido o inactivo."
         appCoupon = null
+        localStorage.removeItem('appliedCoupon')
+
+        await saveCoupon('apliedCoupon')
         renderCartSummary()
         renderTotal()
         return
@@ -367,10 +381,12 @@ const applyCoupon = async () => {
     /*Se agarra el primer cupón válido*/
     const coupon = querySnapshot.docs[0].data()
     appCoupon = coupon;
+    localStorage.setItem('appliedCoupon', JSON.stringify(coupon))
     messageDiv.textContent = coupon.tipo === "porcentaje"
         ? `Cupón aplicado: ${coupon.valor}% de descuento`
         : `Cupón aplicado: $${coupon.valor} de descuento`
 
+    await saveCoupon(coupon)
     renderCartSummary()
     renderTotal()
 }
@@ -386,6 +402,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (couponInput.value.trim() === "") {
                 appCoupon = null
                 document.getElementById('couponMessage').textContent = ""
+                localStorage.removeItem('appliedCoupon')
+                saveCoupon(null)
                 renderCartSummary()
                 renderTotal()
             }
@@ -394,8 +412,34 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 /*Si el usuario esta autenticado, se muestran productos si es que tiene*/
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(async user => {
     if (user) {
+        const cartQuery = query(collection(db, "cart"), where("email", "==", user.email))
+        const cartDocs = await getDocs(cartQuery)
+        if (!cartDocs.empty) {
+            const cartData = cartDocs.docs[0].data()
+            if (cartData.coupon) {
+                appCoupon = cartData.coupon
+                localStorage.setItem('appliedCoupon', JSON.stringify(cartData.coupon))
+                /*Se muestra mensaje y código en el input*/
+                const messageDiv = document.getElementById('couponMessage')
+                const couponInput = document.getElementById('couponInput')
+                if (couponInput && cartData.coupon.codigo) {
+                    couponInput.value = cartData.coupon.codigo
+                }
+                if (messageDiv) {
+                    messageDiv.textContent = cartData.coupon.tipo === "porcentaje"
+                        ? `Cupón aplicado: ${cartData.coupon.valor}% de descuento`
+                        : `Cupón aplicado: $${cartData.coupon.valor} de descuento`
+                }
+            } else {
+                appCoupon = null;
+                localStorage.removeItem('appliedCoupon')
+                /*Se limpia el input si no hay cupón*/
+                const couponInput = document.getElementById('couponInput')
+                if (couponInput) couponInput.value = ""
+            }
+        }
         renderCartProducts()
         renderCartSummary()
         renderTotal()
@@ -411,18 +455,18 @@ document.querySelectorAll('.payment-option input[type="radio"]').forEach((radio)
     radio.addEventListener('change', () => {
         document.querySelectorAll('.payment-option').forEach(option => {
             option.classList.remove('selected');
-        });
+        })
         radio.closest('.payment-option').classList.add('selected');
-    });
-});
+    })
+})
 
 /*Para seleccionar la opción de pago*/
 document.querySelectorAll('.shipping-option input[type="radio"]').forEach((radio) => {
     radio.addEventListener('change', () => {
         document.querySelectorAll('.shipping-option').forEach(option => {
-            option.classList.remove('selected');
-        });
-        radio.closest('.shipping-option').classList.add('selected');
-    });
-});
+            option.classList.remove('selected')
+        })
+        radio.closest('.shipping-option').classList.add('selected')
+    })
+})
 /*Finaliza sección para el proceso de pago*/
