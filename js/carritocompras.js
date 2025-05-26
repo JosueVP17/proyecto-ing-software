@@ -469,4 +469,129 @@ document.querySelectorAll('.shipping-option input[type="radio"]').forEach((radio
         radio.closest('.shipping-option').classList.add('selected')
     })
 })
+
+/*Para mostra el resumen del carrito en el proceso de pago*/
+const renderCartSummaryProcesoPago = async () => {
+    const user = auth.currentUser
+    if (!user) return
+
+    const cartQuery = query(collection(db, "cart"), where("email", "==", user.email))
+    const cartDocs = await getDocs(cartQuery)
+
+    const summaryContainer = document.querySelector('#container-proceso-pago .cart-summary')
+    if (!summaryContainer) return
+    summaryContainer.innerHTML = ""
+
+    if (cartDocs.empty || !(cartDocs.docs[0].data().items && cartDocs.docs[0].data().items.length > 0)) {
+        summaryContainer.innerHTML = "<h1>Tu carrito está vacío.</h1>"
+        return
+    }
+
+    const cartData = cartDocs.docs[0].data()
+    const items = cartData.items || []
+
+    let subtotal = 0
+
+    for (const item of items) {
+        const productRef = doc(db, "products", item.id)
+        const productSnap = await getDoc(productRef)
+        if (!productSnap.exists()) continue
+        const product = productSnap.data()
+        const itemSubtotal = product.precio * item.cantidad
+        subtotal += itemSubtotal
+
+        const summaryItem = document.createElement("div")
+        summaryItem.className = "summary-item"
+        summaryItem.setAttribute("data-id", item.id)
+        summaryItem.innerHTML = 
+        `
+        <p>${product.nombre}<br/><small>${item.cantidad} x $${product.precio}</small></p>
+        <span style="display:block; margin-top:4px;">$${itemSubtotal.toFixed(2)}</span>
+        `
+        summaryContainer.appendChild(summaryItem)
+    }
+
+    /*Se aplica descuento si hay cupón*/
+    let descuento = 0
+    if (appCoupon) {
+        if (appCoupon.tipo === "porcentaje") {
+            descuento = subtotal * (appCoupon.valor / 100)
+        } else if (appCoupon.tipo === "fijo") {
+            descuento = appCoupon.valor
+        }
+        if (descuento > subtotal) descuento = subtotal
+    }
+    const subtotalConDescuento = subtotal - descuento
+
+    /*Cálculo de impuestos y envío*/
+    const impuesto = subtotalConDescuento * 0.04; /*4% de impuesto*/
+    let envio = 180; /*Default DHL*/
+    const shippingSelected = document.querySelector('#container-proceso-pago input[name="shipping"]:checked')
+    if (shippingSelected) {
+        if (shippingSelected.value === "dhl") envio = 180
+        else if (shippingSelected.value === "estafeta") envio = 120
+        else if (shippingSelected.value === "fedex") envio = 200
+    }
+    const total = subtotalConDescuento + impuesto + envio
+
+    /*Se agrega el desglose al final del resumen*/
+    summaryContainer.innerHTML += 
+    `
+    ${descuento > 0 ? `<div class="summary-row"><span>Descuento:</span><span>-$${descuento.toFixed(2)} MXN</span></div>` : ""}
+    <div class="summary-row"><span>Subtotal:</span><span>$${subtotalConDescuento.toFixed(2)} MXN</span></div>
+    <div class="summary-row"><span>Impuesto:</span><span>$${impuesto.toFixed(2)} MXN</span></div>
+    <div class="summary-row"><span>Envío:</span><span>$${envio.toFixed(2)} MXN</span></div>
+    <div class="summary-row total"><span>TOTAL:</span><span>$${total.toFixed(2)} MXN</span></div>
+    `
+}
+
+/*Para cambiar en las diferentes secciones*/
+document.addEventListener('DOMContentLoaded', () => {
+  const carrito = document.getElementById('container-carrito')
+  const procesoPago = document.getElementById('container-proceso-pago')
+  const btnProcesoPago = document.getElementById('proceso-pago-btn')
+  const btnEdit = document.getElementById('edit-btn')
+  const btnContinue = document.getElementById('continue-btn')
+  const btnReview = document.getElementById('review-btn')
+
+  /*Se muestra proceso de pago y se oculta el carrito*/
+  btnProcesoPago?.addEventListener('click', () => {
+    carrito.style.display = 'none'
+    procesoPago.style.display = 'grid'
+    NavActive(1)
+    renderCartSummaryProcesoPago()
+  })
+
+  /*Se vuelve al carrito desde proceso de pago*/
+  btnEdit?.addEventListener('click', (e) => {
+    e.preventDefault()
+    procesoPago.style.display = 'none'
+    carrito.style.display = 'flex'
+    NavActive(0)
+  })
+
+  /*Para redirigir al catálogo (index.html)*/
+  btnContinue?.addEventListener('click', (e) => {
+    e.preventDefault()
+    window.location.href = 'index.html#catalogo'
+  })
+
+  btnReview?.addEventListener('click', (e) => {
+  })
+
+  NavActive(0)
+})
+
+/*Función para cambiar la clase active en el nav-pay*/
+const NavActive = async (stepIndex) => {
+  const navSpans = document.querySelectorAll('.nav-pay span')
+  navSpans.forEach((span, idx) => {
+    if (idx === stepIndex) {
+      span.classList.add('active')
+    } else {
+      span.classList.remove('active')
+    }
+  })
+}
+
 /*Finaliza sección para el proceso de pago*/
