@@ -55,7 +55,7 @@ const renderCartProducts = async () => {
             <img src="${product.imagen}" alt="${product.nombre}" />
             <div class="item-details">
                 <h4>${product.nombre}</h4>
-                <h4>$${product.precio} C/U</h4>
+                <h4>$${product.precio} MXN C/U</h4>
                 <div class="quantity">
                     <button>-</button>
                     <span>${item.cantidad}</span>
@@ -117,7 +117,7 @@ const renderCartSummary = async () => {
         if (!productSnap.exists()) continue
         const product = productSnap.data()
 
-        const subtotal = item.cantidad * product.precio
+        const subtotal = parseFloat((item.cantidad * product.precio).toFixed(2))
         total += subtotal
 
         /*Se crea el HTML del resumen del producto*/
@@ -126,16 +126,10 @@ const renderCartSummary = async () => {
         summaryItem.setAttribute("data-id", item.id)
         summaryItem.innerHTML = 
         `
-            <p>${product.nombre}<br/><small>${item.cantidad} x $${product.precio}</small></p>
-            <span style="display:block; margin-top:4px;">$${subtotal}</span>
+            <p>${product.nombre}<br/><small>${item.cantidad} x $${product.precio} MXN</small></p>
+            <span style="display:block; margin-top:4px;">$${subtotal} MXN</span>
         `
         summaryContainer.appendChild(summaryItem)
-
-        /*Linea divisora*/
-        if (item !== items[items.length - 1]) {
-            const hr = document.createElement("hr")
-            summaryContainer.appendChild(hr)
-        }
     }
 
     /*Se desglosa el descuento*/
@@ -148,7 +142,7 @@ const renderCartSummary = async () => {
             `
                 <div class="summary-discount">
                     <span>Descuento (${appCoupon.valor}%):</span>
-                    <span>-$${descuento}</span>
+                    <span>-$${descuento} MXN</span>
                 </div>
             `
         } else if (appCoupon.tipo === "fijo") {
@@ -157,14 +151,14 @@ const renderCartSummary = async () => {
             `
                 <div class="summary-discount">
                     <span>Descuento:</span>
-                    <span>-$${descuento}</span>
+                    <span>-$${descuento} MXN</span>
                 </div>
             `
         }
         if (descuento > total) descuento = total
     }
 
-    const totalFinal = total - descuento
+    const totalFinal = (total - descuento).toFixed(2)
 
     /*Se agrega el desglose de descuento y total final al resumen*/
     summaryContainer.innerHTML += 
@@ -172,7 +166,7 @@ const renderCartSummary = async () => {
         ${descuentoHtml}
         <div class="summary-total-final">
             <span>Total a pagar:</span>
-            <span>$${totalFinal}</span>
+            <span>$${totalFinal} MXN</span>
         </div>
     `
 }
@@ -409,3 +403,26 @@ auth.onAuthStateChanged(user => {
 })
 
 /*Finaliza sección para el carrito de compras*/
+
+/*Inicia sección para el proceso de pago*/
+
+/*Para seleccionar el método de pago*/
+document.querySelectorAll('.payment-option input[type="radio"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        radio.closest('.payment-option').classList.add('selected');
+    });
+});
+
+/*Para seleccionar la opción de pago*/
+document.querySelectorAll('.shipping-option input[type="radio"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+        document.querySelectorAll('.shipping-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        radio.closest('.shipping-option').classList.add('selected');
+    });
+});
+/*Finaliza sección para el proceso de pago*/

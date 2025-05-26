@@ -27,7 +27,7 @@
         <span>Éxito</span>
     </nav>
 
-    <section class="container-carrito">
+    <section id="container-carrito" class="container-carrito">
         <section class="cart-products">
          <div class="tittle-cart-pruducts">
             <h2>TU CARRITO <i class="fa-solid fa-basket-shopping fa-bounce" style="color: #FFD43B;"></i></h2>
@@ -49,14 +49,14 @@
                 <div id="couponMessage"></div>
             </div>
             <br>
-            <button class="pay-btn">PAGAR</button>
+            <button id="proceso-pago-btn" class="proceso-pago-btn">PROCESAR PAGO</button>
         </aside>
     </section>
 
-    <section class="container-proceso-pago">
+    <section id="container-proceso-pago" class="container-proceso-pago">
         <main class="proceso-pago">
             <section>
-                <h2 class="section-title">
+                <h2 class="proceso-summary-title">
                     📧 Contacto
                 </h2>
                 <div class="form-group">
@@ -66,43 +66,38 @@
             </section>
 
             <section>
-                <h2 class="section-title">
+                <h2 class="proceso-summary-title">
                     📍 Dirección de envío
                 </h2>
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Nombre *</label>
-                        <input type="text" class="form-input" placeholder="Tu nombre">
+                        <input type="text" class="form-input" placeholder="Tu nombre" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Apellido *</label>
-                        <input type="text" class="form-input" placeholder="Tu apellido">
+                        <input type="text" class="form-input" placeholder="Tu apellido" required>
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">Dirección *</label>
-                    <input type="text" class="form-input" placeholder="Calle, número, colonia">
+                    <input type="text" class="form-input" placeholder="Calle, número, colonia" required>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">Código Postal *</label>
-                    <input type="text" class="form-input" placeholder="12345">
+                    <input type="text" class="form-input" placeholder="12345" required>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Ciudad *</label>
-                        <input type="text" class="form-input" placeholder="Ciudad">
+                        <input type="text" class="form-input" placeholder="Ciudad" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Estado *</label>
-                        <select class="form-input">
-                            <option>Seleccionar Estado</option>
-                            <option>Ciudad de México</option>
-                            <option>Guadalajara</option>
-                            <option>Monterrey</option>
-                        </select>
+                        <label class="form-label">Estado *</label required>
+                        <input type="text" class="form-input" placeholder="Estado" required>
                     </div>
                 </div>
                 
@@ -124,7 +119,7 @@
             </section>
 
             <section>
-                <h2 class="section-title">
+                <h2 class="proceso-summary-title">
                     💳 Opciones de pago
                 </h2>
                 <div class="payment-options">
@@ -169,7 +164,7 @@
             </section>
 
             <section>
-                <h2 class="section-title">
+                <h2 class="proceso-summary-title">
                     🚚 Opciones de envío
                 </h2>
                 <label class="shipping-option selected">
@@ -220,36 +215,18 @@
             
             <div class="cart-summary">
             </div>
-            
-            <div class="summary-row">
-                <span>Subtotal:</span>
-                <span>$999.00 MXN</span>
-            </div>
-            <div class="summary-row">
-                <span>Impuesto:</span>
-                <span>$39.96 MXN</span>
-            </div>
-            <div class="summary-row">
-                <span>Envío:</span>
-                <span>$180.00 MXN</span>
-            </div>
-            <div class="summary-row total">
-                <span>TOTAL:</span>
-            </div>
-            
-            <button class="btn btn-primary">
+                
+            <button id="review-btn" class="btn-transform">
                 🔒 Revisar compra
             </button>
             
             <div style="display: flex; gap: 1rem;">
-                <a href="#" class="btn btn-secondary" style="flex: 1;">Editar Carro</a>
-                <a href="#" class="btn btn-secondary" style="flex: 1;">Continuar Comprando</a>
+                <button href="#" id="edit-btn" class="btn btn-secondary" style="flex: 1;">Editar Carro</button>
+                <button href="#" id="continue-btn" class="btn btn-secondary" style="flex: 1;">Continuar Comprando</button>
             </div>
         </aside>
     </section>
     
     <script type="module" src="./js/carritocompras.js"></script>
-    <script type="module" src="./js/products.js"></script>
-    <script type="module" src="./js/script.js"></script>
 </body>
 </html>
