@@ -1,5 +1,5 @@
 import { auth, db } from "./firebase-config.js"
-import { collection, query, where, getDocs, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js"
+import { collection, query, where, getDocs, doc, getDoc, setDoc, updateDoc, addDoc, Timestamp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js"
 
 /*Redirección a la página principal*/
 document.addEventListener('DOMContentLoaded', () => {
@@ -594,4 +594,76 @@ const NavActive = async (stepIndex) => {
   })
 }
 
+/*Función para guardas los datos del proceso de pago*/
+const SDProcesoPago = async (event) => {
+    if (event) event.preventDefault()
+
+    const user = auth.currentUser
+
+    /*Se obtienen los valores del formulario*/
+    const respuestas = {
+        email: user.email,
+        telefono: document.querySelector('.form-input[placeholder="Tu telefono"]')?.value || "",
+        nombre: document.querySelector('.form-input[placeholder="Tu nombre"]')?.value || "",
+        apellido: document.querySelector('.form-input[placeholder="Tu apellido"]')?.value || "",
+        direccion: document.querySelector('.form-input[placeholder="Calle, número, colonia"]')?.value || "",
+        cp: document.querySelector('.form-input[placeholder="12345"]')?.value || "",
+        ciudad: document.querySelector('.form-input[placeholder="Ciudad"]')?.value || "",
+        estado: document.querySelector('.form-input[placeholder="Estado"]')?.value || "",
+        pais: document.querySelector('.form-input[value="México"]')?.value || "",
+        municipio: document.querySelector('.form-input[placeholder="Municipio"]')?.value || "",
+        metodoPago: document.querySelector('input[name="payment"]:checked')?.value || "",
+        metodoEnvio: document.querySelector('input[name="shipping"]:checked')?.value || "",
+        usuarioUid: user.uid,
+        fecha: Timestamp.now()
+    };
+
+    /*Se validan de campos obligatorios*/
+    for (const key in respuestas) {
+        if (respuestas[key] === "" && key !== "pais" !=="email") {
+            alert("Por favor, completa todos los campos obligatorios.")
+            return
+        }
+    }
+
+    try {
+        /*Obtener los productos del carrito*/
+        const cartQuery = query(collection(db, "cart"), where("email", "==", user.email))
+        const cartDocs = await getDocs(cartQuery)
+        if (cartDocs.empty) {
+            alert("Tu carrito está vacío.")
+            return;
+        }
+        const cartData = cartDocs.docs[0].data()
+        respuestas.items = cartData.items || []
+
+        /* Buscar si ya existe una documento para el usuario*/
+        const q = query(collection(db, "procpago"), where("email", "==", respuestas.email))
+        const querySnapshot = await getDocs(q)
+
+        if (!querySnapshot.empty) {
+            /*Si ya existe, se actualiza el documento*/
+            const docRef = querySnapshot.docs[0].ref
+            await setDoc(docRef, respuestas)
+            alert("Datos de proceso de pago actualizados exitosamente.")
+        } else {
+            /*Si no existe, se crea uno nuevo*/
+            await addDoc(collection(db, "procpago"), respuestas)
+            alert("Datos de proceso de pago guardados exitosamente.")
+        }
+    } catch (error) {
+        console.error("Error al guardar los datos del proceso de pago:", error)
+        alert("Hubo un error al guardar los datos. Inténtalo de nuevo.")
+    }
+}
+
+// Asigna el evento al botón después de mostrar la sección de proceso de pago
+document.addEventListener('DOMContentLoaded', () => {
+    const btnGuardar = document.getElementById('sd-btn')
+    if (btnGuardar) {
+        btnGuardar.addEventListener('click', SDProcesoPago)
+    }
+})
+
+/*Para usar la función de guardar datos del proceso de pago*/
 /*Finaliza sección para el proceso de pago*/
