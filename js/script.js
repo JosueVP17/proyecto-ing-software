@@ -2,6 +2,8 @@
 const navButtons = document.querySelectorAll('nav a')
 const sections = document.querySelectorAll('.section')
 
+
+
 sections.forEach(section => section.style.display = 'none')
 inicio.style.display = 'block'
 
@@ -170,7 +172,7 @@ window.addEventListener("load", () => {
         <input type="number" id="pesoTMB" placeholder="Ej. 70" /><br><br>
         <label>Estatura (cm):</label><br>
         <input type="number" id="alturaTMB" placeholder="Ej. 170" /><br><br>
-        <button onclick="calcularTMB()">Calcular TMB</button>
+        <button style="margin-left:15px;" onclick="calcularTMB()">Calcular TMB</button>
         <div id="resultadoTMB" style="margin-top:15px;"></div>
 `
 
@@ -292,3 +294,5 @@ function calcularTMB() {
         modal.style.display = "none";
       }
     };
+
+    
