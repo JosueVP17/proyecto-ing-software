@@ -1255,13 +1255,19 @@ to {
     background: #e53935;
   }
 /* CSS Contacto con Profesionales */
-.contacto-container 
-{
+.contacto-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 60px;
-    margin-right: 50px;
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
+#titulo-contacto {
+    font-size: 3em;
+    color: #F2B705;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .item1{
@@ -1271,15 +1277,22 @@ to {
     margin-right: 20px;
     margin-left: 25px;
     margin-bottom: 25px;
-    height: 350px;
+    height: 375px;
     width: 350px;
     background-color: #1c1f26cc;
-
     border-radius: 20px;
 }
 
 .nombre-profesional{
     font-size: 15px;
+}
+
+.nombre-profesional h1{
+    background: #F2B705;
+    border-radius: 0 5px 5px 0;
+    color: var(--color-bg);
+    height: 30px;
+    width: 250px;
 }
 
 .contacto-datos {
@@ -1291,8 +1304,9 @@ to {
     
 }
 
+
 .esp-datos p {
-    font-size: 15px;
+    font-size: 18px;
 }
 
 .datos-prof p {
@@ -1314,15 +1328,25 @@ to {
 }
 
 #especialidad { 
+    font-size: 18px;
+    background: #F2B705;
+    border-radius: 5px;
+    text-align: center;
+    color: var(--color-bg);
 }
 
 #modalidad {
     color: #25D366;
+    font-size: 18px;
 
 }
 
 #ubicacion {
-    color: white;
+    font-size: 18px;
+    text-align: center;
+    background: #F2B705;
+    border-radius: 5px;
+    color: var(--color-bg);
     text-decoration: none;
 }
 
@@ -1335,9 +1359,19 @@ to {
 }
 
 #correo {
+    font-size: 18px;
+    text-align: center;
+    background: #F2B705;
+    border-radius: 5px;
+    color: var(--color-bg);
 
 }
 #telefono {
+    font-size: 18px;
+    text-align: center;
+    background: #F2B705;
+    border-radius: 5px;
+    color: var(--color-bg);
 }
 
 .logo-container {
@@ -1346,7 +1380,7 @@ to {
 
 #facebook {
     justify-content: center;
-    margin-top: 5px;
+    margin-top: 10px;
     font-size: 30px;
     color: #1877F2;
 }
