@@ -393,8 +393,8 @@ nav a:hover {
 }
 
 .producto h3 {
-    color: #f2f2f2;
-    background-color: #9E872F;
+    color: var(--color-bg);
+    background-color: rgb(246, 195, 8);
     padding: 10px;
     border-radius: 10px;
 }
@@ -413,15 +413,16 @@ nav a:hover {
 .producto p {
     color: #f2f2f2;
     background-color: var(--color-card);
-    padding: 10px;
+    padding: 15px 40px;
     border-radius: 10px;
 }
 
 .producto button {
-    background-color: var(--color-accent);
+    background-color: #16428A;
     width: 40%;
     height: 4em;
     border-radius: 10px;
+    border-color: transparent;
     transition: transform 0.3s, background-color 0.3s;
 }
 
