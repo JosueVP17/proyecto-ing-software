@@ -39,8 +39,13 @@ header {
     width: 400px;
 }
 
+nav {
+    display: flex;
+    align-items: center;
+}
+
 nav a {
-    margin: 0 50px;
+    margin: 0 40px;
     color: white;
     text-decoration: none;
     font-size: 30px;
@@ -347,6 +352,49 @@ nav a.active {
     margin-top: 0;
 }
 
+.search-filter-bar {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-card);
+    gap: 10px;
+    border-radius: 4px;
+    width: 70%;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+#searchInput {
+    flex: 1;
+    font-size: medium;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+#filterBtn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    background: var(--color-highlight);
+    color: #222;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#filterModal label {
+    color: #fff;
+}
+
+#closeFilterModal {
+    float:right;
+    font-size:1.5em;
+    cursor:pointer;
+}
+
+#aplicarFiltros {
+    cursor: pointer;
+}
+
 .productos {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -455,7 +503,7 @@ td {
 }
 
 tr img {
-    width: 100%;
+    width: 70%;
     border-radius: 10px;
 }
 
@@ -610,7 +658,7 @@ tr img {
     height: 100px;
 }
 
-.modal-content input, .modal-content button, .modal-content textarea {
+.modal-content select,.modal-content input, .modal-content button, .modal-content textarea {
     width: 90%;
     margin: 10px 0;
     padding: 10px;
@@ -717,27 +765,38 @@ tr img {
     font-size: 16px;
 }
 
+.usercontent {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* dos columnas iguales */
+  gap: 20px;
+  padding: 20px;
+}
+
 .userinfo {
-  flex-grow: 1;
-  max-width: 25%;
   background-color: #534F4F;
   color: white;
   font-weight: bold;
-  display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 6px;
+  padding: 10px;
 }
-.usercontent {
-  display: flex;
-  gap: 20px; /* espacio igual entre cajas */
-  padding: 20px;
+.userinfo span{
+    display: block;
 }
+
+.userinfo span::before {
+  content: "• "; /* viñeta clásica */
+  color: #F2B705;  /* color de la viñeta */
+  margin-right: 6px;
+}
+
 .info
 {
     background: transparent;
     border: none;
     border-bottom: 2px solid #F2B705;
+    display: block;
 }
 .datan
 {
@@ -1232,7 +1291,6 @@ to {
     margin-right: 50px;
 }
 
-
 .item1{
     display: flex;
     flex-direction: column;
@@ -1241,7 +1299,7 @@ to {
     margin-left: 25px;
     margin-bottom: 25px;
     height: 350px;
-    width: 300px;
+    width: 350px;
     background-color: #0c1324cc;
 
     border-radius: 20px;
@@ -1282,20 +1340,109 @@ to {
     margin-bottom: 10px;
 }
 
+#especialidad { 
+}
+
+#modalidad {
+    color: #25D366;
+
+}
+
+#ubicacion {
+    color: white;
+    text-decoration: none;
+}
+
+#ubicacion:hover {
+    font-size: 16px;
+    color: #a09d90;
+}
+#ubicacion:visited {
+  text-decoration: none;
+}
+
+#correo {
+
+}
+#telefono {
+}
+
 #facebook {
     margin-top: 15px;
     font-size: 30px;
-    color: blue;
+    color: #1877F2;
+}
+
+#facebook:hover {
+    margin-top: 15px;
+    color: #0d4999;
+    font-size: 35px;
+}
+
+#linkedin {
+    margin-top: 15px;
+    font-size: 30px;
+    color: #0A66C2;
+}
+
+#linkedin:hover {
+    margin-top: 15px;
+    font-size: 35px;
+    color: #103b66;
 }
 
 #instagram {
     margin-top: 15px;
     font-size: 30px;
+    color: white;
+}
+
+#instagram:hover {
+    margin-top: 15px;
+    font-size: 35px;
+    color: rgb(163, 163, 163);
+}
+
+#instagram:visited {
+  color: white;
+  text-decoration: none;
 }
 
 #whatsapp {
     margin-top: 15px;
     font-size: 30px;
-    color: green;
+    color: #25D366;
 }
+
+#whatsapp:hover {
+    margin-top: 15px;
+    font-size: 35px;
+    color: #068334;
+}
+
+#youtube {
+    margin-top: 15px;
+    font-size: 30px;
+    color: #FF0000;
+}
+#youtube:hover {
+    margin-top: 15px;
+    font-size: 35px;
+    color: #a50000;
+}
+
+#mail {
+    margin-top: 15px;
+    font-size: 26px;
+    color: white;
+}
+
+#mail:hover {
+    margin-top: 15px;
+    font-size: 30px;
+    color: white;
+}
+
+
+
 /* ----------------------------- */
