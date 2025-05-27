@@ -8,11 +8,16 @@
     --color-highlight: #F6C308;
 }
 
+*{
+    font-family: "Bebas Neue", sans-serif;
+}
+
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Bebas Neue", sans-serif;
     background-color: #111;
     color: white;
-    background-image: url(../images/bg.png);
+    background-color: #333335;
+    /* background-image: url(../images/bg.png); */
     background-repeat: no-repeat;
     overflow: hidden;
     overflow-y: auto;
@@ -29,8 +34,8 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    background: linear-gradient(to bottom, #1c1f26, transparent);
+    /* padding: 20px; */
+    background: linear-gradient(to bottom, #1c1f26);
 }
 
 .logo img {
@@ -51,11 +56,25 @@ nav a.active {
     color: #F2B705;
 }
 
+nav a:hover {
+    font-size: 35px;
+}
+
 .section {
-    padding: 20px;
+    /* padding: 20px; */
     text-align: center;
     width: 100%;
     height: auto;
+}
+
+#inicio {
+ margin: 32px;
+ margin-top: 60px;
+}
+
+#login {
+ margin-left: 32px;
+ margin-top: 20px;
 }
 
 .login {
@@ -141,7 +160,7 @@ nav a.active {
     margin: auto;
     align-items: flex-start;
     flex-wrap: wrap;
-    margin-right: 120px;
+    margin-right: 80px;
     margin-top: -400px;
     
 }
@@ -200,16 +219,16 @@ nav a.active {
 }
 .estadistica{
     display: flex;
-     background-color: #272D39;
-     border-radius: 15px;
-     color: #F2B705;
-     width: 800px;
-     height: 300px;
-     border: #272D39;
-     font-size: 20px;
-     float: right;
-     margin-right: 200px;
-     margin-top: 80px;
+    background-color: #272D39;
+    border-radius: 15px;
+    color: #F2B705;
+    width: 900px;
+    height: 300px;
+    border: #272D39;
+    font-size: 20px;
+    float: right;
+    margin-right: 100px;
+    margin-top: 20px;
 
 
 }
@@ -344,7 +363,8 @@ nav a.active {
 .catalogo h1 {
     font-size: 3em;
     color: #F2B705;
-    margin-top: 0;
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .productos {
@@ -380,6 +400,7 @@ nav a.active {
 
 .producto h4 {
     color: #f2f2f2;
+    font-size: 22px;
 }
 
 .producto div {
@@ -508,7 +529,7 @@ tr img {
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
-    padding: 40px;
+    /* padding: 40px; */
 }
 
 .plan {
@@ -697,6 +718,7 @@ tr img {
 }
 .panel-principal {
   flex-grow: 1;
+  height: 632px;
   width: 70%;
   background-color: #1a171a;
   margin-left: 25%;
@@ -756,10 +778,10 @@ tr img {
 .routine {
   border-collapse: separate;
   border-spacing: 0;
-  width: 80%;
+  /* width: 80%; */
   border-radius: 10px;
   overflow: hidden;
-  font-family: Arial, sans-serif;
+  /* font-family: Arial, sans-serif; */
   text-align: left;
 }
 
@@ -772,8 +794,9 @@ tr img {
   color: #FFF;
   padding: 10px;
   border-bottom: 2px solid #000;
+  font-size: 20px;
   text-align: center;
-  text-decoration: underline;
+  text-decoration: none;
   text-decoration-color: #F6C308;
 }
 
@@ -1241,7 +1264,7 @@ to {
     margin-bottom: 25px;
     height: 350px;
     width: 350px;
-    background-color: #0c1324cc;
+    background-color: #1c1f26cc;
 
     border-radius: 20px;
 }
@@ -1308,38 +1331,43 @@ to {
 #telefono {
 }
 
+.logo-container {
+    text-align: center;
+}
+
 #facebook {
-    margin-top: 15px;
+    justify-content: center;
+    margin-top: 5px;
     font-size: 30px;
     color: #1877F2;
 }
 
 #facebook:hover {
-    margin-top: 15px;
+    margin-top: 5px;
     color: #0d4999;
     font-size: 35px;
 }
 
 #linkedin {
-    margin-top: 15px;
+    margin-top: 5px;
     font-size: 30px;
     color: #0A66C2;
 }
 
 #linkedin:hover {
-    margin-top: 15px;
+    margin-top: 5px;
     font-size: 35px;
     color: #103b66;
 }
 
 #instagram {
-    margin-top: 15px;
+    margin-top: 5px;
     font-size: 30px;
     color: white;
 }
 
 #instagram:hover {
-    margin-top: 15px;
+    margin-top: 5px;
     font-size: 35px;
     color: rgb(163, 163, 163);
 }
@@ -1350,36 +1378,36 @@ to {
 }
 
 #whatsapp {
-    margin-top: 15px;
+    margin-top: 5px;
     font-size: 30px;
     color: #25D366;
 }
 
 #whatsapp:hover {
-    margin-top: 15px;
+    margin-top: 5px;
     font-size: 35px;
     color: #068334;
 }
 
 #youtube {
-    margin-top: 15px;
+    margin-top: 5px;
     font-size: 30px;
     color: #FF0000;
 }
 #youtube:hover {
-    margin-top: 15px;
+    margin-top: 5px;
     font-size: 35px;
     color: #a50000;
 }
 
 #mail {
-    margin-top: 15px;
+    margin-top: 5px;
     font-size: 26px;
     color: white;
 }
 
 #mail:hover {
-    margin-top: 15px;
+    margin-top: 5px;
     font-size: 30px;
     color: white;
 }
