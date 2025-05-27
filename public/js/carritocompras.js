@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
         logo.style.cursor = 'pointer'
         logo.addEventListener('click', () => {
             window.location.href = 'index.html#catalogo'
-        });
+        })
     }
-});
+})
 
 /*Inicia sección para el carrito de compras*/
 
@@ -19,7 +19,7 @@ const renderCartProducts = async () => {
     const user = auth.currentUser
     if (!user) {
         alert("Debes iniciar sesión para ver tu carrito.")
-        return;
+        return
     }
 
     /*Se consulta el carrito del usuario en firebase*/
@@ -29,7 +29,7 @@ const renderCartProducts = async () => {
     /*Si no hay productos, se envia un mensaje*/
     if (cartDocs.empty || !(cartDocs.docs[0].data().items && cartDocs.docs[0].data().items.length > 0)) {
         document.querySelector('.products').innerHTML = "<h1>Tu carrito está vacío.</h1>"
-        return;
+        return
     }
 
     const cartData = cartDocs.docs[0].data()
@@ -127,7 +127,7 @@ const renderCartSummary = async () => {
         summaryItem.innerHTML = 
         `
             <p>${product.nombre}<br/><small>${item.cantidad} x $${product.precio} MXN</small></p>
-            <span style="display:block; margin-top:4px;">$${subtotal} MXN</span>
+            <span style="display:block margin-top:4px">$${subtotal} MXN</span>
         `
         summaryContainer.appendChild(summaryItem)
     }
@@ -146,7 +146,7 @@ const renderCartSummary = async () => {
                 </div>
             `
         } else if (appCoupon.tipo === "fijo") {
-            descuento = appCoupon.valor;
+            descuento = appCoupon.valor
             descuentoHtml = 
             `
                 <div class="summary-discount">
@@ -188,7 +188,6 @@ const addQuantityListeners = () => {
                 quantitySpan.textContent = cantidad
                 updateSummaryItem(productId, cantidad)
                 await renderCartSummary()
-                await renderTotal()
             }
         })
 
@@ -200,7 +199,6 @@ const addQuantityListeners = () => {
             quantitySpan.textContent = cantidad
             updateSummaryItem(productId, cantidad)
             await renderCartSummary()
-            await renderTotal()
         })
 
         /*Para eliminar un producto*/
@@ -208,12 +206,11 @@ const addQuantityListeners = () => {
         removeBtn.addEventListener('click', async () => {
             await removeCartItem(productId)
             /*Se elimina el producto y su summary del carrito*/
-            cartProduct.remove();
+            cartProduct.remove()
             const summaryItem = document.querySelector(`.summary-item[data-id="${productId}"]`)
             if (summaryItem) summaryItem.remove()
             await renderCartSummary()
             await renderCartProducts()
-            await renderTotal()
         })
     })
 }
@@ -290,52 +287,6 @@ const removeCartItem = async (productId) => {
     await updateDoc(cartDoc.ref, { items })
 }
 
-/*Función para mostrar el total del carrito*/
-const renderTotal = async () => {
-    /*Se obtiene el usuario*/
-    const user = auth.currentUser
-    if (!user) return
-
-    /*Se consulta el documento de la colección del carrito del usuario*/
-    const cartQuery = query(collection(db, "cart"), where("email", "==", user.email))
-    const cartDocs = await getDocs(cartQuery)
-
-    /*Si no hay productos, se muestra $0*/
-    if (cartDocs.empty) {
-        document.querySelector('.total span').textContent = "$0"
-        return;
-    }
-
-    /*Se obtienen los datos del carrito*/
-    const cartData = cartDocs.docs[0].data();
-    const items = cartData.items || [];
-
-    let total = 0
-    /*Se suman los totales de los productos*/
-    for (const item of items) {
-        const productRef = doc(db, "products", item.id)
-        const productSnap = await getDoc(productRef)
-        if (!productSnap.exists()) continue
-        const product = productSnap.data()
-        total += item.cantidad * product.precio
-    }
-
-    /*Aplicando el cupón si hay*/
-    let descuento = 0
-    if (appCoupon) {
-        if (appCoupon.tipo === "porcentaje") {
-            descuento = Math.round(total * (appCoupon.valor / 100));
-        } else if (appCoupon.tipo === "fijo") {
-            descuento = appCoupon.valor
-        }
-        if (descuento > total) descuento = total;
-    }
-
-    const totalFinal = total - descuento
-    /*Se muestra el total de todo el carrito*/
-    document.querySelector('.total span').textContent = `$${totalFinal}`
-}
-
 let appCoupon = null /*Para guardar el cupón a aplicar*/
 
 /*Función para guardar el cupón en Firebase*/
@@ -358,7 +309,6 @@ const applyCoupon = async () => {
         messageDiv.textContent = "Ingresa un código de cupón."
         appCoupon = null
         renderCartSummary()
-        renderTotal()
         return
     }
 
@@ -374,13 +324,12 @@ const applyCoupon = async () => {
 
         await saveCoupon('apliedCoupon')
         renderCartSummary()
-        renderTotal()
         return
     }
 
     /*Se agarra el primer cupón válido*/
     const coupon = querySnapshot.docs[0].data()
-    appCoupon = coupon;
+    appCoupon = coupon
     localStorage.setItem('appliedCoupon', JSON.stringify(coupon))
     messageDiv.textContent = coupon.tipo === "porcentaje"
         ? `Cupón aplicado: ${coupon.valor}% de descuento`
@@ -388,7 +337,6 @@ const applyCoupon = async () => {
 
     await saveCoupon(coupon)
     renderCartSummary()
-    renderTotal()
 }
 
 /*Listener para aplicar cupón*/
@@ -405,7 +353,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.removeItem('appliedCoupon')
                 saveCoupon(null)
                 renderCartSummary()
-                renderTotal()
             }
         })
     }
@@ -433,7 +380,7 @@ auth.onAuthStateChanged(async user => {
                         : `Cupón aplicado: $${cartData.coupon.valor} de descuento`
                 }
             } else {
-                appCoupon = null;
+                appCoupon = null
                 localStorage.removeItem('appliedCoupon')
                 /*Se limpia el input si no hay cupón*/
                 const couponInput = document.getElementById('couponInput')
@@ -442,7 +389,6 @@ auth.onAuthStateChanged(async user => {
         }
         renderCartProducts()
         renderCartSummary()
-        renderTotal()
     }
 })
 
@@ -454,9 +400,9 @@ auth.onAuthStateChanged(async user => {
 document.querySelectorAll('.payment-option input[type="radio"]').forEach((radio) => {
     radio.addEventListener('change', () => {
         document.querySelectorAll('.payment-option').forEach(option => {
-            option.classList.remove('selected');
+            option.classList.remove('selected')
         })
-        radio.closest('.payment-option').classList.add('selected');
+        radio.closest('.payment-option').classList.add('selected')
     })
 })
 
@@ -506,7 +452,7 @@ const renderCartSummaryProcesoPago = async () => {
         summaryItem.innerHTML = 
         `
         <p>${product.nombre}<br/><small>${item.cantidad} x $${product.precio}</small></p>
-        <span style="display:block; margin-top:4px;">$${itemSubtotal.toFixed(2)}</span>
+        <span style="display:block margin-top:4px">$${itemSubtotal.toFixed(2)}</span>
         `
         summaryContainer.appendChild(summaryItem)
     }
@@ -524,8 +470,8 @@ const renderCartSummaryProcesoPago = async () => {
     const subtotalConDescuento = subtotal - descuento
 
     /*Cálculo de impuestos y envío*/
-    const impuesto = subtotalConDescuento * 0.04; /*4% de impuesto*/
-    let envio = 180; /*Default DHL*/
+    const impuesto = subtotalConDescuento * 0.04 /*4% de impuesto*/
+    let envio = 180 /*Default DHL*/
     const shippingSelected = document.querySelector('#container-proceso-pago input[name="shipping"]:checked')
     if (shippingSelected) {
         if (shippingSelected.value === "dhl") envio = 180
@@ -547,51 +493,51 @@ const renderCartSummaryProcesoPago = async () => {
 
 /*Para cambiar en las diferentes secciones*/
 document.addEventListener('DOMContentLoaded', () => {
-  const carrito = document.getElementById('container-carrito')
-  const procesoPago = document.getElementById('container-proceso-pago')
-  const btnProcesoPago = document.getElementById('proceso-pago-btn')
-  const btnEdit = document.getElementById('edit-btn')
-  const btnContinue = document.getElementById('continue-btn')
-  const btnReview = document.getElementById('review-btn')
+    const carrito = document.getElementById('container-carrito')
+    const procesoPago = document.getElementById('container-proceso-pago')
+    const btnProcesoPago = document.getElementById('proceso-pago-btn')
+    const btnEdit = document.getElementById('edit-btn')
+    const btnContinue = document.getElementById('continue-btn')
+    const btnReview = document.getElementById('review-btn')
 
-  /*Se muestra proceso de pago y se oculta el carrito*/
-  btnProcesoPago?.addEventListener('click', () => {
-    carrito.style.display = 'none'
-    procesoPago.style.display = 'grid'
-    NavActive(1)
-    renderCartSummaryProcesoPago()
-  })
+    /*Se muestra proceso de pago y se oculta el carrito*/
+    btnProcesoPago?.addEventListener('click', () => {
+        carrito.style.display = 'none'
+        procesoPago.style.display = 'grid'
+        NavActive(1)
+        renderCartSummaryProcesoPago()
+    })
 
-  /*Se vuelve al carrito desde proceso de pago*/
-  btnEdit?.addEventListener('click', (e) => {
-    e.preventDefault()
-    procesoPago.style.display = 'none'
-    carrito.style.display = 'flex'
+    /*Se vuelve al carrito desde proceso de pago*/
+    btnEdit?.addEventListener('click', (e) => {
+        e.preventDefault()
+        procesoPago.style.display = 'none'
+        carrito.style.display = 'flex'
+        NavActive(0)
+    })
+
+    /*Para redirigir al catálogo (index.html)*/
+    btnContinue?.addEventListener('click', (e) => {
+        e.preventDefault()
+        window.location.href = 'index.html#catalogo'
+    })
+
+    btnReview?.addEventListener('click', (e) => {
+    })
+
     NavActive(0)
-  })
-
-  /*Para redirigir al catálogo (index.html)*/
-  btnContinue?.addEventListener('click', (e) => {
-    e.preventDefault()
-    window.location.href = 'index.html#catalogo'
-  })
-
-  btnReview?.addEventListener('click', (e) => {
-  })
-
-  NavActive(0)
 })
 
 /*Función para cambiar la clase active en el nav-pay*/
 const NavActive = async (stepIndex) => {
-  const navSpans = document.querySelectorAll('.nav-pay span')
-  navSpans.forEach((span, idx) => {
-    if (idx === stepIndex) {
-      span.classList.add('active')
-    } else {
-      span.classList.remove('active')
-    }
-  })
+    const navSpans = document.querySelectorAll('.nav-pay span')
+    navSpans.forEach((span, idx) => {
+        if (idx === stepIndex) {
+            span.classList.add('active')
+        } else {
+            span.classList.remove('active')
+        }
+    })
 }
 
 /*Función para guardas los datos del proceso de pago*/
@@ -616,7 +562,7 @@ const SDProcesoPago = async (event) => {
         metodoEnvio: document.querySelector('input[name="shipping"]:checked')?.value || "",
         usuarioUid: user.uid,
         fecha: Timestamp.now()
-    };
+    }
 
     /*Se validan de campos obligatorios*/
     for (const key in respuestas) {
@@ -632,7 +578,7 @@ const SDProcesoPago = async (event) => {
         const cartDocs = await getDocs(cartQuery)
         if (cartDocs.empty) {
             alert("Tu carrito está vacío.")
-            return;
+            return
         }
         const cartData = cartDocs.docs[0].data()
         respuestas.items = cartData.items || []
@@ -667,3 +613,127 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /*Para usar la función de guardar datos del proceso de pago*/
 /*Finaliza sección para el proceso de pago*/
+
+/*Inicia sección para finalizar el pago*/
+// Mostrar sección de revisión del pedido
+const containerCarrito = document.getElementById('container-carrito')
+const containerProcesoPago = document.getElementById('container-proceso-pago')
+const containerRevision = document.getElementById('container-revision')
+const btnReview = document.getElementById('review-btn')
+const btnVolverPago = document.getElementById('volver-pago-btn')
+const btnConfirmarPago = document.getElementById('confirmar-pago-btn')
+
+// Navegación: Proceso de Pago -> Revisión del Pedido
+btnReview?.addEventListener('click', async () => {
+    containerProcesoPago.style.display = 'none'
+    containerRevision.style.display = 'grid'
+    NavActive(2)
+    await renderRevisionSummary()
+    renderRevisionPayment()
+})
+
+// Navegación: Revisión del Pedido -> Proceso de Pago
+btnVolverPago?.addEventListener('click', () => {
+    containerRevision.style.display = 'none'
+    containerProcesoPago.style.display = 'grid'
+    NavActive(1)
+})
+
+// Renderiza el resumen del pedido en la revisión
+async function renderRevisionSummary() {
+    const user = auth.currentUser
+    if (!user) return
+    const cartQuery = query(collection(db, "cart"), where("email", "==", user.email))
+    const cartDocs = await getDocs(cartQuery)
+    const summaryDiv = document.getElementById('revision-summary')
+    summaryDiv.innerHTML = ""
+
+    if (cartDocs.empty || !(cartDocs.docs[0].data().items && cartDocs.docs[0].data().items.length > 0)) {
+        summaryDiv.innerHTML = "<h3>Tu carrito está vacío.</h3>"
+        return
+    }
+
+    const cartData = cartDocs.docs[0].data()
+    const items = cartData.items || []
+    let total = 0
+    for (const item of items) {
+        const productRef = doc(db, "products", item.id)
+        const productSnap = await getDoc(productRef)
+        if (!productSnap.exists()) continue
+        const product = productSnap.data()
+        const subtotal = parseFloat((item.cantidad * product.precio).toFixed(2))
+        total += subtotal
+        summaryDiv.innerHTML += `
+            <div class="summary-item">
+                <p>${product.nombre} (${item.cantidad} x $${product.precio})</p>
+                <span>$${subtotal} MXN</span>
+            </div>
+        `
+    }
+    summaryDiv.innerHTML += `<div class="summary-total-final"><span>Total:</span><span id="total-price">$${total.toFixed(2)} MXN</span></div>`
+}
+
+// Renderiza el botón de pago según método seleccionado
+const renderRevisionPayment = async() => {
+    const paymentDiv = document.getElementById('confirmar-pago-btn')
+    const metodoPago = document.querySelector('input[name="payment"]:checked')?.value || "card"
+    paymentDiv.innerHTML = ""
+
+    if (metodoPago === "card") {
+        paymentDiv.innerHTML = `
+            <button class="btn-stripe animated-pay" id="stripePayBtn">
+                <img src="https://cdn.jsdelivr.net/gh/stripe/stripe-payments-demo@master/client/images/stripe.svg" alt="Stripe" style="height:24px;vertical-align:middle;margin-right:8px">
+                Pagar con Stripe
+            </button>
+        `
+        setTimeout(() => {
+            const stripeBtn = document.getElementById('stripePayBtn')
+            if (stripeBtn) {
+                stripeBtn.addEventListener('click', async () => {
+                    const totalElement = document.getElementById('total-price')
+                    if (!totalElement) return
+                    const totalText = totalElement.textContent.replace(/[^\d.]/g, '')
+                    const amount = Math.round(parseFloat(totalText) * 100)
+                    const res = await fetch("http://localhost:5500/create-checkout-session", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ amount }),
+                    })
+                    const data = await res.json()
+                    if (data.url) {
+                        window.location.href = data.url // redirige a Stripe Checkout
+                    } else {
+                        alert("Error al crear la sesión de pago. Intenta de nuevo.")
+                    }
+                })
+            }
+        }, 100)
+    } else if (metodoPago === "paypal") {
+        paymentDiv.innerHTML = `
+            <button class="btn-paypal animated-pay" id="paypalPayBtn">
+                <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" style="height:24pxvertical-align:middlemargin-right:8px">
+                Pagar con PayPal
+            </button>
+        `
+        // Evento para PayPal
+        setTimeout(() => {
+            const paypalBtn = document.getElementById('paypalPayBtn')
+            if (paypalBtn) {
+                paypalBtn.addEventListener('click', () => {
+                    // Aquí deberías redirigir a tu enlace de PayPal real
+                    window.open('https://www.paypal.com/checkoutnow', '_blank')
+                })
+            }
+        }, 100)
+    } else if (metodoPago === "transfer") {
+        paymentDiv.innerHTML = `
+            <div class="bank-info">
+                <h4>Transferencia Bancaria</h4>
+                <p>Banco: BBVA<br>
+                Cuenta: 1234567890<br>
+                CLABE: 012345678901234567<br>
+                Titular: Aurum Gym</p>
+            </div>
+        `
+    }
+}

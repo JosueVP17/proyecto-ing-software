@@ -715,3 +715,42 @@ hr {
 }
 /*Finaliza sección de proceso de pago*/
 
+.container-revision {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    gap: 30px;
+}
+
+/* Animación para los botones de pago */
+.animated-pay {
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    font-size: 1.1em;
+    padding: 12px 24px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.animated-pay:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    background: #f6f9fc;
+}
+
+.btn-stripe {
+    background: #635bff;
+    color: #fff;
+}
+
+.btn-paypal {
+    background: #ffc439;
+    color: #222;
+}
