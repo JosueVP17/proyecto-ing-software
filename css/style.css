@@ -10,6 +10,7 @@
 
 *{
     font-family: "Bebas Neue", sans-serif;
+    letter-spacing: 1px;
 }
 
 body {
@@ -219,7 +220,7 @@ nav a:hover {
 }
 .estadistica{
     display: flex;
-    background-color: #272D39;
+    background-color: rgba(65, 67, 70, 0.9);
     border-radius: 15px;
     color: #F2B705;
     width: 900px;
@@ -232,20 +233,22 @@ nav a:hover {
 }
 .imgestadistica{
     width: 30px;
-    height: 30spx;
+    height: 30px;
     right: 70px;
     float: left;
     align-items: center;
-    margin-left: 20px;
-    margin-top: 10px;
+    margin-left: 10px;
+    margin-top: 22px;
 }
 .estadistica h2{
     color: #F2B705;
     float: left;
     margin-left: 20px;
-    font-size: 20px;
+    font-size: 30px;
+    margin-top: 20px;
 
 }
+
 .login button {
     display: flex;
     flex-direction: column;
@@ -761,11 +764,14 @@ tr img {
 }
 .datan
 {
+    display: flex;
+    flex-direction: column;
     background-color: #F2B705;
     border-radius: 4px;
     border-color: #000;
     border-width: 10px;
     color: #000;
+    width: 300px;
 }
 .data
 {
