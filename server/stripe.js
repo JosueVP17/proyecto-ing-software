@@ -3,13 +3,13 @@ require('dotenv').config()
 const express = require('express')
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
-const app = express()
-app.use(express.json())
+const router = express.Router()
+router.use(express.json())
 
 const path = require('path')
-app.use(express.static(path.join(__dirname, '..', 'public')))
+router.use(express.static(path.join(__dirname, '..', 'public')))
 
-app.post('/create-checkout-session', async (req, res) => {
+router.post('/create-checkout-session', async (req, res) => {
     const { amount } = req.body
 
     try {
@@ -36,4 +36,4 @@ app.post('/create-checkout-session', async (req, res) => {
     }
 })
 
-app.listen(5500, () => console.log('Servidor en http://localhost:5500'))
+module.exports = router

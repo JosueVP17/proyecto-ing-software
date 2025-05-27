@@ -720,55 +720,61 @@ async function renderRevisionSummary() {
 
 // Renderiza el botón de pago según método seleccionado
 const renderRevisionPayment = async() => {
-    const paymentDiv = document.getElementById('confirmar-pago-btn')
+    const confirmarPagoBtn = document.getElementById('confirmar-pago-btn')
     const metodoPago = document.querySelector('input[name="payment"]:checked')?.value || "card"
-    paymentDiv.innerHTML = ""
+    confirmarPagoBtn.innerHTML = ""
 
     if (metodoPago === "card") {
-        paymentDiv.innerHTML = `
-            <button class="btn-stripe animated-pay" id="stripePayBtn">
-                <img src="https://cdn.jsdelivr.net/gh/stripe/stripe-payments-demo@master/client/images/stripe.svg" alt="Stripe" style="height:24px;vertical-align:middle;margin-right:8px">
-                Pagar con Stripe
-            </button>
+        confirmarPagoBtn.classList.add('btn-stripe')
+        confirmarPagoBtn.id = 'stripePayBtn'
+        confirmarPagoBtn.innerHTML = `
+            <img src="https://cdn.jsdelivr.net/gh/stripe/stripe-payments-demo@master/client/images/stripe.svg" alt="Stripe" style="height:24px;vertical-align:middle;margin-right:8px">
+            Pagar con Stripe
         `
         setTimeout(() => {
-            const stripeBtn = document.getElementById('stripePayBtn')
-            if (stripeBtn) {
-                stripeBtn.addEventListener('click', async () => {
-                    const totalElement = document.getElementById('total-price')
-                    if (!totalElement) return
-                    const totalText = totalElement.textContent.replace(/[^\d.]/g, '')
-                    const amount = Math.round(parseFloat(totalText) * 100)
-                    const res = await fetch("http://localhost:5500/create-checkout-session", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ amount }),
-                    })
-                    const data = await res.json()
-                    if (data.url) {
-                        window.location.href = data.url // redirige a Stripe Checkout
-                    } else {
-                        alert("Error al crear la sesión de pago. Intenta de nuevo.")
-                    }
+            confirmarPagoBtn.addEventListener('click', async () => {
+                const totalElement = document.getElementById('total-price')
+                if (!totalElement) return
+                const totalText = totalElement.textContent.replace(/[^\d.]/g, '')
+                const amount = Math.round(parseFloat(totalText) * 100)
+                const res = await fetch("http://localhost:5500/create-checkout-session", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ amount }),
                 })
-            }
+                const data = await res.json()
+                if (data.url) {
+                    window.location.href = data.url // redirige a Stripe Checkout
+                } else {
+                    alert("Error al crear la sesión de pago. Intenta de nuevo.")
+                }
+            })
         }, 100)
     } else if (metodoPago === "paypal") {
-        paymentDiv.innerHTML = `
-            <button class="btn-paypal animated-pay" id="paypalPayBtn">
-                <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" style="height:24pxvertical-align:middlemargin-right:8px">
-                Pagar con PayPal
-            </button>
+        confirmarPagoBtn.classList.add('btn-paypal')
+        confirmarPagoBtn.innerHTML = `
+            <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" style="height:24pxvertical-align:middlemargin-right:8px">
+            Pagar con PayPal
         `
         // Evento para PayPal
         setTimeout(() => {
-            const paypalBtn = document.getElementById('paypalPayBtn')
-            if (paypalBtn) {
-                paypalBtn.addEventListener('click', () => {
-                    // Aquí deberías redirigir a tu enlace de PayPal real
-                    window.open('https://www.paypal.com/checkoutnow', '_blank')
+            confirmarPagoBtn.addEventListener('click', async () => {
+                const totalElement = document.getElementById('total-price')
+                if (!totalElement) return
+                const totalText = totalElement.textContent.replace(/[^\d.]/g, '')
+                const amount = Math.round(parseFloat(totalText) * 100)
+                const res = await fetch("http://localhost:5500/create-paypal-order", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ amount }),
                 })
-            }
+                const data = await res.json()
+                if (data.url) {
+                    window.location.href = data.url // redirige a PayPal Checkout
+                } else {
+                    alert("Error al crear la orden de PayPal. Intenta de nuevo.")
+                }
+            })
         }, 100)
     } else if (metodoPago === "transfer") {
         paymentDiv.innerHTML = `

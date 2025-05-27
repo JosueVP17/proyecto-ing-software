@@ -723,6 +723,14 @@ hr {
     gap: 30px;
 }
 
+#confirmar-pago-btn {
+    height: 50px;
+}
+
+#confirmar-pago-btn img {
+    height: 100%;
+}
+
 /* Animación para los botones de pago */
 .animated-pay {
     transition: transform 0.2s, box-shadow 0.2s;
