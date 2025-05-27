@@ -506,6 +506,7 @@ document.addEventListener('DOMContentLoaded', () => {
         procesoPago.style.display = 'grid'
         NavActive(1)
         renderCartSummaryProcesoPago()
+        cargarDatosProcesoPago()
     })
 
     /*Se vuelve al carrito desde proceso de pago*/
@@ -612,6 +613,50 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 /*Para usar la función de guardar datos del proceso de pago*/
+// Cargar datos guardados del proceso de pago al formulario
+async function cargarDatosProcesoPago() {
+    const user = auth.currentUser
+    if (!user) return
+
+    // Buscar documento en la colección procpago
+    const q = query(collection(db, "procpago"), where("email", "==", user.email))
+    const querySnapshot = await getDocs(q)
+    if (querySnapshot.empty) return
+
+    const datos = querySnapshot.docs[0].data()
+
+    // Cargar los valores en los inputs del formulario
+    document.querySelector('.form-input[placeholder="Tu telefono"]').value = datos.telefono || ""
+    document.querySelector('.form-input[placeholder="Tu nombre"]').value = datos.nombre || ""
+    document.querySelector('.form-input[placeholder="Tu apellido"]').value = datos.apellido || ""
+    document.querySelector('.form-input[placeholder="Calle, número, colonia"]').value = datos.direccion || ""
+    document.querySelector('.form-input[placeholder="12345"]').value = datos.cp || ""
+    document.querySelector('.form-input[placeholder="Ciudad"]').value = datos.ciudad || ""
+    document.querySelector('.form-input[placeholder="Estado"]').value = datos.estado || ""
+    document.querySelector('.form-input[value="México"]').value = datos.pais || "México"
+    document.querySelector('.form-input[placeholder="Municipio"]').value = datos.municipio || ""
+
+    // Seleccionar método de pago
+    if (datos.metodoPago) {
+        const pagoRadio = document.querySelector(`input[name="payment"][value="${datos.metodoPago}"]`)
+        pagoRadio.checked = true
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.classList.remove('selected')
+        })
+        pagoRadio.closest('.payment-option').classList.add('selected')
+    }
+
+    // Seleccionar método de envío
+    if (datos.metodoEnvio) {
+        const envioRadio = document.querySelector(`input[name="shipping"][value="${datos.metodoEnvio}"]`)
+        envioRadio.checked = true
+        document.querySelectorAll('.shipping-option').forEach(option => {
+            option.classList.remove('selected')
+        })
+        envioRadio.closest('.shipping-option').classList.add('selected')
+    }
+}
+
 /*Finaliza sección para el proceso de pago*/
 
 /*Inicia sección para finalizar el pago*/
