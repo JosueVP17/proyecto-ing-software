@@ -1,5 +1,5 @@
 import { auth, db } from "./firebase-config.js"
-import { collection, query, where, getDocs, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js"
+import { collection, query, where, getDocs, doc, getDoc, setDoc, updateDoc, addDoc, Timestamp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js"
 
 /*Redirección a la página principal*/
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+/*Inicia sección para el carrito de compras*/
 
 /*Función para mostrar los productos agregados del carrito*/
 const renderCartProducts = async () => {
@@ -53,7 +55,7 @@ const renderCartProducts = async () => {
             <img src="${product.imagen}" alt="${product.nombre}" />
             <div class="item-details">
                 <h4>${product.nombre}</h4>
-                <h4>$${product.precio} C/U</h4>
+                <h4>$${product.precio} MXN C/U</h4>
                 <div class="quantity">
                     <button>-</button>
                     <span>${item.cantidad}</span>
@@ -115,7 +117,7 @@ const renderCartSummary = async () => {
         if (!productSnap.exists()) continue
         const product = productSnap.data()
 
-        const subtotal = item.cantidad * product.precio
+        const subtotal = parseFloat((item.cantidad * product.precio).toFixed(2))
         total += subtotal
 
         /*Se crea el HTML del resumen del producto*/
@@ -124,16 +126,10 @@ const renderCartSummary = async () => {
         summaryItem.setAttribute("data-id", item.id)
         summaryItem.innerHTML = 
         `
-            <p>${product.nombre}<br/><small>${item.cantidad} x $${product.precio}</small></p>
-            <span style="display:block; margin-top:4px;">$${subtotal}</span>
+            <p>${product.nombre}<br/><small>${item.cantidad} x $${product.precio} MXN</small></p>
+            <span style="display:block; margin-top:4px;">$${subtotal} MXN</span>
         `
         summaryContainer.appendChild(summaryItem)
-
-        /*Linea divisora*/
-        if (item !== items[items.length - 1]) {
-            const hr = document.createElement("hr")
-            summaryContainer.appendChild(hr)
-        }
     }
 
     /*Se desglosa el descuento*/
@@ -146,7 +142,7 @@ const renderCartSummary = async () => {
             `
                 <div class="summary-discount">
                     <span>Descuento (${appCoupon.valor}%):</span>
-                    <span>-$${descuento}</span>
+                    <span>-$${descuento} MXN</span>
                 </div>
             `
         } else if (appCoupon.tipo === "fijo") {
@@ -155,14 +151,14 @@ const renderCartSummary = async () => {
             `
                 <div class="summary-discount">
                     <span>Descuento:</span>
-                    <span>-$${descuento}</span>
+                    <span>-$${descuento} MXN</span>
                 </div>
             `
         }
         if (descuento > total) descuento = total
     }
 
-    const totalFinal = total - descuento
+    const totalFinal = (total - descuento).toFixed(2)
 
     /*Se agrega el desglose de descuento y total final al resumen*/
     summaryContainer.innerHTML += 
@@ -170,7 +166,7 @@ const renderCartSummary = async () => {
         ${descuentoHtml}
         <div class="summary-total-final">
             <span>Total a pagar:</span>
-            <span>$${totalFinal}</span>
+            <span>$${totalFinal} MXN</span>
         </div>
     `
 }
@@ -342,6 +338,17 @@ const renderTotal = async () => {
 
 let appCoupon = null /*Para guardar el cupón a aplicar*/
 
+/*Función para guardar el cupón en Firebase*/
+const saveCoupon = async (coupon) => {
+    const user = auth.currentUser
+    if (!user) return
+    const cartQuery = query(collection(db, "cart"), where("email", "==", user.email))
+    const cartDocs = await getDocs(cartQuery)
+    if (cartDocs.empty) return
+    const cartDoc = cartDocs.docs[0]
+    await updateDoc(cartDoc.ref, { coupon: coupon ? coupon : null })
+}
+
 /*Función para validar y aplicar el cupón*/
 const applyCoupon = async () => {
     const input = document.getElementById('couponInput')
@@ -363,6 +370,9 @@ const applyCoupon = async () => {
     if (querySnapshot.empty) {
         messageDiv.textContent = "Cupón no válido o inactivo."
         appCoupon = null
+        localStorage.removeItem('appliedCoupon')
+
+        await saveCoupon('apliedCoupon')
         renderCartSummary()
         renderTotal()
         return
@@ -371,10 +381,12 @@ const applyCoupon = async () => {
     /*Se agarra el primer cupón válido*/
     const coupon = querySnapshot.docs[0].data()
     appCoupon = coupon;
+    localStorage.setItem('appliedCoupon', JSON.stringify(coupon))
     messageDiv.textContent = coupon.tipo === "porcentaje"
         ? `Cupón aplicado: ${coupon.valor}% de descuento`
         : `Cupón aplicado: $${coupon.valor} de descuento`
 
+    await saveCoupon(coupon)
     renderCartSummary()
     renderTotal()
 }
@@ -390,6 +402,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (couponInput.value.trim() === "") {
                 appCoupon = null
                 document.getElementById('couponMessage').textContent = ""
+                localStorage.removeItem('appliedCoupon')
+                saveCoupon(null)
                 renderCartSummary()
                 renderTotal()
             }
@@ -398,10 +412,258 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 /*Si el usuario esta autenticado, se muestran productos si es que tiene*/
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(async user => {
     if (user) {
+        const cartQuery = query(collection(db, "cart"), where("email", "==", user.email))
+        const cartDocs = await getDocs(cartQuery)
+        if (!cartDocs.empty) {
+            const cartData = cartDocs.docs[0].data()
+            if (cartData.coupon) {
+                appCoupon = cartData.coupon
+                localStorage.setItem('appliedCoupon', JSON.stringify(cartData.coupon))
+                /*Se muestra mensaje y código en el input*/
+                const messageDiv = document.getElementById('couponMessage')
+                const couponInput = document.getElementById('couponInput')
+                if (couponInput && cartData.coupon.codigo) {
+                    couponInput.value = cartData.coupon.codigo
+                }
+                if (messageDiv) {
+                    messageDiv.textContent = cartData.coupon.tipo === "porcentaje"
+                        ? `Cupón aplicado: ${cartData.coupon.valor}% de descuento`
+                        : `Cupón aplicado: $${cartData.coupon.valor} de descuento`
+                }
+            } else {
+                appCoupon = null;
+                localStorage.removeItem('appliedCoupon')
+                /*Se limpia el input si no hay cupón*/
+                const couponInput = document.getElementById('couponInput')
+                if (couponInput) couponInput.value = ""
+            }
+        }
         renderCartProducts()
         renderCartSummary()
         renderTotal()
     }
 })
+
+/*Finaliza sección para el carrito de compras*/
+
+/*Inicia sección para el proceso de pago*/
+
+/*Para seleccionar el método de pago*/
+document.querySelectorAll('.payment-option input[type="radio"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.classList.remove('selected');
+        })
+        radio.closest('.payment-option').classList.add('selected');
+    })
+})
+
+/*Para seleccionar la opción de pago*/
+document.querySelectorAll('.shipping-option input[type="radio"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+        document.querySelectorAll('.shipping-option').forEach(option => {
+            option.classList.remove('selected')
+        })
+        radio.closest('.shipping-option').classList.add('selected')
+    })
+})
+
+/*Para mostra el resumen del carrito en el proceso de pago*/
+const renderCartSummaryProcesoPago = async () => {
+    const user = auth.currentUser
+    if (!user) return
+
+    const cartQuery = query(collection(db, "cart"), where("email", "==", user.email))
+    const cartDocs = await getDocs(cartQuery)
+
+    const summaryContainer = document.querySelector('#container-proceso-pago .cart-summary')
+    if (!summaryContainer) return
+    summaryContainer.innerHTML = ""
+
+    if (cartDocs.empty || !(cartDocs.docs[0].data().items && cartDocs.docs[0].data().items.length > 0)) {
+        summaryContainer.innerHTML = "<h1>Tu carrito está vacío.</h1>"
+        return
+    }
+
+    const cartData = cartDocs.docs[0].data()
+    const items = cartData.items || []
+
+    let subtotal = 0
+
+    for (const item of items) {
+        const productRef = doc(db, "products", item.id)
+        const productSnap = await getDoc(productRef)
+        if (!productSnap.exists()) continue
+        const product = productSnap.data()
+        const itemSubtotal = product.precio * item.cantidad
+        subtotal += itemSubtotal
+
+        const summaryItem = document.createElement("div")
+        summaryItem.className = "summary-item"
+        summaryItem.setAttribute("data-id", item.id)
+        summaryItem.innerHTML = 
+        `
+        <p>${product.nombre}<br/><small>${item.cantidad} x $${product.precio}</small></p>
+        <span style="display:block; margin-top:4px;">$${itemSubtotal.toFixed(2)}</span>
+        `
+        summaryContainer.appendChild(summaryItem)
+    }
+
+    /*Se aplica descuento si hay cupón*/
+    let descuento = 0
+    if (appCoupon) {
+        if (appCoupon.tipo === "porcentaje") {
+            descuento = subtotal * (appCoupon.valor / 100)
+        } else if (appCoupon.tipo === "fijo") {
+            descuento = appCoupon.valor
+        }
+        if (descuento > subtotal) descuento = subtotal
+    }
+    const subtotalConDescuento = subtotal - descuento
+
+    /*Cálculo de impuestos y envío*/
+    const impuesto = subtotalConDescuento * 0.04; /*4% de impuesto*/
+    let envio = 180; /*Default DHL*/
+    const shippingSelected = document.querySelector('#container-proceso-pago input[name="shipping"]:checked')
+    if (shippingSelected) {
+        if (shippingSelected.value === "dhl") envio = 180
+        else if (shippingSelected.value === "estafeta") envio = 120
+        else if (shippingSelected.value === "fedex") envio = 200
+    }
+    const total = subtotalConDescuento + impuesto + envio
+
+    /*Se agrega el desglose al final del resumen*/
+    summaryContainer.innerHTML += 
+    `
+    ${descuento > 0 ? `<div class="summary-row"><span>Descuento:</span><span>-$${descuento.toFixed(2)} MXN</span></div>` : ""}
+    <div class="summary-row"><span>Subtotal:</span><span>$${subtotalConDescuento.toFixed(2)} MXN</span></div>
+    <div class="summary-row"><span>Impuesto:</span><span>$${impuesto.toFixed(2)} MXN</span></div>
+    <div class="summary-row"><span>Envío:</span><span>$${envio.toFixed(2)} MXN</span></div>
+    <div class="summary-row total"><span>TOTAL:</span><span>$${total.toFixed(2)} MXN</span></div>
+    `
+}
+
+/*Para cambiar en las diferentes secciones*/
+document.addEventListener('DOMContentLoaded', () => {
+  const carrito = document.getElementById('container-carrito')
+  const procesoPago = document.getElementById('container-proceso-pago')
+  const btnProcesoPago = document.getElementById('proceso-pago-btn')
+  const btnEdit = document.getElementById('edit-btn')
+  const btnContinue = document.getElementById('continue-btn')
+  const btnReview = document.getElementById('review-btn')
+
+  /*Se muestra proceso de pago y se oculta el carrito*/
+  btnProcesoPago?.addEventListener('click', () => {
+    carrito.style.display = 'none'
+    procesoPago.style.display = 'grid'
+    NavActive(1)
+    renderCartSummaryProcesoPago()
+  })
+
+  /*Se vuelve al carrito desde proceso de pago*/
+  btnEdit?.addEventListener('click', (e) => {
+    e.preventDefault()
+    procesoPago.style.display = 'none'
+    carrito.style.display = 'flex'
+    NavActive(0)
+  })
+
+  /*Para redirigir al catálogo (index.html)*/
+  btnContinue?.addEventListener('click', (e) => {
+    e.preventDefault()
+    window.location.href = 'index.html#catalogo'
+  })
+
+  btnReview?.addEventListener('click', (e) => {
+  })
+
+  NavActive(0)
+})
+
+/*Función para cambiar la clase active en el nav-pay*/
+const NavActive = async (stepIndex) => {
+  const navSpans = document.querySelectorAll('.nav-pay span')
+  navSpans.forEach((span, idx) => {
+    if (idx === stepIndex) {
+      span.classList.add('active')
+    } else {
+      span.classList.remove('active')
+    }
+  })
+}
+
+/*Función para guardas los datos del proceso de pago*/
+const SDProcesoPago = async (event) => {
+    if (event) event.preventDefault()
+
+    const user = auth.currentUser
+
+    /*Se obtienen los valores del formulario*/
+    const respuestas = {
+        email: user.email,
+        telefono: document.querySelector('.form-input[placeholder="Tu telefono"]')?.value || "",
+        nombre: document.querySelector('.form-input[placeholder="Tu nombre"]')?.value || "",
+        apellido: document.querySelector('.form-input[placeholder="Tu apellido"]')?.value || "",
+        direccion: document.querySelector('.form-input[placeholder="Calle, número, colonia"]')?.value || "",
+        cp: document.querySelector('.form-input[placeholder="12345"]')?.value || "",
+        ciudad: document.querySelector('.form-input[placeholder="Ciudad"]')?.value || "",
+        estado: document.querySelector('.form-input[placeholder="Estado"]')?.value || "",
+        pais: document.querySelector('.form-input[value="México"]')?.value || "",
+        municipio: document.querySelector('.form-input[placeholder="Municipio"]')?.value || "",
+        metodoPago: document.querySelector('input[name="payment"]:checked')?.value || "",
+        metodoEnvio: document.querySelector('input[name="shipping"]:checked')?.value || "",
+        usuarioUid: user.uid,
+        fecha: Timestamp.now()
+    };
+
+    /*Se validan de campos obligatorios*/
+    for (const key in respuestas) {
+        if (respuestas[key] === "" && key !== "pais" !=="email") {
+            alert("Por favor, completa todos los campos obligatorios.")
+            return
+        }
+    }
+
+    try {
+        /*Obtener los productos del carrito*/
+        const cartQuery = query(collection(db, "cart"), where("email", "==", user.email))
+        const cartDocs = await getDocs(cartQuery)
+        if (cartDocs.empty) {
+            alert("Tu carrito está vacío.")
+            return;
+        }
+        const cartData = cartDocs.docs[0].data()
+        respuestas.items = cartData.items || []
+
+        /* Buscar si ya existe una documento para el usuario*/
+        const q = query(collection(db, "procpago"), where("email", "==", respuestas.email))
+        const querySnapshot = await getDocs(q)
+
+        if (!querySnapshot.empty) {
+            /*Si ya existe, se actualiza el documento*/
+            const docRef = querySnapshot.docs[0].ref
+            await setDoc(docRef, respuestas)
+            alert("Datos de proceso de pago actualizados exitosamente.")
+        } else {
+            /*Si no existe, se crea uno nuevo*/
+            await addDoc(collection(db, "procpago"), respuestas)
+            alert("Datos de proceso de pago guardados exitosamente.")
+        }
+    } catch (error) {
+        console.error("Error al guardar los datos del proceso de pago:", error)
+        alert("Hubo un error al guardar los datos. Inténtalo de nuevo.")
+    }
+}
+
+// Asigna el evento al botón después de mostrar la sección de proceso de pago
+document.addEventListener('DOMContentLoaded', () => {
+    const btnGuardar = document.getElementById('sd-btn')
+    if (btnGuardar) {
+        btnGuardar.addEventListener('click', SDProcesoPago)
+    }
+})
+
+/*Para usar la función de guardar datos del proceso de pago*/
+/*Finaliza sección para el proceso de pago*/
