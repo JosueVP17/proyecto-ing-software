@@ -762,3 +762,24 @@ hr {
     background: #ffc439;
     color: #222;
 }
+
+.afterPay-div {
+    text-align: center;
+    margin-top: 200px;
+}
+
+.afterPay-i {
+    overflow-y: hidden;
+    margin-bottom: 20px;
+}
+
+.afterPay-btn {
+    font-size: medium;
+    font-weight: bold;
+    color: white;
+    background-color: #e3b50c;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    padding: 10px 20px;
+}
