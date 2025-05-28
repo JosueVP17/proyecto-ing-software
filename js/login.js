@@ -18,6 +18,7 @@ onAuthStateChanged(auth, async(user) => {
     
         inicioCard.style.display = 'none'
         serviciosCard.style.display = 'block'
+        
 
         // COMPROBAR SI EL USUARIO ES ADMIN
         const adminRef = doc(db, 'admin', user.uid)
@@ -44,6 +45,13 @@ onAuthStateChanged(auth, async(user) => {
         inicioCard.style.display = 'block'
         serviciosCard.style.display = 'none'
     }
+     // Mostrar gráfica IMC
+    document.getElementById('graficaIMC').style.display = 'block';
+
+    // Guardar IMC del mes (reemplaza este número con el valor real calculado)
+    const nuevoIMC = 23.4;
+    guardarIMCMensual(nuevoIMC);
+    crearGraficaIMC();
 })
 
 const signupBtn = document.getElementById('signupBtn')
@@ -77,7 +85,16 @@ signinBtn.addEventListener('click', async () => {
         alert('Error al iniciar sesión: ' + error.message)
     }
 })
+function iniciarSesion() {
+  // Simula login
+  const loginContainer = document.getElementById("login-container");
+  const graficaContainer = document.getElementById("grafica-container");
+  
+  loginContainer.style.display = "none";
+  graficaContainer.style.display = "block";
 
+  cargarGraficaIMC();
+}
 // FUNCIÓN PARA CERRAR SESIÓN
 const logoutBtn = document.getElementById('logoutBtn')
 

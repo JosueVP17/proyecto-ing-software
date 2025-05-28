@@ -7,11 +7,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <title>Aurum Gym</title>
   <link rel="stylesheet" href="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.css" />
-  <script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
+ 
+
+
 
 
 </head>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <body>
   <header>
@@ -43,14 +44,16 @@
         </div>
     </div>
     <div class="servicios" id="servicios-card">
-      <center><h2>Servicios</h2></center>
-    <center>
+      <h2 class="title-servicios">Servicios</h2>
+      
+  
     <button class="servicios" onclick="abrirModal('rutinas')">Rutinas</button>
     
     <button class="servicios" onclick="abrirModal('plan')">Plan Nutricional</button>
     <button class="servicios" onclick="abrirModal('imc')">IMC</button>
+    
     <button class="servicios" onclick="abrirModal('tmb')">TMB</button>
-  </center>
+
  
 
   <!-- Modal -->
@@ -60,14 +63,74 @@
       <div id="modalContenido"></div>
     </div>
   </div>
+    </div>
+    <div>
+    </div>
 
-    
- <div id="graficaAvances" style="width: 90%; max-width: 600px; margin: 30px auto; display: none;">
-  <h3 style="text-align: center;">Avance en IMC y TMB</h3>
-  <canvas id="graficoIMCTMB"></canvas>
-</div>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
+  
+<div class="grafica"><h2>Avances por mes IMC</h2>
+ <canvas id="graficaIMC" width="400" height="200"></canvas>
+<div id="resultadoIMC"></div>
+
+
+<script>
+let graficaIMC;
+
+function guardarIMCMensual(valorIMC) {
+    const mesActual = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
+    let datosIMC = JSON.parse(localStorage.getItem("datosIMC")) || {};
+    datosIMC[mesActual] = valorIMC;
+    localStorage.setItem("datosIMC", JSON.stringify(datosIMC));
+}
+
+function crearGraficaIMC() {
+    const ctx = document.getElementById("graficaIMC").getContext("2d");
+    const datosIMC = JSON.parse(localStorage.getItem("datosIMC")) || {};
+    const etiquetas = Object.keys(datosIMC);
+    const valores = Object.values(datosIMC);
+
+    if (graficaIMC) {
+        graficaIMC.destroy();
+    }
+
+    graficaIMC = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: etiquetas,
+            datasets: [{
+                label: "IMC por mes",
+                data: valores,
+                backgroundColor: valores.map(valor =>
+                    valor < 18.5 ? "blue" :
+                    valor < 24.9 ? "green" :
+                    valor < 29.9 ? "orange" : "red"
+                ),
+                borderColor: "black",
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    min: 10,
+                    max: 40,
+                    title: {
+                        display: true,
+                        text: 'Índice de Masa Corporal'
+                    }
+                }
+            }
+        }
+    });
+}
+
+</script>
+
+  
   </section>
 
 <!--Perfil de usuario-->
