@@ -18,6 +18,13 @@ onAuthStateChanged(auth, async(user) => {
     
         inicioCard.style.display = 'none'
         serviciosCard.style.display = 'block'
+          // Mostrar gráfica IMC
+        document.getElementById('graficaIMC').style.display = 'block';
+
+        // Guardar IMC del mes (reemplaza este número con el valor real calculado)
+         const nuevoIMC = 23.4;
+        guardarIMCMensual(nuevoIMC);
+        crearGraficaIMC();
         
 
         // COMPROBAR SI EL USUARIO ES ADMIN
@@ -45,13 +52,7 @@ onAuthStateChanged(auth, async(user) => {
         inicioCard.style.display = 'block'
         serviciosCard.style.display = 'none'
     }
-     // Mostrar gráfica IMC
-    document.getElementById('graficaIMC').style.display = 'block';
-
-    // Guardar IMC del mes (reemplaza este número con el valor real calculado)
-    const nuevoIMC = 23.4;
-    guardarIMCMensual(nuevoIMC);
-    crearGraficaIMC();
+   
 })
 
 const signupBtn = document.getElementById('signupBtn')
