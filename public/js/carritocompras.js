@@ -666,12 +666,11 @@ const containerProcesoPago = document.getElementById('container-proceso-pago')
 const containerRevision = document.getElementById('container-revision')
 const btnReview = document.getElementById('review-btn')
 const btnVolverPago = document.getElementById('volver-pago-btn')
-const btnConfirmarPago = document.getElementById('confirmar-pago-btn')
 
 // Navegación: Proceso de Pago -> Revisión del Pedido
 btnReview?.addEventListener('click', async () => {
     containerProcesoPago.style.display = 'none'
-    containerRevision.style.display = 'grid'
+    containerRevision.style.display = 'flex'
     NavActive(2)
     await renderRevisionSummary()
     renderRevisionPayment()
@@ -753,8 +752,8 @@ const renderRevisionPayment = async() => {
     } else if (metodoPago === "paypal") {
         confirmarPagoBtn.classList.add('btn-paypal')
         confirmarPagoBtn.innerHTML = `
-            <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" style="height:24pxvertical-align:middlemargin-right:8px">
-            Pagar con PayPal
+            <span style="font-weight:bold;">Pagar con</span>
+            <img src="./images/paypal.png" class="paypal-logo" />
         `
         // Evento para PayPal
         setTimeout(() => {

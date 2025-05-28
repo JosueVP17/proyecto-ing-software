@@ -723,44 +723,48 @@ hr {
     gap: 30px;
 }
 
-#confirmar-pago-btn {
-    height: 50px;
+.revision-main {
+    width: 80%;
 }
 
-#confirmar-pago-btn img {
-    height: 100%;
+#revision-summary {
+    margin: 20px 0;
 }
 
-/* Animación para los botones de pago */
-.animated-pay {
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    font-size: 1.1em;
-    padding: 12px 24px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
+#btn-management {
     display: flex;
-    align-items: center;
-    gap: 8px;
+    justify-content: space-around;
+    overflow: hidden;
 }
 
-.animated-pay:hover {
-    transform: scale(1.05) translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-    background: #f6f9fc;
-}
-
-.btn-stripe {
-    background: #635bff;
-    color: #fff;
+#btn-management button {
+    width: 45%;
 }
 
 .btn-paypal {
-    background: #ffc439;
-    color: #222;
+    background-color: #ffcc33;
+    color: black;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-paypal:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    overflow: visible;
+}
+
+.paypal-logo {
+    width: 100px;
 }
 
 .afterPay-div {
