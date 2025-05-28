@@ -741,9 +741,7 @@ hr {
     width: 45%;
 }
 
-.btn-paypal {
-    background-color: #ffcc33;
-    color: black;
+.btn-stripe, .btn-paypal{
     border: none;
     border-radius: 12px;
     padding: 12px 24px;
@@ -757,14 +755,33 @@ hr {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-paypal:hover {
+.btn-stripe:hover, .btn-paypal:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     overflow: visible;
 }
 
+.btn-stripe {
+    background-color: #6772e5;
+    color: white;
+}
+
+.stripe-logo {
+    width: 70px;
+}
+
+.btn-paypal {
+    background-color: #ffcc33;
+    color: black;
+}
+
 .paypal-logo {
     width: 100px;
+}
+
+.bank-info {
+    border-radius: 12px;
+    padding: 5px;
 }
 
 .afterPay-div {

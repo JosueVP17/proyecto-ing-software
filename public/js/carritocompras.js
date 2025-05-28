@@ -727,8 +727,8 @@ const renderRevisionPayment = async() => {
         confirmarPagoBtn.classList.add('btn-stripe')
         confirmarPagoBtn.id = 'stripePayBtn'
         confirmarPagoBtn.innerHTML = `
-            <img src="https://cdn.jsdelivr.net/gh/stripe/stripe-payments-demo@master/client/images/stripe.svg" alt="Stripe" style="height:24px;vertical-align:middle;margin-right:8px">
-            Pagar con Stripe
+            <span style="font-weight:bold;">Pagar con</span>
+            <img src="./images/stripe.png" class="stripe-logo" />
         `
         setTimeout(() => {
             confirmarPagoBtn.addEventListener('click', async () => {
@@ -776,13 +776,19 @@ const renderRevisionPayment = async() => {
             })
         }, 100)
     } else if (metodoPago === "transfer") {
-        paymentDiv.innerHTML = `
+        confirmarPagoBtn.classList.add('bank-info')
+        confirmarPagoBtn.innerHTML = `
             <div class="bank-info">
-                <h4>Transferencia Bancaria</h4>
-                <p>Banco: BBVA<br>
-                Cuenta: 1234567890<br>
-                CLABE: 012345678901234567<br>
-                Titular: Aurum Gym</p>
+                <h4>Datos para Transferencia Bancaria</h4>
+                <p>
+                    <strong>Banco:</strong> BBVA<br>
+                    <strong>Cuenta:</strong> 1234567890<br>
+                    <strong>CLABE:</strong> 012345678901234567<br>
+                    <strong>Titular:</strong> Aurum Gym
+                </p>
+                <div style="margin-top:12px; color:#b57f00;">
+                    <strong>Importante:</strong> Una vez realizada la transferencia, envía tu comprobante a <a href="mailto:pagos@aurumgym.com">pagos@aurumgym.com</a> para procesar tu pedido.
+                </div>
             </div>
         `
     }
