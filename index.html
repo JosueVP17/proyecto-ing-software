@@ -374,51 +374,18 @@ const miGrafico = new Chart(ctx, {
               <span id="userMod"></span>
             </div>
           </div>
-         <center><table border="1" class="routine">
-            <tr>
-              <th style="width: 10%;">Día</th>
-              <th style="width: 70%;">Rutina</th>
-            </tr>
-            <tr>
-              <td>Lunes</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Martes</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Miércoles</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Jueves</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Viernes</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Sábado</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Domingo</td>
-              <td></td>
-            </tr>
-          </table></center> 
+         
         </div>
       <div class="panel-lateral">
-        <input type="file" id="avatarInput" accept="image/*">
+         <input type="file" id="avatarInput" accept="image/*">
 
-        <img id="avatarPreview" src="./images/npp.png" alt="Preview">
+        <img id="avatarPreview" src="./images/npp.png" alt="Avatar" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; cursor: pointer;" />
+        <input type="file" id="avatarInput" accept="image/*" style="display: none;" />
 
-        <div id="cropModal">
-          <div id="cropModalContent">
-            <img id="imageToCrop" alt="Imagen para recortar">
-
-            <div class="buttonsContainer">
+        <div id="cropModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; z-index: 9999;">
+          <div id="cropModalContent" style="background: #fff; padding: 20px; border-radius: 10px; text-align: center;">
+            <img id="imageToCrop" style="max-width: 90vw; max-height: 70vh;" />
+            <div class="buttonsContainer" style="margin-top: 15px;">
               <button id="cropBtn">Recortar</button>
               <button id="cancelCropBtn">Cancelar</button>
             </div>
@@ -429,6 +396,7 @@ const miGrafico = new Chart(ctx, {
           <p class="datan">Edad <span class="data" id="userAge"></span></p>
           <p class="datan">Masa <span class="data" id="userWei"></span></p>
           <p class="datan">Estatura <span class="data" id="userHei"></span></p>
+          <p class="datan">Plan actual <span class="data" id="userPlan">Sin suscripción</span></p>
           
           <div class="usercontent">
             <button id="logoutBtn">Cerrar Sesión</button>
@@ -569,86 +537,154 @@ const miGrafico = new Chart(ctx, {
 
   <section class="section planes" id="planes">
     <div class="plan">
+      <h2>Plan Diario</h2>
+      <ul>
+        <li>Ideal para visitantes ocasionales</li>
+        <li>Pago por entrada</li>
+        <li>Acceso completo por 1 día</li>
+      </ul>
+      <div class="price">$60/día</div>
+      <button class="subscribe-button" onclick="abrirModal('planDiario')" id="planDiario">Suscribirse</button>
+    </div>
+    <div class="plan">
       <h2>Plan Básico</h2>
       <ul>
-        <li>Acceso de 8 am a 2 pm</li>
-        <li>Uso de máquinas y pesas</li>
-        <li>1 clase grupal por semana</li>
-        <li>Sin entrenador personal</li>
+        <li>Acceso a zonas comunes</li>
+        <li>1 Clase grupal gratis a la semana</li>
+        <li>Sin sesiones con entrenador personal</li>
+        <li>Asesoria de instructores de piso</li>
       </ul>
-      <div class="price">$XX/mes</div>
-      <button class="subscribe-button" onclick="abrirModal()">Suscribirse</button>
+      <div class="price">$350/mes</div>
+      <button class="subscribe-button" onclick="abrirModal('planBasico')" id="planBasico">Suscribirse</button>
     </div>
 
     <div class="plan">
       <h2>Plan Estándar</h2>
       <ul>
-        <li>Acceso ilimitado</li>
-        <li>Clases grupales ilimitadas</li>
+        <li>Acceso a zonas comunes</li>
+        <li>5 Clases grupales gratis a la semana</li>
         <li>1 sesión mensual con entrenador</li>
-        <li>Acceso a zona de cardio y pesas</li>
+        <li>Descuento en clases grupales extra</li>
       </ul>
-      <div class="price">$XX/mes</div>
-      <button class="subscribe-button" onclick="abrirModal()">Suscribirse</button>
+      <div class="price">$450/mes</div>
+      <button class="subscribe-button" onclick="abrirModal('planEstandar')" id="planEstandar">Suscribirse</button>
     </div>
 
     <div class="plan">
       <h2>Plan Premium</h2>
       <ul>
-        <li>Acceso total a todas las zonas</li>
+        <li>Acceso a zona VIP</li>
         <li>Clases grupales ilimitadas</li>
-        <li>4 sesiones con entrenador</li>
+        <li>Sesion semanal con entrenador</li>
         <li>Plan nutricional personalizado</li>
         <li>Eventos y talleres exclusivos</li>
+        <li>Cupones de descuento para la tienda</li>
       </ul>
-      <div class="price">$XX/mes</div>
-      <button class="subscribe-button" onclick="abrirModal()">Suscribirse</button>
+      <div class="price">$700/mes</div>
+      <button class="subscribe-button" onclick="abrirModal('planPremium')" id="planPremium">Suscribirse</button>
     </div>
 
     <div class="plan">
       <h2>Plan Corporativo</h2>
+      <h3>De 6-15 personas</h3>
       <ul>
         <li>Ideal para empresas o grupos</li>
-        <li>Descuento por cantidad</li>
-        <li>Incluye beneficios estándar/premium</li>
-        <li>Informes de progreso</li>
+        <li>Beneficios del plan estándar</li>
+        <li>Clase semanal especial para el grupo</li>
+        <li>Cupones de descuento para la tienda</li>
       </ul>
-      <div class="price">$XX/mes por miembro</div>
-      <button class="subscribe-button" onclick="abrirModal()">Suscribirse</button>
-    </div>
-
-    <div class="plan">
-      <h2>Plan Diario</h2>
-      <ul>
-        <li>Pago por entrada</li>
-        <li>Acceso completo por 1 día</li>
-        <li>Ideal para visitantes ocasionales</li>
-      </ul>
-      <div class="price">$XX/día</div>
-      <button class="subscribe-button" onclick="abrirModal()">Suscribirse</button>
+      <div class="price">$400/mes por miembro</div>
+      <button class="subscribe-button" onclick="abrirModal('planCorporativo')" id="planCorporativo">Suscribirse</button>
     </div>
 
     <div class="plan">
       <h2>Plan Estudiantil / Senior</h2>
+      <h3>Requiere identificación vigente</h3>
       <ul>
-        <li>Descuento especial</li>
-        <li>Requiere identificación</li>
-        <li>Beneficios del plan básico o estándar</li>
+        <li>Beneficios del plan estándar</li>
+        <li>Cupones de descuento para la tienda</li>
+        <li>Entrenador de piso especializado para usuarios de este Plan</li>
+        <li>Acceso a eventos y talleres relacionados con este Plan</li>
       </ul>
-      <div class="price">$XX/mes</div>
-      <button class="subscribe-button" onclick="abrirModal()">Suscribirse</button>
+      <div class="price">$380/mes</div>
+      <button class="subscribe-button" onclick="abrirModal('planEstSen')" id="planEstSen">Suscribirse</button>
     </div>
     
-    <!-- Modal -->
-    <div id="modal" class="modal">
-      <div class="modal-content">
-        <h3>Formulario de Suscripción</h3>
-        <input type="text" placeholder="Nombre completo" required>
-        <input type="email" placeholder="Correo electrónico" required>
-        <button class="send-btn">Enviar</button>
-        <button class="close-btn" onclick="cerrarModal()">Cerrar</button>
-      </div>
+    <div id="modalPlan" class="modal" style="display: none;">
+  <div class="modal-content">
+    <h2 id="modalTitulo" class="proceso-summary-title"></h2>
+    <ul id="modalDescripcion" style="margin-bottom: 20px;"></ul>
+    <div id="modalPrecio" style="color: #FFD43B; font-weight: bold; font-size: 1.2rem; margin-bottom: 20px;"></div>
+
+    <h2 class="proceso-summary-title">💳 Opciones de pago</h2>
+    <div class="payment-options">
+      <label class="payment-option selected">
+        <input type="radio" name="payment" value="card" checked>
+        <div class="payment-header">
+          <div class="payment-title">Tarjeta de Crédito o Débito</div>
+        </div>
+        <div class="payment-description">Será redireccionado a Stripe para realizar su pago seguro</div>
+        <div class="payment-logos">
+          <span class="payment-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Stripe_Logo%2C_revised_2016.svg/2560px-Stripe_Logo%2C_revised_2016.svg.png" alt="STRIPE">
+          </span>
+          <span class="payment-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/1024px-Visa_Inc._logo.svg.png" alt="VISA">
+          </span>
+          <span class="payment-logo">
+            <img src="https://logos-world.net/wp-content/uploads/2020/09/Mastercard-Logo-2016-2020.png" alt="Mastercard">
+          </span>
+          <span class="payment-logo">
+            <img src="https://logos-world.net/wp-content/uploads/2023/02/Maestro-Logo.png" alt="Maestro">
+          </span>
+          <span class="payment-logo">
+            <img src="https://logosmarcas.net/wp-content/uploads/2020/11/American-Express-Emblema.png" alt="AMEX">
+          </span>
+        </div>
+      </label>
+
+      <label class="payment-option">
+        <input type="radio" name="payment" value="paypal">
+        <div class="payment-header">
+          <div class="payment-title">PayPal</div>
+        </div>
+        <div class="payment-description">Será redireccionado a PayPal para completar el pago</div>
+        <div class="payment-logos">
+          <span class="payment-logo">
+            <img src="https://th.bing.com/th/id/R.f5d8443bd418f16c308bb80aac78786c?rik=nQEAqB8UXjgFfA&pid=ImgRaw&r=0" alt="PayPal">
+          </span>
+        </div>
+      </label>
+
+      <label class="payment-option">
+        <input type="radio" name="payment" value="transfer">
+        <div class="payment-header">
+          <div class="payment-title">Transferencia Bancaria</div>
+        </div>
+        <div class="payment-description">Se mostrarán los datos bancarios después de confirmar</div>
+        <div class="payment-logos">
+          <span class="payment-logo">
+            <img src="https://logos-world.net/wp-content/uploads/2021/02/BBVA-Logo.png" alt="BBVA">
+          </span>
+          <span class="payment-logo">
+            <img src="https://logosmarcas.net/wp-content/uploads/2020/11/Santander-Emblema.png" alt="Santander">
+          </span>
+          <span class="payment-logo">
+            <img src="https://companieslogo.com/img/orig/GFNORTEO.MX-414b60db.png?t=1689841977" alt="Banorte">
+          </span>
+          <span class="payment-logo">
+            <img src="https://vignette.wikia.nocookie.net/logopedia/images/2/29/CITIBANAMEX_Marca_RGB_01.png/revision/latest/scale-to-width-down/2000?cb=20170916230905" alt="Citibanamex">
+          </span>
+        </div>
+      </label>
     </div>
+
+    <button id="confirmarPago" class="pay-btn" style="margin-top: 20px;">Confirmar Suscripción</button>
+    <button onclick="cerrarModal()" class="pay-btn" style="background-color: #7B848D; margin-top: 10px;">Cancelar</button>
+  </div>
+</div>
+
+
   </section> 
 
   <section class="section contacto" id="contacto" style="display: none;">
@@ -873,8 +909,9 @@ const miGrafico = new Chart(ctx, {
   <script type="module" src="./js/loginfo.js"></script>
   <script type="module" src="./js/formpersonal.js"></script>
   <script type="module" src="./js/login.js"></script>
-  <script src="./js/cropper.js"></script>
+  <script type="module" src="./js/cropper.js"></script>
   <script type="module" src="./js/products.js"></script>
   <script type="module" src="./js/infometa.js"></script>
+  <script type="module" src="./js/planes.js"></script>
 </body>
 </html>
