@@ -417,6 +417,7 @@ document.querySelectorAll('.shipping-option input[type="radio"]').forEach((radio
 })
 
 /*Para mostra el resumen del carrito en el proceso de pago*/
+let descuento = 0, subtotalConDescuento = 0, impuesto = 0, envio = 0, total = 0
 const renderCartSummaryProcesoPago = async () => {
     const user = auth.currentUser
     if (!user) return
@@ -458,7 +459,6 @@ const renderCartSummaryProcesoPago = async () => {
     }
 
     /*Se aplica descuento si hay cupón*/
-    let descuento = 0
     if (appCoupon) {
         if (appCoupon.tipo === "porcentaje") {
             descuento = subtotal * (appCoupon.valor / 100)
@@ -467,18 +467,18 @@ const renderCartSummaryProcesoPago = async () => {
         }
         if (descuento > subtotal) descuento = subtotal
     }
-    const subtotalConDescuento = subtotal - descuento
+    subtotalConDescuento = subtotal - descuento
 
     /*Cálculo de impuestos y envío*/
-    const impuesto = subtotalConDescuento * 0.04 /*4% de impuesto*/
-    let envio = 180 /*Default DHL*/
+    impuesto = subtotalConDescuento * 0.04 /*4% de impuesto*/
+
     const shippingSelected = document.querySelector('#container-proceso-pago input[name="shipping"]:checked')
     if (shippingSelected) {
         if (shippingSelected.value === "dhl") envio = 180
         else if (shippingSelected.value === "estafeta") envio = 120
         else if (shippingSelected.value === "fedex") envio = 200
     }
-    const total = subtotalConDescuento + impuesto + envio
+    total = subtotalConDescuento + impuesto + envio
 
     /*Se agrega el desglose al final del resumen*/
     summaryContainer.innerHTML += 
@@ -699,14 +699,12 @@ async function renderRevisionSummary() {
 
     const cartData = cartDocs.docs[0].data()
     const items = cartData.items || []
-    let total = 0
     for (const item of items) {
         const productRef = doc(db, "products", item.id)
         const productSnap = await getDoc(productRef)
         if (!productSnap.exists()) continue
         const product = productSnap.data()
         const subtotal = parseFloat((item.cantidad * product.precio).toFixed(2))
-        total += subtotal
         summaryDiv.innerHTML += `
             <div class="summary-item">
                 <p>${product.nombre} (${item.cantidad} x $${product.precio})</p>
@@ -714,7 +712,14 @@ async function renderRevisionSummary() {
             </div>
         `
     }
-    summaryDiv.innerHTML += `<div class="summary-total-final"><span>Total:</span><span id="total-price">$${total.toFixed(2)} MXN</span></div>`
+    
+    summaryDiv.innerHTML += `
+        ${descuento > 0 ? `<div class="summary-row"><span>Descuento:</span><span>-$${descuento.toFixed(2)} MXN</span></div>` : ""}
+        <div class="summary-row"><span>Subtotal:</span><span>$${subtotalConDescuento.toFixed(2)} MXN</span></div>
+        <div class="summary-row"><span>Impuesto:</span><span>$${impuesto.toFixed(2)} MXN</span></div>
+        <div class="summary-row"><span>Envío:</span><span>$${envio.toFixed(2)} MXN</span></div>
+        <div class="summary-row total"><span>TOTAL:</span><span id="payment-total">$${total.toFixed(2)} MXN</span></div>
+    `
 }
 
 // Renderiza el botón de pago según método seleccionado
@@ -732,7 +737,7 @@ const renderRevisionPayment = async() => {
         `
         setTimeout(() => {
             confirmarPagoBtn.addEventListener('click', async () => {
-                const totalElement = document.getElementById('total-price')
+                const totalElement = document.getElementById('payment-total')
                 if (!totalElement) return
                 const totalText = totalElement.textContent.replace(/[^\d.]/g, '')
                 const amount = Math.round(parseFloat(totalText) * 100)
@@ -758,7 +763,7 @@ const renderRevisionPayment = async() => {
         // Evento para PayPal
         setTimeout(() => {
             confirmarPagoBtn.addEventListener('click', async () => {
-                const totalElement = document.getElementById('total-price')
+                const totalElement = document.getElementById('payment-total')
                 if (!totalElement) return
                 const totalText = totalElement.textContent.replace(/[^\d.]/g, '')
                 const amount = Math.round(parseFloat(totalText) * 100)
