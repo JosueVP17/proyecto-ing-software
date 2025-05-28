@@ -239,6 +239,14 @@ header h1 {
     color:#F6C308
 }
 
+.summary-item-2 span {
+    display: block;
+    margin-top: 4px;
+    font-weight: bold;
+    text-align: right;
+    color:#F6C308
+}
+
 /*Para el scroll*/
 .cart-summary::-webkit-scrollbar {
     width: 8px;
