@@ -1,0 +1,5 @@
+# node_modules no debe subirse al repositorio
+node_modules/
+
+# .env
+.env

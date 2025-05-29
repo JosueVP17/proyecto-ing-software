@@ -10,11 +10,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <title>Aurum Gym</title>
   <link rel="stylesheet" href="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.css" />
- 
-
-
-
-
 </head>
 
 <body>
@@ -32,8 +27,6 @@
     </nav>
   </header>
 
-<div id="servicios-card"></div>
-
 <section class="section inicio" id="inicio">
     <div class="login"  id="inicio-card">
       <h2>Te damos la bienvenida</h2>
@@ -43,97 +36,86 @@
         <div class="button">
           <button>Iniciar Sesión</button>
           <button>Registrarse</button>
-          <p class="continue">Continuar sin iniciar sesión</p>
         </div>
     </div>
-    <div class="servicios" id="servicios-card">
+    <div class="servicios" id="servicios-card" >
       <h2 class="title-servicios">Servicios</h2>
+  
+      <button class="servicios" onclick="abrirModalServicios('rutinas')">Rutinas</button>
       
+      <button class="servicios" onclick="abrirModalServicios('plan')">Plan Nutricional</button>
+      <button class="servicios" onclick="abrirModalServicios('imc')">IMC</button>
+      
+      <button class="servicios" onclick="abrirModalServicios('tmb')">TMB</button>
+
+      <!-- Modal -->
+      <div id="miModal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <span class="close" onclick="cerrarModalServicios()">&times;</span>
+          <div id="modalContenido"></div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-    <button class="servicios" onclick="abrirModal('rutinas')">Rutinas</button>
-    
-    <button class="servicios" onclick="abrirModal('plan')">Plan Nutricional</button>
-    <button class="servicios" onclick="abrirModal('imc')">IMC</button>
-    
-    <button class="servicios" onclick="abrirModal('tmb')">TMB</button>
+      <div class="grafica">
+        <h2>Avances por mes IMC</h2>
+        <canvas id="graficaIMC" width="400" height="200"></canvas>
+        <div id="resultadoIMC"></div>
+      </div>
+      <script>
+        let graficaIMC;
 
- 
+        function guardarIMCMensual(valorIMC) {
+            const mesActual = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
+            let datosIMC = JSON.parse(localStorage.getItem("datosIMC")) || {};
+            datosIMC[mesActual] = valorIMC;
+            localStorage.setItem("datosIMC", JSON.stringify(datosIMC));
+        }
 
-  <!-- Modal -->
-  <div id="miModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="cerrarModal()">&times;</span>
-      <div id="modalContenido"></div>
-    </div>
-  </div>
-    </div>
-    <div>
-    </div>
+        function crearGraficaIMC() {
+            const ctx = document.getElementById("graficaIMC").getContext("2d");
+            const datosIMC = JSON.parse(localStorage.getItem("datosIMC")) || {};
+            const etiquetas = Object.keys(datosIMC);
+            const valores = Object.values(datosIMC);
 
-   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            if (graficaIMC) {
+                graficaIMC.destroy();
+            }
 
-
-  
-<div class="grafica"><h2>Avances por mes IMC</h2>
- <canvas id="graficaIMC" width="400" height="200"></canvas>
-<div id="resultadoIMC"></div>
-
-
-<script>
-let graficaIMC;
-
-function guardarIMCMensual(valorIMC) {
-    const mesActual = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
-    let datosIMC = JSON.parse(localStorage.getItem("datosIMC")) || {};
-    datosIMC[mesActual] = valorIMC;
-    localStorage.setItem("datosIMC", JSON.stringify(datosIMC));
-}
-
-function crearGraficaIMC() {
-    const ctx = document.getElementById("graficaIMC").getContext("2d");
-    const datosIMC = JSON.parse(localStorage.getItem("datosIMC")) || {};
-    const etiquetas = Object.keys(datosIMC);
-    const valores = Object.values(datosIMC);
-
-    if (graficaIMC) {
-        graficaIMC.destroy();
-    }
-
-    graficaIMC = new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: etiquetas,
-            datasets: [{
-                label: "IMC por mes",
-                data: valores,
-                backgroundColor: valores.map(valor =>
-                    valor < 18.5 ? "blue" :
-                    valor < 24.9 ? "green" :
-                    valor < 29.9 ? "orange" : "red"
-                ),
-                borderColor: "black",
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    min: 10,
-                    max: 40,
-                    title: {
-                        display: true,
-                        text: 'Índice de Masa Corporal'
+            graficaIMC = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: etiquetas,
+                    datasets: [{
+                        label: "IMC por mes",
+                        data: valores,
+                        backgroundColor: valores.map(valor =>
+                            valor < 18.5 ? "blue" :
+                            valor < 24.9 ? "green" :
+                            valor < 29.9 ? "orange" : "red"
+                        ),
+                        borderColor: "black",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            min: 10,
+                            max: 40,
+                            title: {
+                                display: true,
+                                text: 'Índice de Masa Corporal'
+                            }
+                        }
                     }
                 }
-            }
+            });
         }
-    });
-}
-
-</script>
-
-  
+      </script>
+    </div>
   </section>
 
 <!--Perfil de usuario-->
@@ -148,25 +130,33 @@ function crearGraficaIMC() {
               <i class="fa-solid fa-clipboard-question tit-meta-personal"></i>
 
               <div class="question">
-                <label>1. ¿Cuál es tu edad?</label><br>
+                <label>1. Sexo</label><br>
+                <select name="sexo">
+                  <option value="hombre">Hombre</option>
+                  <option value="mujer">Mujer</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label>2. ¿Cuál es tu edad?</label><br>
                 <input type="number" name="edad" placeholder="Ingresa tu edad">
                 <div class="error-message" style="display: none;"></div>
               </div>
 
               <div class="question">
-                <label>2. ¿Cuál es tu masa corporal (en kg)?</label><br>
+                <label>3. ¿Cuál es tu masa corporal (en kg)?</label><br>
                 <input type="number" name="masa" placeholder="Ingresa tu peso en kg">
                 <div class="error-message" style="display: none;"></div>
               </div>
 
               <div class="question">
-                <label>3. ¿Cuál es tu estatura (en cm)?</label><br>
+                <label>4. ¿Cuál es tu estatura (en cm)?</label><br>
                 <input type="number" name="estatura" placeholder="Ingresa tu estatura en cm">
                 <div class="error-message" style="display: none;"></div>
               </div>
 
               <div class="question">
-                <label>4. ¿Cuál es tu principal objetivo al unirte al gimnasio?</label><br>
+                <label>5. ¿Cuál es tu principal objetivo al unirte al gimnasio?</label><br>
                 <select name="objetivo">
                   <option value="musculo">Ganar masa muscular</option>
                   <option value="peso">Bajar de peso</option>
@@ -177,7 +167,7 @@ function crearGraficaIMC() {
               </div>
 
               <div class="question">
-                <label>5. ¿Cuántos días a la semana puedes entrenar?</label><br>
+                <label>6. ¿Cuántos días a la semana puedes entrenar?</label><br>
                 <select name="frecuencia">
                   <option value="1-2">1-2 días</option>
                   <option value="3-4">3-4 días</option>
@@ -187,7 +177,7 @@ function crearGraficaIMC() {
               </div>
 
               <div class="question">
-                <label>6. ¿Cuál es tu nivel de experiencia?</label><br>
+                <label>7. ¿Cuál es tu nivel de experiencia?</label><br>
                 <select name="experiencia">
                   <option value="principiante">Principiante</option>
                   <option value="intermedio">Intermedio</option>
@@ -196,7 +186,7 @@ function crearGraficaIMC() {
               </div>
 
               <div class="question">
-                <label>7. ¿Qué tipo de ejercicios prefieres?</label><br>
+                <label>8. ¿Qué tipo de ejercicios prefieres?</label><br>
                 <select name="preferencia">
                   <option value="pesas">Pesas y máquinas</option>
                   <option value="cuerpo">Cuerpo libre (calistenia)</option>
@@ -207,7 +197,7 @@ function crearGraficaIMC() {
               </div>
 
               <div class="question">
-                <label>8. ¿Qué habitos estás dispuesto(a) a cambiar o mejorar?</label><br>
+                <label>9. ¿Qué habitos estás dispuesto(a) a cambiar o mejorar?</label><br>
                 <select name="habitos">
                   <option value="alimentacion">Alimentación</option>
                   <option value="sueño">Horario de sueño</option>
@@ -217,7 +207,7 @@ function crearGraficaIMC() {
               </div>
               
               <div class="question">
-                <label>9. ¿Cuánto tiempo puedes dedicar por sesión de entrenamiento?</label><br>
+                <label>10. ¿Cuánto tiempo puedes dedicar por sesión de entrenamiento?</label><br>
                 <select name="tiempo_sesion">
                   <option value="30">30 minutos</option>
                   <option value="45">45 minutos</option>
@@ -227,7 +217,7 @@ function crearGraficaIMC() {
               </div>
 
               <div class="question">
-                <label>10. ¿Qué tan intenso prefieres que sea tu entrenamiento?</label><br>
+                <label>11. ¿Qué tan intenso prefieres que sea tu entrenamiento?</label><br>
                 <select name="intensidad">
                   <option value="baja">Baja intensidad</option>
                   <option value="media">Intensidad media</option>
@@ -236,7 +226,7 @@ function crearGraficaIMC() {
               </div>
 
               <div class="question">
-                <label>11. ¿Tienes alguna lesión o limitación física?</label><br>
+                <label>12. ¿Tienes alguna lesión o limitación física?</label><br>
                 <select name="lesiones">
                   <option value="si">Sí</option>
                   <option value="no">No</option>
@@ -244,7 +234,7 @@ function crearGraficaIMC() {
               </div>
 
               <div class="question">
-                <label>12. ¿Tienes alguna restricción alimenticia?</label><br>
+                <label>13. ¿Tienes alguna restricción alimenticia?</label><br>
                 <select name="restriccionalimentaria">
                   <option value="si">Sí</option>
                   <option value="no">No</option>
@@ -252,7 +242,7 @@ function crearGraficaIMC() {
               </div>
 
               <div class="question">
-                <label>13. ¿Qué tan importante es perder grasa corporal?</label><br>
+                <label>14. ¿Qué tan importante es perder grasa corporal?</label><br>
                 <select name="grasa">
                   <option value="muy">Muy importante</option>
                   <option value="algo">Algo importante</option>
@@ -261,7 +251,7 @@ function crearGraficaIMC() {
               </div>
 
               <div class="question">
-                <label>14. ¿Te interesa competir en alguna disciplina?</label><br>
+                <label>15. ¿Te interesa competir en alguna disciplina?</label><br>
                 <select name="competencia">
                   <option value="si">Sí</option>
                   <option value="no">No</option>
@@ -270,7 +260,7 @@ function crearGraficaIMC() {
               </div>
 
               <div class="question">
-                <label>15. ¿Qué tan motivado estás actualmente?</label><br>
+                <label>16. ¿Qué tan motivado estás actualmente?</label><br>
                 <select name="motivacion">
                   <option value="muy">Muy motivado</option>
                   <option value="media">Medianamente motivado</option>
@@ -279,7 +269,7 @@ function crearGraficaIMC() {
               </div>
 
               <div class="question">
-                <label>16. ¿Qué tan importante es tu salud mental?</label><br>
+                <label>17. ¿Qué tan importante es tu salud mental?</label><br>
                 <select name="salud">
                   <option value="muy">Muy importante</option>
                   <option value="algo">Algo importante</option>
@@ -288,7 +278,7 @@ function crearGraficaIMC() {
               </div>
 
               <div class="question">
-                <label>17. ¿Prefieres entrenar solo o en grupo?</label><br>
+                <label>18. ¿Prefieres entrenar solo o en grupo?</label><br>
                 <select name="grupo">
                   <option value="solo">Solo</option>
                   <option value="grupo">En grupo</option>
@@ -454,7 +444,7 @@ function crearGraficaIMC() {
       <button id="filterBtn"><i class="fa fa-filter"></i> Filtros</button>
     </div>
     <!-- Modal de Filtros -->
-    <div id="filterModal" class="modal">
+    <div id="filterModal" class="modal" style="display: none;">
       <div class="modal-content">
         <span id="closeFilterModal">&times;</span>
         <h3>FILTROS</h3>
@@ -889,10 +879,10 @@ function crearGraficaIMC() {
   </section>
     
   <script src="./js/script.js"></script>
-  <script type="module" src="./js/loginfo.js"></script>
   <script type="module" src="./js/formpersonal.js"></script>
   <script type="module" src="./js/login.js"></script>
   <script type="module" src="./js/cropper.js"></script>
+  <script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
   <script type="module" src="./js/products.js"></script>
   <script type="module" src="./js/infometa.js"></script>
   <script type="module" src="./js/planes.js"></script>

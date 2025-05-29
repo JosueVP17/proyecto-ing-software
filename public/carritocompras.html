@@ -111,11 +111,6 @@
                         <input type="text" class="form-input" placeholder="Municipio">
                     </div>
                 </div>
-                
-                <div class="checkbox-group">
-                    <input type="checkbox" class="checkbox" id="same-address">
-                    <label for="same-address">Dirección de Facturación igual a la de Envío</label>
-                </div>
             </section>
 
             <section>
@@ -252,6 +247,18 @@
         </aside>
     </section>
     
+    <section id="container-revision" class="container-revision" style="display: none">
+        <main class="revision-main">
+            <h2>🛒 Revisión del pedido</h2>
+            <div id="revision-summary"></div>
+            <div id="btn-management">
+                <button id="confirmar-pago-btn">Confirmar y Pagar</button>
+                <button id="volver-pago-btn" class="btn btn-secondary">Volver a Pago</button>
+            </div>
+        </main>
+    </section>
+    <script src="https://static.elfsight.com/platform/platform.js" async></script>
     <script type="module" src="./js/carritocompras.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
 </body>
 </html>

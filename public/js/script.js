@@ -102,7 +102,7 @@ window.addEventListener("load", () => {
 });
 
 // VENTANA EMERGENTE PARA SERVICIOS
-   function abrirModal(tipo) {
+   function abrirModalServicios(tipo) {
   const modal = document.getElementById("miModal");
   const contenidoDiv = document.getElementById("modalContenido");
 
@@ -264,7 +264,7 @@ function calcularTMB() {
     <small>Esto es la energía que tu cuerpo gasta en reposo.</small>
   `;
 }
-  function cerrarModal() {
+  function cerrarModalServicios() {
   document.getElementById("miModal").style.display = "none";
 }
 

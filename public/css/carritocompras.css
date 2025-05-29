@@ -366,7 +366,7 @@ hr {
 
 .proceso-pago-btn, .btn-transform {
     background-color: #2e3192;
-    color: black;
+    color: white;
     width: 100%;
     padding: 12px;
     border: none;
@@ -723,3 +723,92 @@ hr {
 }
 /*Finaliza sección de proceso de pago*/
 
+.container-revision {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    gap: 30px;
+}
+
+.revision-main {
+    width: 80%;
+}
+
+#revision-summary {
+    margin: 20px 0;
+}
+
+#btn-management {
+    display: flex;
+    justify-content: space-around;
+    overflow: hidden;
+}
+
+#btn-management button {
+    width: 45%;
+}
+
+.btn-stripe, .btn-paypal{
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-stripe:hover, .btn-paypal:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    overflow: visible;
+}
+
+.btn-stripe {
+    background-color: #6772e5;
+    color: white;
+}
+
+.stripe-logo {
+    width: 70px;
+}
+
+.btn-paypal {
+    background-color: #ffcc33;
+    color: black;
+}
+
+.paypal-logo {
+    width: 100px;
+}
+
+.bank-info {
+    border-radius: 12px;
+    padding: 5px;
+}
+
+.afterPay-div {
+    text-align: center;
+    margin-top: 200px;
+}
+
+.afterPay-i {
+    overflow-y: hidden;
+    margin-bottom: 20px;
+}
+
+.afterPay-btn {
+    font-size: medium;
+    font-weight: bold;
+    color: white;
+    background-color: #e3b50c;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    padding: 10px 20px;
+}

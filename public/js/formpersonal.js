@@ -38,6 +38,8 @@ async function cargarRespuestas() {
         const docSnapshot = querySnapshot.docs[0]
         const respuestas = docSnapshot.data()
 
+        /*Se llenan los campos del formulario con las respuestas*/
+        document.querySelector('select[name="sexo"]').value = respuestas.sexo || ''
         document.querySelector('input[name="edad"]').value = respuestas.edad || ''
         document.querySelector('input[name="masa"]').value = respuestas.masa || ''
         document.querySelector('input[name="estatura"]').value = respuestas.estatura || ''
@@ -71,6 +73,7 @@ async function procesarFormulario(event) {
   event.preventDefault();
 
   const respuestas = {
+    sexo: document.querySelector('select[name="sexo"]').value,
     edad: document.querySelector('input[name="edad"]').value,
     masa: document.querySelector('input[name="masa"]').value,
     estatura: document.querySelector('input[name="estatura"]').value,

@@ -21,8 +21,6 @@ onAuthStateChanged(auth, async(user) => {
   const serviciosCard = document.getElementById('servicios-card');
 
   if (user) {
-    console.log('Usuario autenticado:', user);
-
     userCard.style.display = 'block';
     loginCard.style.display = 'none';
     document.getElementById('userEmail').textContent = user.email;
@@ -37,11 +35,9 @@ onAuthStateChanged(auth, async(user) => {
     if (adminSnap.exists()) {
       addProductBtn.style.display = 'inline-block';
       inventoryBtn.style.display = 'inline-block';
-      console.log('@@@ Administrador');
     } else {
       addProductBtn.style.display = 'none';
       inventoryBtn.style.display = 'none';
-      console.log('@@@ Usuario');
     }
   } else {
     console.log('No hay usuario autenticado');
@@ -123,99 +119,4 @@ logoutBtn.addEventListener('click', async () => {
   }
 });
 
-// CAMBIO DE CONTRASEÑA
-function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
-document.addEventListener("DOMContentLoaded", () => {
-  const ventana = document.getElementById("ventanaLog");
-  const passwordActualInput = document.getElementById("passwordActual");
-  const nuevaPasswordInput = document.getElementById("nuevaPassword");
-  const mensaje = document.getElementById("mensaje");
-
-  function abrirLog() {
-    if (ventana) ventana.style.display = "block";
-  }
-
-  function cerrarLog() {
-    if (ventana) ventana.style.display = "none";
-    limpiarCampos(true);
-  }
-
-  function limpiarCampos(todos = false) {
-    passwordActualInput.value = "";
-    if (todos) nuevaPasswordInput.value = "";
-    mensaje.textContent = "";
-  }
-
-  async function guardarCambios() {
-    const user = auth.currentUser;
-    const passwordActual = passwordActualInput.value.trim();
-    const nuevaPassword = nuevaPasswordInput.value.trim();
-    const passwordsecurity = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-
-    if (!user) {
-      mensaje.textContent = "No hay usuario autenticado.";
-      return;
-    }
-
-    if (!passwordActual) {
-      mensaje.textContent = "Debes ingresar tu contraseña actual.";
-      return;
-    }
-
-    if (!nuevaPassword) {
-      mensaje.textContent = "Debes ingresar una nueva contraseña.";
-      return;
-    }
-
-    if (!passwordsecurity.test(nuevaPassword)) {
-      mensaje.textContent = "La nueva contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.";
-      return;
-    }
-
-    try {
-      const credential = EmailAuthProvider.credential(user.email, passwordActual);
-      await reauthenticateWithCredential(user, credential);
-
-      await updatePassword(user, nuevaPassword);
-      mensaje.textContent = "Contraseña actualizada correctamente.";
-      await delay(2000);
-      limpiarCampos(true);
-      cerrarLog();
-
-    } catch (error) {
-      console.error(error);
-      switch (error.code) {
-        case "auth/invalid-credential":
-          mensaje.textContent = "La contraseña actual es incorrecta.";
-          passwordActualInput.value = "";
-          await delay(2000);
-          mensaje.textContent = "";
-          break;
-        case "auth/weak-password":
-          mensaje.textContent = "La nueva contraseña es muy débil (mínimo 6 caracteres).";
-          passwordActualInput.value = "";
-          await delay(2000);
-          mensaje.textContent = "";
-          break;
-        case "auth/requires-recent-login":
-          mensaje.textContent = "Por seguridad, vuelve a iniciar sesión e intenta de nuevo.";
-          passwordActualInput.value = "";
-          await delay(2000);
-          mensaje.textContent = "";
-          break;
-        default:
-          mensaje.textContent = "Error desconocido: " + error.message;
-          passwordActualInput.value = "";
-          await delay(2000);
-          mensaje.textContent = "";
-      }
-    }
-  }
-
-  document.getElementById("logeditBtn").addEventListener("click", abrirLog);
-  document.getElementById("cerrarLogBtn").addEventListener("click", cerrarLog);
-  document.getElementById("guardarCambiosBtn").addEventListener("click", guardarCambios);
-});
