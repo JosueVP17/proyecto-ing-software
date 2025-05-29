@@ -5,6 +5,7 @@ import {
   where,
   getDocs
 } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js"
+import { cargarPlanActual } from './planes.js'
 
 async function mostrarDatosMetaPersonal() {
   auth.onAuthStateChanged(async (user) => {
@@ -48,3 +49,4 @@ async function mostrarDatosMetaPersonal() {
 
 // Ejecutar al cargar
 mostrarDatosMetaPersonal()
+cargarPlanActual()

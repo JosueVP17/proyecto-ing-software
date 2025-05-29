@@ -102,7 +102,25 @@ export function cerrarModal() {
   document.body.style.overflow = "";
 }
 
-// Confirmar y guardar suscripción en Firestore
+function mostrarDatosBancarios() {
+  const datos = `
+    <h3>Datos para transferencia bancaria</h3>
+    <ul>
+      <li><b>Banco:</b> BBVA</li>
+      <li><b>Cuenta:</b> 1234567890</li>
+      <li><b>CLABE:</b> 012345678901234567</li>
+      <li><b>Beneficiario:</b> Aurum Gym</li>
+    </ul>
+    <p>Envía tu comprobante a: pagos@aurumgym.com</p>
+    <button onclick="cerrarModal()">Cerrar</button>
+  `;
+  const modal = document.getElementById("modalPlan");
+  modal.querySelector(".modal-content").innerHTML = datos;
+  modal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+}
+
+// Confirmar y guardar suscripción en Firestore y redirigir según método de pago
 export async function confirmarSuscripcion() {
   const modal = document.getElementById("modalPlan");
   const planId = modal.dataset.planSeleccionado;
@@ -120,6 +138,16 @@ export async function confirmarSuscripcion() {
     return;
   }
 
+  // Montos en centavos (Stripe) y en pesos (PayPal)
+  const precios = {
+    planDiario: 6000,
+    planBasico: 35000,
+    planEstandar: 45000,
+    planPremium: 70000,
+    planCorporativo: 40000,
+    planEstSen: 38000
+  };
+
   try {
     const userRef = doc(db, "users", auth.currentUser.uid);
     const userDoc = await getDoc(userRef);
@@ -130,21 +158,44 @@ export async function confirmarSuscripcion() {
       return;
     }
 
-    await setDoc(userRef, {
-      plan: plan.nombre,
-      metodoPago: metodoPago
-    }, { merge: true });
-
-    alert(`Suscripción al ${plan.nombre} confirmada mediante ${metodoPago}.`);
     cerrarModal();
     mostrarPlanEnPerfil(plan.nombre);
 
+    // Redirección según método de pago
     if (metodoPago === "card") {
-      window.location.href = "https://checkout.stripe.com/pay";
+      // Stripe Checkout
+      const amount = precios[planId]
+      const response = await fetch("/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount })
+      });
+      const data = await response.json();
+      if (data.url) {
+        localStorage.setItem("planNombre", plan.nombre)
+        localStorage.setItem("metodoPago", metodoPago)
+        window.location.href = data.url
+      } else {
+        alert("Error al iniciar el pago con Stripe.");
+      }
     } else if (metodoPago === "paypal") {
-      window.location.href = "https://www.paypal.com/checkout";
+      // Redirección a PayPal con monto y descripción
+      const amount = precios[planId]
+      const res = await fetch("/create-paypal-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount }),
+      })
+      const data = await res.json()
+      if (data.url) {
+          localStorage.setItem("planNombre", plan.nombre)
+          localStorage.setItem("metodoPago", metodoPago)
+          window.location.href = data.url
+      } else {
+          alert("Error al crear la orden de PayPal. Intenta de nuevo.")
+      }      
     } else if (metodoPago === "transfer") {
-      alert("Se mostrarán los datos para transferencia en la siguiente pantalla.");
+      mostrarDatosBancarios();
     }
 
   } catch (err) {
