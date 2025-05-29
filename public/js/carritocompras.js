@@ -418,7 +418,7 @@ document.querySelectorAll('.shipping-option input[type="radio"]').forEach((radio
 
 /*Para mostra el resumen del carrito en el proceso de pago*/
 let descuento = 0, subtotalConDescuento = 0, impuesto = 0, envio = 0, total = 0
-const renderCartSummaryProcesoPago = async () => {
+const renderCartSummaryProcesoPago = async (envioGuardado = null) => {
     const user = auth.currentUser
     if (!user) return
 
@@ -470,24 +470,27 @@ const renderCartSummaryProcesoPago = async () => {
     subtotalConDescuento = subtotal - descuento
 
     /*Cálculo de impuestos y envío*/
-    impuesto = subtotalConDescuento * 0.04 /*4% de impuesto*/
-
-    const shippingSelected = document.querySelector('#container-proceso-pago input[name="shipping"]:checked')
-    if (shippingSelected) {
-        if (shippingSelected.value === "dhl") envio = 180
-        else if (shippingSelected.value === "estafeta") envio = 120
-        else if (shippingSelected.value === "fedex") envio = 200
+    impuesto = subtotalConDescuento * 0.04; /*4% de impuesto*/
+    envio = 180; /*Default DHL*/
+    let metodoEnvio = envioGuardado
+    if (!metodoEnvio) {
+        const shippingSelected = document.querySelector('#container-proceso-pago input[name="shipping"]:checked')
+        metodoEnvio = shippingSelected ? shippingSelected.value : "dhl"
     }
-    total = subtotalConDescuento + impuesto + envio
+    if (metodoEnvio === "dhl") envio = 180
+    else if (metodoEnvio === "estafeta") envio = 120
+    else if (metodoEnvio === "fedex") envio = 200
+
+    const total = subtotalConDescuento + impuesto + envio
 
     /*Se agrega el desglose al final del resumen*/
     summaryContainer.innerHTML += 
     `
-    ${descuento > 0 ? `<div class="summary-row"><span>Descuento:</span><span>-$${descuento.toFixed(2)} MXN</span></div>` : ""}
-    <div class="summary-row"><span>Subtotal:</span><span>$${subtotalConDescuento.toFixed(2)} MXN</span></div>
-    <div class="summary-row"><span>Impuesto:</span><span>$${impuesto.toFixed(2)} MXN</span></div>
-    <div class="summary-row"><span>Envío:</span><span>$${envio.toFixed(2)} MXN</span></div>
-    <div class="summary-row total"><span>TOTAL:</span><span>$${total.toFixed(2)} MXN</span></div>
+    ${descuento > 0 ? `<div class="summary-row summary-item-2"><span>Descuento:</span><span>-$${descuento.toFixed(2)} MXN</span></div>` : ""}
+    <div class="summary-row summary-item-2"><span>Subtotal:</span><span>$${subtotalConDescuento.toFixed(2)} MXN</span></div>
+    <div class="summary-row summary-item-2"><span>Impuesto:</span><span>$${impuesto.toFixed(2)} MXN</span></div>
+    <div class="summary-row summary-item-2"><span>Envío:</span><span>$${envio.toFixed(2)} MXN</span></div>
+    <div class="summary-row total summary-item-2"><span>TOTAL:</span><span>$${total.toFixed(2)} MXN</span></div>
     `
 }
 
@@ -593,10 +596,12 @@ const SDProcesoPago = async (event) => {
             const docRef = querySnapshot.docs[0].ref
             await setDoc(docRef, respuestas)
             alert("Datos de proceso de pago actualizados exitosamente.")
+            await renderCartSummaryProcesoPago(respuestas.metodoEnvio)
         } else {
             /*Si no existe, se crea uno nuevo*/
             await addDoc(collection(db, "procpago"), respuestas)
             alert("Datos de proceso de pago guardados exitosamente.")
+            await renderCartSummaryProcesoPago(respuestas.metodoEnvio)
         }
     } catch (error) {
         console.error("Error al guardar los datos del proceso de pago:", error)

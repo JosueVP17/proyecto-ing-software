@@ -2,7 +2,6 @@ import { db, auth } from './firebase-config.js'
 import { doc, setDoc, getDoc, updateDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js"
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js"
 
-
 /*Para limpiar el formulario*/
 function limpiarFormulario() {
   document.querySelectorAll('input, select').forEach(el => el.value = '')
@@ -32,12 +31,10 @@ async function cargarRespuestas() {
 
   if (user) {
     try {
-      /*Consulta para buscar el formulario del usuario por su correo*/
       const q = query(collection(db, "meta-personal"), where("correo", "==", user.email))
       const querySnapshot = await getDocs(q)
 
       if (!querySnapshot.empty) {
-        /*Se obtiene el formulario que contenga el correo del usuario*/
         const docSnapshot = querySnapshot.docs[0]
         const respuestas = docSnapshot.data()
 
@@ -75,7 +72,6 @@ async function cargarRespuestas() {
 async function procesarFormulario(event) {
   event.preventDefault();
 
-  /*Se obtienen los valores del formulario*/
   const respuestas = {
     sexo: document.querySelector('select[name="sexo"]').value,
     edad: document.querySelector('input[name="edad"]').value,
@@ -99,20 +95,22 @@ async function procesarFormulario(event) {
   }
 
   try {
-    /*Se crea o actualiza el documento en la base de datos*/
     const q = query(collection(db, "meta-personal"), where("correo", "==", respuestas.correo))
     const querySnapshot = await getDocs(q)
 
     if (!querySnapshot.empty) {
-      /*Si ya existe, se actualiza*/
       const docRef = querySnapshot.docs[0].ref
       await setDoc(docRef, respuestas)
       alert("Formulario actualizado exitosamente.")
     } else {
-      /*Si no existe, se crea o agrega a la base*/
       await addDoc(collection(db, "meta-personal"), respuestas)
       alert("Formulario enviado exitosamente.")
     }
+
+    // Cerrar el formulario y recargar la página
+    document.getElementById("ventana").style.display = "none";
+    location.reload();
+
   } catch (error) {
     console.error("Error al guardar el formulario:", error)
     alert("Hubo un error al enviar el formulario. Inténtalo de nuevo.")
