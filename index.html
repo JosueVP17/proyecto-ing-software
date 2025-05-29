@@ -10,11 +10,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <title>Aurum Gym</title>
   <link rel="stylesheet" href="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.css" />
-  <script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
+ 
+
+
 
 
 </head>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <body>
   <header>
@@ -31,7 +32,9 @@
     </nav>
   </header>
 
-  <section class="section inicio" id="inicio">
+<div id="servicios-card"></div>
+
+<section class="section inicio" id="inicio">
     <div class="login"  id="inicio-card">
       <h2>Te damos la bienvenida</h2>
         <div class="presentation">
@@ -44,116 +47,93 @@
         </div>
     </div>
     <div class="servicios" id="servicios-card">
-      <h2>Servicios</h2>
-      <center><button >Catálogo</button>
-      <button >Planes de suscripción</button>
-      <button >Clases</button>
-      </center>
-    </div>
- <div class="contenedor">   
-<button class="rutin" onclick="abrirModal()">Rutinas
-<img class="imgrutin" src="./images/rutinas.png" >
-</button>
+      <h2 class="title-servicios">Servicios</h2>
+      
+  
+    <button class="servicios" onclick="abrirModal('rutinas')">Rutinas</button>
+    
+    <button class="servicios" onclick="abrirModal('plan')">Plan Nutricional</button>
+    <button class="servicios" onclick="abrirModal('imc')">IMC</button>
+    
+    <button class="servicios" onclick="abrirModal('tmb')">TMB</button>
 
-
-<!-- Modal (oculto por defecto) -->
-<div id="rutinas" class="rutinas">
-  <div class="rutina-contenido">
-    <span class="cerrar" onclick="cerrarModal()">&times;</span>
-    <h2>Rutinas</h2>
-    <p>Este es el contenido de la ventana emergente.</p>
-  </div>
-</div>
-
-<button class="rutin" onclick="abrirModal()">Plan nutricional
-  <img class="imgdieta" src="./images/nutricion.png" > </button>
-
-<!-- Modal (oculto por defecto) -->
-<div id="rutina" class="rutinas">
-  <div class="rutina-contenido">
-    <span class="cerrar" onclick="cerrarModal()">&times;</span>
-    <h2>Plan nutricional</h2>
-    <p>Este es el contenido de la ventana emergente.</p>
-  </div>
-</div>
-
-<button class="rutin" onclick="abrirModal()">IMC
-  <img class="imgIMC" src="./images/IMC.png" >
-</button>
-
-
-<!-- Modal (oculto por defecto) -->
-<div id="rutinas" class="rutinas">
-  <div class="rutina-contenido">
-    <span class="cerrar" onclick="cerrarModal()">&times;</span>
-    <h2>IMC</h2>
-    <p>Este es el contenido de la ventana emergente.</p>
-  </div>
-</div>
-
-<button class="rutin" onclick="abrirModal()">TMB
-  <img class="imgtmb" src="./images/bdc.png" >
-</button>
  
 
-<!-- Modal (oculto por defecto) -->
-<div id="rutinas" class="rutinas">
-  <div class="rutina-contenido">
-    <span class="cerrar" onclick="cerrarModal()">&times;</span>
-    <h2>TMB</h2>
-    <p>Este es el contenido de la ventana emergente.</p>
+  <!-- Modal -->
+  <div id="miModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="cerrarModal()">&times;</span>
+      <div id="modalContenido"></div>
+    </div>
   </div>
-</div>
-</div>
-<div class="estadistica"> 
-  <div>
-    <h2>Estadísticas</h2>
-  <img class="imgestadistica" src="./images/estadisticas.png" >
-  <canvas id="miGrafica" width="500" height="100"></canvas>
-  </div>
-  <script>
-const ctx = document.getElementById('miGrafica').getContext('2d');
-const miGrafico = new Chart(ctx, {
-  type: 'bar', // o 'line', 'pie', etc.
-  data: {
-    labels: ['Enero', 'Febrero', 'Marzo', 'Abril'],
-    datasets: [{
-      label: 'Cambios en el IMC',
-      data: [12, 19, 3, 5],
-      backgroundColor: '#ffb800',
-      borderColor: '#ffffff',
-      borderWidth: 1
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: {
-        labels: {
-          color: 'white'
-        }
-      }
-    },
-    scales: {
-      x: {
-        ticks: {
-          color: 'white'
-        }
-      },
-      y: {
-        ticks: {
-          color: 'white'
-        }
-      }
+    </div>
+    <div>
+    </div>
+
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+  
+<div class="grafica"><h2>Avances por mes IMC</h2>
+ <canvas id="graficaIMC" width="400" height="200"></canvas>
+<div id="resultadoIMC"></div>
+
+
+<script>
+let graficaIMC;
+
+function guardarIMCMensual(valorIMC) {
+    const mesActual = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
+    let datosIMC = JSON.parse(localStorage.getItem("datosIMC")) || {};
+    datosIMC[mesActual] = valorIMC;
+    localStorage.setItem("datosIMC", JSON.stringify(datosIMC));
+}
+
+function crearGraficaIMC() {
+    const ctx = document.getElementById("graficaIMC").getContext("2d");
+    const datosIMC = JSON.parse(localStorage.getItem("datosIMC")) || {};
+    const etiquetas = Object.keys(datosIMC);
+    const valores = Object.values(datosIMC);
+
+    if (graficaIMC) {
+        graficaIMC.destroy();
     }
-  }
-});
+
+    graficaIMC = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: etiquetas,
+            datasets: [{
+                label: "IMC por mes",
+                data: valores,
+                backgroundColor: valores.map(valor =>
+                    valor < 18.5 ? "blue" :
+                    valor < 24.9 ? "green" :
+                    valor < 29.9 ? "orange" : "red"
+                ),
+                borderColor: "black",
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    min: 10,
+                    max: 40,
+                    title: {
+                        display: true,
+                        text: 'Índice de Masa Corporal'
+                    }
+                }
+            }
+        }
+    });
+}
+
 </script>
 
-
-</div>
-
-
+  
   </section>
 
 <!--Perfil de usuario-->

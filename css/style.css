@@ -124,19 +124,19 @@ nav a:hover {
     color: black;
     transform: scale(1.05);
 }
-.servicios{
+.servicios {
     display: flex;
-    place-items: center;
+    flex-direction: column; /* Para alinear en columna */
     background-color: #1c1f26cc;
     padding: 15px;
     max-width: 400px;
     border-radius: 20px;
     height: 350px;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    color:#F2B705 ;
+    justify-content: flex-start; /* Comienza desde arriba */
+    color: #F2B705;
+    gap: 10px; /* Espacio entre elementos */
 }
+
 .servicios button{
      display: flex;
     flex-direction: column;
@@ -277,6 +277,23 @@ nav a:hover {
     color: black;
     transform: scale(1.05);
 }
+.grafica
+{
+    display: flex;
+    height: 60%;
+    width: 50%;
+    align-items: start;
+    justify-content: left;
+    margin-left: 600px;
+    position: absolute;
+    top: 200px; /* ← sube la gráfica */
+}
+
+#title-servicios {
+    text-align: center;
+    margin-left: 20px;
+}
+
 .servicios{
     display: flex;
     place-items: center;
@@ -1606,7 +1623,4 @@ to {
     font-size: 30px;
     color: white;
 }
-
-
-
 /* ----------------------------- */
