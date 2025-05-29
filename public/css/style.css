@@ -280,13 +280,13 @@ nav a:hover {
 .grafica
 {
     display: flex;
-    height: 60%;
-    width: 50%;
+    height: 100%;
+    width: 180%;
     align-items: start;
     justify-content: left;
     margin-left: 600px;
     position: absolute;
-    top: 200px; /* ← sube la gráfica */
+    top: 100px;
 }
 
 #title-servicios {
@@ -309,7 +309,7 @@ nav a:hover {
 
 }
 .servicios button{
-     display: flex;
+    display: flex;
     flex-direction: column;
     width: 90%;
     height: 70px;

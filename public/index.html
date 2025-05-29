@@ -10,11 +10,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <title>Aurum Gym</title>
   <link rel="stylesheet" href="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.css" />
- 
-
-
-
-
 </head>
 
 <body>
@@ -32,8 +27,6 @@
     </nav>
   </header>
 
-<div id="servicios-card"></div>
-
 <section class="section inicio" id="inicio">
     <div class="login"  id="inicio-card">
       <h2>Te damos la bienvenida</h2>
@@ -43,97 +36,86 @@
         <div class="button">
           <button>Iniciar Sesión</button>
           <button>Registrarse</button>
-          <p class="continue">Continuar sin iniciar sesión</p>
         </div>
     </div>
-    <div class="servicios" id="servicios-card">
+    <div class="servicios" id="servicios-card" >
       <h2 class="title-servicios">Servicios</h2>
+  
+      <button class="servicios" onclick="abrirModalServicios('rutinas')">Rutinas</button>
       
+      <button class="servicios" onclick="abrirModalServicios('plan')">Plan Nutricional</button>
+      <button class="servicios" onclick="abrirModalServicios('imc')">IMC</button>
+      
+      <button class="servicios" onclick="abrirModalServicios('tmb')">TMB</button>
+
+      <!-- Modal -->
+      <div id="miModal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <span class="close" onclick="cerrarModalServicios()">&times;</span>
+          <div id="modalContenido"></div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-    <button class="servicios" onclick="abrirModal('rutinas')">Rutinas</button>
-    
-    <button class="servicios" onclick="abrirModal('plan')">Plan Nutricional</button>
-    <button class="servicios" onclick="abrirModal('imc')">IMC</button>
-    
-    <button class="servicios" onclick="abrirModal('tmb')">TMB</button>
+      <div class="grafica">
+        <h2>Avances por mes IMC</h2>
+        <canvas id="graficaIMC" width="400" height="200"></canvas>
+        <div id="resultadoIMC"></div>
+      </div>
+      <script>
+        let graficaIMC;
 
- 
+        function guardarIMCMensual(valorIMC) {
+            const mesActual = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
+            let datosIMC = JSON.parse(localStorage.getItem("datosIMC")) || {};
+            datosIMC[mesActual] = valorIMC;
+            localStorage.setItem("datosIMC", JSON.stringify(datosIMC));
+        }
 
-  <!-- Modal -->
-  <div id="miModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="cerrarModal()">&times;</span>
-      <div id="modalContenido"></div>
-    </div>
-  </div>
-    </div>
-    <div>
-    </div>
+        function crearGraficaIMC() {
+            const ctx = document.getElementById("graficaIMC").getContext("2d");
+            const datosIMC = JSON.parse(localStorage.getItem("datosIMC")) || {};
+            const etiquetas = Object.keys(datosIMC);
+            const valores = Object.values(datosIMC);
 
-   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            if (graficaIMC) {
+                graficaIMC.destroy();
+            }
 
-
-  
-<div class="grafica"><h2>Avances por mes IMC</h2>
- <canvas id="graficaIMC" width="400" height="200"></canvas>
-<div id="resultadoIMC"></div>
-
-
-<script>
-let graficaIMC;
-
-function guardarIMCMensual(valorIMC) {
-    const mesActual = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
-    let datosIMC = JSON.parse(localStorage.getItem("datosIMC")) || {};
-    datosIMC[mesActual] = valorIMC;
-    localStorage.setItem("datosIMC", JSON.stringify(datosIMC));
-}
-
-function crearGraficaIMC() {
-    const ctx = document.getElementById("graficaIMC").getContext("2d");
-    const datosIMC = JSON.parse(localStorage.getItem("datosIMC")) || {};
-    const etiquetas = Object.keys(datosIMC);
-    const valores = Object.values(datosIMC);
-
-    if (graficaIMC) {
-        graficaIMC.destroy();
-    }
-
-    graficaIMC = new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: etiquetas,
-            datasets: [{
-                label: "IMC por mes",
-                data: valores,
-                backgroundColor: valores.map(valor =>
-                    valor < 18.5 ? "blue" :
-                    valor < 24.9 ? "green" :
-                    valor < 29.9 ? "orange" : "red"
-                ),
-                borderColor: "black",
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    min: 10,
-                    max: 40,
-                    title: {
-                        display: true,
-                        text: 'Índice de Masa Corporal'
+            graficaIMC = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: etiquetas,
+                    datasets: [{
+                        label: "IMC por mes",
+                        data: valores,
+                        backgroundColor: valores.map(valor =>
+                            valor < 18.5 ? "blue" :
+                            valor < 24.9 ? "green" :
+                            valor < 29.9 ? "orange" : "red"
+                        ),
+                        borderColor: "black",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            min: 10,
+                            max: 40,
+                            title: {
+                                display: true,
+                                text: 'Índice de Masa Corporal'
+                            }
+                        }
                     }
                 }
-            }
+            });
         }
-    });
-}
-
-</script>
-
-  
+      </script>
+    </div>
   </section>
 
 <!--Perfil de usuario-->
@@ -462,7 +444,7 @@ function crearGraficaIMC() {
       <button id="filterBtn"><i class="fa fa-filter"></i> Filtros</button>
     </div>
     <!-- Modal de Filtros -->
-    <div id="filterModal" class="modal">
+    <div id="filterModal" class="modal" style="display: none;">
       <div class="modal-content">
         <span id="closeFilterModal">&times;</span>
         <h3>FILTROS</h3>
@@ -897,10 +879,10 @@ function crearGraficaIMC() {
   </section>
     
   <script src="./js/script.js"></script>
-  <script type="module" src="./js/loginfo.js"></script>
   <script type="module" src="./js/formpersonal.js"></script>
   <script type="module" src="./js/login.js"></script>
   <script type="module" src="./js/cropper.js"></script>
+  <script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
   <script type="module" src="./js/products.js"></script>
   <script type="module" src="./js/infometa.js"></script>
   <script type="module" src="./js/planes.js"></script>

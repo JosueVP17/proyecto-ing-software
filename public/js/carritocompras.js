@@ -106,8 +106,6 @@ const renderCartSummary = async () => {
     const summaryContainer = document.querySelector('.cart-summary')
     summaryContainer.innerHTML = ""
 
-    let total = 0
-
     /*Se crea un recuadro o div por cada producto en el carrito*/
     for (const item of items) {
         /*Se obtienen detalles del producto desde la colección products*/
