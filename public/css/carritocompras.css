@@ -5,8 +5,11 @@
     overflow-x: hidden;
 }
 
+* {
+    font-family: "Bebas Neue", sans-serif;
+    letter-spacing: 1px;
+}
 body {
-    font-family: 'Poppins', sans-serif;
     background-color: #161A25;
     color: white;
 }
@@ -676,6 +679,18 @@ hr {
     font-weight: 600;
 }
 
+.login-required {
+    max-width: 420px;
+    margin: 60px auto 0 auto;
+    padding: 32px 24px;
+    background: transparent;
+    border-radius: 16px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #F6C308;
+    font-weight: bold;
+}
+
 @media (max-width: 1024px) {
     .container-proceso-pago {
         grid-template-columns: 1fr;
@@ -708,8 +723,29 @@ hr {
         display: none;
     }
 
+    .tittle-cart-pruducts {
+        width: 80%;
+        text-align: center;
+    }
+
+    .container-carrito {
+        flex-direction: column;
+        align-items: center;
+    }
+    
     .container-proceso-pago {
         padding: 1rem;
+    }
+    
+    .cart-product {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .summary, .cart-products {
+        width: 80%;
+        max-width: 80%;
     }
     
     .form-row {

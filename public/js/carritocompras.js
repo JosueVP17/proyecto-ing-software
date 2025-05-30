@@ -19,8 +19,26 @@ const renderCartProducts = async () => {
     const user = auth.currentUser
     if (!user) {
         alert("Debes iniciar sesión para ver tu carrito.")
+        const carrito = document.getElementById('container-carrito')
+        if (carrito) carrito.style.display = "none"
+        // Muestra mensaje en pantalla
+        let message = document.getElementById('login-required')
+        if (!message) {
+            message = document.createElement('div')
+            message.id = 'login-required-msg'
+            message.className = 'login-required-message'
+            message.innerHTML = 
+            `
+            <div class="login-required">
+            <h1>Inicia sesión o regístrate para poder realizar compras.</h1>
+            </div>
+            `
+            document.body.appendChild(message)
+        }
         return
     }
+
+    const btnProcesoPago = document.getElementById('proceso-pago-btn')
 
     /*Se consulta el carrito del usuario en firebase*/
     const cartQuery = query(collection(db, "cart"), where("email", "==", user.email))
@@ -29,7 +47,10 @@ const renderCartProducts = async () => {
     /*Si no hay productos, se envia un mensaje*/
     if (cartDocs.empty || !(cartDocs.docs[0].data().items && cartDocs.docs[0].data().items.length > 0)) {
         document.querySelector('.products').innerHTML = "<h1>Tu carrito está vacío.</h1>"
+        if (btnProcesoPago) btnProcesoPago.style.display = "none"
         return
+    } else {
+        if (btnProcesoPago) btnProcesoPago.style.display = "block"
     }
 
     const cartData = cartDocs.docs[0].data()
@@ -56,6 +77,7 @@ const renderCartProducts = async () => {
             <div class="item-details">
                 <h4>${product.nombre}</h4>
                 <h4>$${product.precio} MXN C/U</h4>
+                <br> <br>
                 <div class="quantity">
                     <button>-</button>
                     <span>${item.cantidad}</span>
@@ -105,6 +127,7 @@ const renderCartSummary = async () => {
 
     const summaryContainer = document.querySelector('.cart-summary')
     summaryContainer.innerHTML = ""
+    let total = 0
 
     /*Se crea un recuadro o div por cada producto en el carrito*/
     for (const item of items) {
@@ -385,9 +408,9 @@ auth.onAuthStateChanged(async user => {
                 if (couponInput) couponInput.value = ""
             }
         }
-        renderCartProducts()
-        renderCartSummary()
     }
+    renderCartProducts()
+    renderCartSummary()
 })
 
 /*Finaliza sección para el carrito de compras*/
@@ -716,6 +739,8 @@ async function renderRevisionSummary() {
         `
     }
     
+    total = subtotalConDescuento + impuesto + envio
+
     summaryDiv.innerHTML += `
         ${descuento > 0 ? `<div class="summary-row"><span>Descuento:</span><span>-$${descuento.toFixed(2)} MXN</span></div>` : ""}
         <div class="summary-row"><span>Subtotal:</span><span>$${subtotalConDescuento.toFixed(2)} MXN</span></div>
