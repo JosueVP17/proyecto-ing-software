@@ -1,6 +1,6 @@
 import { db } from "./firebase-config.js"
 import { auth } from "./firebase-config.js"
-import { doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js"
+import { doc, setDoc, getDoc, updateDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js"
 
 document.addEventListener('DOMContentLoaded', async () => {
     auth.onAuthStateChanged(async user => {
@@ -22,12 +22,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const userRef = doc(db, "users", user.uid)
             const userDoc = await getDoc(userRef)
             // Solo guardar si aún no tiene ese plan
-            await setDoc(userRef, {
-                plan: planNombre,
-                metodoPago: metodoPago
-            }, { merge: true })
-
-            document.getElementById("userPlan").textContent = planNombre
+            if (!userDoc.exists()) {
+                await setDoc(userRef, {
+                    plan: planNombre,
+                    metodoPago: metodoPago
+                }, { merge: true })
+            } else if(userDoc.data().plan !== planNombre) {
+                updateDoc(userRef, {plan: planNombre})
+            }
             // Limpia los datos del localStorage
             localStorage.removeItem("planNombre")
             localStorage.removeItem("metodoPago")
