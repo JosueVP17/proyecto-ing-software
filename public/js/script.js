@@ -2,8 +2,6 @@
 const navButtons = document.querySelectorAll('nav a')
 const sections = document.querySelectorAll('.section')
 
-
-
 sections.forEach(section => section.style.display = 'none')
 inicio.style.display = 'block'
 
@@ -44,6 +42,22 @@ signupShowBtn.addEventListener('click', () => {
 signinShowBtn.addEventListener('click', () => {
     signupForm.style.display = 'none'
     signinForm.style.display = 'block'
+})
+
+inicioSigninBtn.addEventListener('click', () => {
+  login.style.display = 'block'
+  inicio.style.display = 'none'
+  inicioBtn.classList.remove('active')
+  loginBtn.classList.add('active')
+})
+
+inicioSignupBtn.addEventListener('click', () => {
+  login.style.display = 'block'
+  inicio.style.display = 'none'
+  inicioBtn.classList.remove('active')
+  loginBtn.classList.add('active')
+  signupForm.style.display = 'block'
+  signinForm.style.display = 'none'
 })
 
 function abrirModal() {

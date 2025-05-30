@@ -61,7 +61,7 @@ onAuthStateChanged(auth, async(user) => {
 })
 
 const signupBtn = document.getElementById('signupBtn')
-  const signinBtn = document.getElementById('signinBtn')
+const signinBtn = document.getElementById('signinBtn')
 
   signupBtn.addEventListener('click', async () => {
       const email = document.getElementById('emailSignup').value

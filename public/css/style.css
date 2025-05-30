@@ -36,7 +36,8 @@ header {
     justify-content: space-between;
     align-items: center;
     /* padding: 20px; */
-    background: linear-gradient(to bottom, #1c1f26);
+    background-color: #1c1f26cc;
+    padding: 10px 0;
 }
 
 .logo img {
@@ -79,8 +80,17 @@ nav a:hover {
 }
 
 #login {
- margin-left: 32px;
- margin-top: 20px;
+    position: relative;
+    margin-left: 32px;
+    margin-top: 20px;
+}
+
+#login-card {
+    position: absolute;
+    top: 45%;
+    left: 48%;
+    transform: translate(-50%, 0);
+    margin: 0;
 }
 
 .login {
@@ -578,6 +588,21 @@ tr img {
     justify-content: space-evenly;
 }
 
+.inicio-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.button-inicio {
+    width: 90%;
+}
+
+.button-inicio button {
+    margin: 10px auto;
+}
+
 .presentation {
     display: flex;
     align-items: center;
@@ -602,6 +627,13 @@ tr img {
     margin-top: 20px;
     margin-bottom: 20px;
     /* padding: 40px; */
+}
+
+.planes h1 {
+    width: 100%;
+    font-size: 3em;
+    color: #F2B705;
+    margin: 5px 0;
 }
 
 .plan {
